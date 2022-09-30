@@ -1,0 +1,20 @@
+Modbus Network
+
+Slave (COM6)/slave UID = 113
+	well_new_QoWcQt
+	Input Registers (30000)
+	-Read qo_lc	: Address = 109
+	-Read qt_lc	: Address = 2024
+	-Read Wc	: Address = 191
+	Holding Registers (40000)
+	-Read GLIR	: Address = 2022
+
+Master (COM7)/slave UID = 114
+	well_new_GLIR
+	Input Registers (30000)
+	-Read qo_lc	: Address = 109
+	-Read qt_lc	: Address = 2024
+	-Read Wc	: Address = 191
+	Holding Registers (40000)
+	-Write GLIR	: Address = 2022, value = well_new_GLIR
+	-Read GLIR	: Address = 2022
