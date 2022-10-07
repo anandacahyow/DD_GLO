@@ -3,11 +3,15 @@ import logging
 from datetime import datetime
 from time import sleep
 
+import matplotlib.pyplot as plt
+import numpy as np
+
 from pymodbus.client.sync import ModbusSerialClient
 from pymodbus.payload import BinaryPayloadDecoder
 from pymodbus.constants import Endian
 
 from DDGLO import DDGLO
+from DDGLO import WellDyn
 
 logging.basicConfig(level=logging.INFO)
 
@@ -21,9 +25,12 @@ def main():
     client.connect()
     i = 0
     num = 8
+    val_GLIR = []
+    qt_data = []
+    plt.ion()
     while 1:
         num = 8
-        val = DDGLO("well_cleaned_qt.csv",i)
+        val = DDGLO("well_VX2_calc.csv",i,'Qt')
         GLIR_opt = val.RegOpt(i)[4]
         # ========================== INPUT REGISTERS (VX) ===============================
         val1 = client.read_input_registers(address=109, count=2, unit=113)  # qo_lc
@@ -47,12 +54,39 @@ def main():
         # ========================== HOLDING REGISTERS (ABB) ===============================
         val5 = client.write_register(7001, GLIR_opt, unit=114)  #GLIR_opt
         val5 = client.read_holding_registers(7001, 10, unit=114)  # GLIR
+        val_GLIR.append(GLIR_opt)
 
         # ========================== LOGGING HOLDING REGISTER (ABB) ===============================
         #logging.info(f"{datetime.now()} GLIR: {val5.registers[0]}")
-        logging.info(f"{datetime.now()} GLIR OPT: {val5.registers[0]}")
+        logging.info(f"{datetime.now()} GLIR OPT: {val5.registers[0]} || {np.shape(val_GLIR)}")
 
-        sleep(3)
+        # ========================== WELL SYSTEM DYNAMICS ===============================
+        well = WellDyn(val_GLIR)
+        y_sys = well.WellSys(val_GLIR)
+
+        # ========================== REAL-TIME PLOTTING ===============================
+        #logging.info(f"NILAI GLIR DATA: {y_sys}")
+        
+        qt = val.DataRef('Qt')
+        qt_data.append(qt)
+
+        t = np.arange(0,i+1,1)
+        if len(y_sys) < 4:
+            tt = np.arange(0,3,1)
+        else:
+            tt = np.arange(0,i+1,1)
+
+        plt.plot(t,qt_data, label = 'Qt Data')
+        plt.plot(t,val_GLIR, label='GLIR OPT')
+        plt.plot(tt,y_sys, label='Qt Pred')
+        plt.xlabel(f"Day {i}-th")
+        plt.ylabel('GLIR (mscfd)')
+        plt.legend()
+        plt.grid()
+        plt.pause(0.05)
+        plt.clf()
+
+        sleep(1)
         i += 1
     client.close()
 

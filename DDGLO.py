@@ -11,11 +11,20 @@ from sklearn.metrics import r2_score
 import sys
 import seaborn as sns
 
+from gekko import GEKKO
+
 
 class DDGLO():
-    def __init__(self, dataset, i):  # param yg bakal dipake (dataset, )
+    def __init__(self, dataset, i,param):  # param yg bakal dipake (dataset, )
         self.dataset = dataset
         self.i = i
+        self.param=param
+    
+    def DataRef(self,param):
+        DF = pd.read_csv(self.dataset)
+        qt1 = DF[self.param].values
+        qt = qt1[self.i]
+        return qt
 
     def RegOpt(self, i):
         def objective(x, a, b, c, wc):
@@ -109,7 +118,6 @@ class DDGLO():
                            method='SLSQP', bounds=bound, constraints=con)
 
         # ========================================== DATA HANDLING ==========================================
-
         # Qo to Plot
         y_obj_fun = objectives(x, poly[0], poly[1], poly[2], wc[-1])
         # Qt to Scatter Optimal Point
@@ -120,77 +128,54 @@ class DDGLO():
         # Qo from Data
         y_comparison = z[-1]
 
-        """if yy >= y_comparison:
-                # print("[+]\tGLIR:", x[-1], "\tnilai Qo data:", y_comparison, "\tGLIR opt:", int(sol.x),"\tQo optimal model:", yy, "incr avg:", yy-y_comparison)
-                cond.append("+")
-                j = j+1
-            else:
-                # print("[-]\tGLIR:", x[-1], "\tnilai Qo data:", y_comparison, "\tGLIR opt:", int(sol.x),"\tQo optimal model:", yy, "incr avg:", yy-y_comparison)
-                cond.append("-")"""
-
-        """avg_incc = yy-y_comparison
-            avg_inc.append(avg_incc)
-
-            y_optimal_qo.append(yy)
-            y_comp.append(z[-1])
-            x_comp.append(x[-1])
-
-            x_glir.append(x)
-            yp.append(y_pred)  # Qt predict
-            yd.append(y[-1])       # Qt data
-            wcd.append(wc[-1])
-
-            x_glir_opt.append(int(sol.x))  # GLIR
-            y_glir_opt.append(yy)  # Qt"""
-
-        # ========================================== VISUALIZATION ==========================================
-        """plt.figure(1)
-            plt.plot(x, y_obj_fun)  # Qo plot
-            plt.scatter(sol.x, yy)  # Qo point optimal
-            plt.grid()
-            plt.xlabel('GLIR')
-            plt.ylabel('Ql')
-            plt.title("Qo Regression Curve with Its Optimal Point")"""
-
-        """plt.figure(5)
-            sns.regplot(x=y_pred, y=y)
-            plt.xlabel('Qt Pred')
-            plt.ylabel('Qt Data')
-            plt.title("Qt Data vs Qt Pred")"""
-
-        plt.figure(6)
-        plt.scatter(x_reg, y_pred)  # Qt plot
-        plt.scatter(x_reg, y_reg)  # Qt point optimal
-        plt.plot(np.arange(0, max(x), 25), regress(
-            np.arange(0, max(x), 25), poly[0], poly[1], poly[2]))
-        plt.grid()
-        plt.xlabel('GLIR (MSCFD)')
-        plt.ylabel('Qt (BFPD)')
-        plt.title("Qt Regression Curve vs Qt Plot Data")
-        # plt.show()
-
         # ========================================== R^2 SCORED ==========================================
         R = np.corrcoef(y1, y_pred, rowvar=False)[0, 1]
         R2 = R**2
 
         r2_total.append(R2)
-        # print(f"Variasi n = {num} => R squared = {R2}")
-
-        # ========================================== STORING VALUES INTO CSV ==========================================
-        """df_VX = df_VX.replace(to_replace=[df_VX['qo_lc'][0], df_VX['qt_lc'][0], df_VX['wc'][0], df_VX['GLIR'][0]], value=[z[-1], y[-1], wc[-1], x[-1]])
-            print(df_VX)
-
-            df_ABB = df_ABB.replace(
-                to_replace=[df_ABB['GLIR'][0]], value=[int(sol.x)])
-            print(df_ABB)
-
-            df_VX.to_csv("well_VX.csv")
-            df_ABB.to_csv("well_ABB.csv")"""
 
         output = [z[-1], y[-1], wc[-1], x[-1], int(sol.x)]
-        #print(output, "[+]")
 
         return output
+
+class WellDyn():
+    def __init__(self, u):  # param yg bakal dipake (dataset, )
+        self.u = u
+
+    def WellSys(self,u):
+        import control as ctl
+
+        #t = np.arange(0,3600*24*len(self.u),3600*24)
+        
+        #if np.shape(self.u) == ():
+            #x_ident = [0,0,self.u]
+        if np.shape(self.u) == (1,):
+            x_ident = [0,0,self.u[0]]
+        elif np.shape(self.u) == (2,):
+            x_ident = [0,self.u[0],self.u[1]]
+        else:
+            x_ident = self.u
+        
+        #t = np.arange(0,len(self.u),1)
+
+        #zero delay
+        num = np.array([0.3678,-0.3667])
+        den = np.array([1.0000,-1.3745,0.4767,-0.0976])
+
+        #second order delay
+        num = np.array([0.343188420833007,-0.343090293948511,0,0])
+        den = np.array([1,-1.369332042280427,0.473411287445827,-0.101420313022513])
+
+        K = 1.5
+        #K = 1
+        Ts = 3600*24  #1 day sampling day
+        sys = ctl.TransferFunction(K*num,den, dt=Ts)
+
+        res = ctl.forced_response(sys,T=None,U=x_ident,X0=0)
+        y_sys = res.outputs
+        x_sys = res.inputs
+        
+        return y_sys
 
 if __name__ == "__main__":
     main()
