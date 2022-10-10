@@ -22,9 +22,9 @@ class DDGLO():
     
     def DataRef(self,param):
         DF = pd.read_csv(self.dataset)
-        qt1 = DF[self.param].values
-        qt = qt1[self.i]
-        return qt
+        data_csv = DF[self.param].values
+        data = data_csv[self.i]
+        return data
 
     def RegOpt(self, i):
         def objective(x, a, b, c, wc):
@@ -134,29 +134,49 @@ class DDGLO():
 
         r2_total.append(R2)
 
-        output = [z[-1], y[-1], wc[-1], x[-1], int(sol.x)]
+        output = [z[-1], y[-1], wc[-1], x[-1], int(sol.x),yy]
 
         return output
 
 class WellDyn():
-    def __init__(self, u):  # param yg bakal dipake (dataset, )
+    def __init__(self, u,i,u2):  # param yg bakal dipake (dataset, )
         self.u = u
+        self.i = i
+        self.u2 = u2
+        #self.header=header
 
-    def WellSys(self,u):
+    def WellSys(self,u,i,u2):
         import control as ctl
+        
+        DF = pd.read_csv(self.u2)
+        data = DF['Qt'].values
+        qt1 = data[0:self.i+1]
+        #qt1.tolist()
+        #qt = qt1[self.i]
 
         #t = np.arange(0,3600*24*len(self.u),3600*24)
         
-        #if np.shape(self.u) == ():
-            #x_ident = [0,0,self.u]
         if np.shape(self.u) == (1,):
             x_ident = [0,0,self.u[0]]
         elif np.shape(self.u) == (2,):
             x_ident = [0,self.u[0],self.u[1]]
         else:
-            x_ident = self.u
+            x_ident1 = [0,self.u[0],self.u[1]]
+            x_ident_temp = x_ident1.copy()
+            x_ident = x_ident_temp + self.u[2:self.i+1]
         
-        #t = np.arange(0,len(self.u),1)
+        if len(qt1) == 1:
+            x_dident = [0,0,qt1[0]]
+        elif len(qt1) == 2:
+            x_dident = [0,qt1[0],qt1[1]]
+        else:
+            x_dident1 = [0,qt1[0],qt1[1]]
+            x_dident_temp = x_dident1.copy()
+            x_dident = x_dident_temp + qt1[2:self.i+1].tolist()
+        
+        u_sys = np.subtract(np.array(x_dident),np.array(x_ident))
+        #u_sys = np.subtract(np.array(x_ident),np.array(self.temp))
+        #u_sys.tolist()
 
         #zero delay
         num = np.array([0.3678,-0.3667])
@@ -164,14 +184,18 @@ class WellDyn():
 
         #second order delay
         num = np.array([0.343188420833007,-0.343090293948511,0,0])
-        den = np.array([1,-1.369332042280427,0.473411287445827,-0.101420313022513])
+        den = np.array([1,-1.369332042280427,0.473411287445827,-0.101420313022513]) 
+
+        #second order delay ARX
+        #num = np.array([0,0,0.291967330160550,-0.242849422368530])
+        #den = np.array([1,-0.690217748679766,0.081126624658709,-0.287692951198518]) 
 
         K = 1.5
-        #K = 1
+        K = 2
         Ts = 3600*24  #1 day sampling day
         sys = ctl.TransferFunction(K*num,den, dt=Ts)
 
-        res = ctl.forced_response(sys,T=None,U=x_ident,X0=0)
+        res = ctl.forced_response(sys,T=None,U=u_sys,X0=0)
         y_sys = res.outputs
         x_sys = res.inputs
         

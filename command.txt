@@ -18,6 +18,7 @@ python master.py -po COM7
 
 ================================SLAVE===========================
 all:
+python slave.py -s 113,114 -i well_VX2.csv,well_ABB1.csv -m VX1.xlsx,ABB.xlsx -pd 1,1 -po COM6
 python slave.py -s 113,114 -i well_VX2.csv,well_ABB1.csv -m VX1.xlsx,ABB.xlsx -pd 3,3 -po COM6
 
 holding reg. only:
