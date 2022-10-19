@@ -82,8 +82,11 @@ class ModbusTemplate:
         excel_data = pandas.read_excel(path, skiprows=3)
         self.modbus_entries = []
         for row in excel_data.values:
+            #print(f"NILAI ROW: {row}")
             entry = ModbusEntry(row)
+            #print(f"NILAI ROW: {entry}")
             self.modbus_entries.append(entry)
+        
 
 
 class InputData:
@@ -95,19 +98,23 @@ class InputData:
         with open(csv_path) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=",")
             for id, row in enumerate(csv_reader):
-                if id == 0:
+                if id == 0:                                 #Row 0th is a header
                     for idx, val in enumerate(row):
                         self.headers[val] = idx
+                        #print(f"Headers: {val}")
                 else:
                     self.data.append(row)
+            #print(f"NILAI DATA: {self.data}\n")
 
     def advance_data_point(self):
         if self.current_idx < len(self.data) - 1:
             self.current_idx += 1
         else:
             self.current_idx = 0
+        #print(f"NILAI IDX: {self.current_idx}")
 
     def get_data(self):
+        #print(f"NILAI DATA PADA ROW KE {self.current_idx} : {self.data[self.current_idx]}")
         return self.data[self.current_idx]
 
 
@@ -121,13 +128,16 @@ class SlaveContexts:
             )
 
             for id in slave_ids:
+                #print(f"ID: {id}")
                 ctx = ModbusSlaveContext(
                     di=ModbusSparseDataBlock(),
                     co=ModbusSparseDataBlock(),
                     hr=ModbusSparseDataBlock(),
                     ir=ModbusSparseDataBlock(),
                 )
+                #print(f"ID: {ctx}")
                 self.contexts[int(id)] = ctx
+            #print(f"DATA : {input_data}")
 
         except:
             logging.error("failed in instantiating SparseDataBlock class")
@@ -138,12 +148,19 @@ class SlaveContexts:
         template = self.__templates[slave_id]
 
         data.advance_data_point()
+        #print(data.current_idx)
+        #print(f"DATA : {data.advance_data_point()}")
 
         for entry in template.modbus_entries:
+            #print(f"OBJECT ENTRY : {entry}") #MERUPAKAN OBJECT ModbusEntry
             if entry.io_name == nan:
                 continue  # skipping invalid io_name
 
             sim_data_index = data.headers.get(entry.io_name)
+            #print(f"OBJECT DATA: {data}") #MERUPAKAN OBJECT InputData
+            #print(f"SIM INDEX : {data.headers}") #MERUPAKAN DICTIONARY 'Headers': Nomor Collumn
+            #print(f"SIM INDEX : {entry.io_name}") #MERUPAKAN DICTIONARY 'Headers': Nomor Collumn
+            #print(f"SIM INDEX : {data.headers.get(entry.io_name)}")
             if sim_data_index is None:
                 simulated_value = 0
             else:
@@ -216,6 +233,7 @@ class SlaveContexts:
 def updater_entrypoint(contexts, id, period):
     while 1:
         contexts.update_context(id)
+        print("=========================================================================================")
         sleep(int(period))
 
 
@@ -285,6 +303,8 @@ def main():
         )
 
     slave_contexts = SlaveContexts(slave_ids, input_data, modbus_templates)
+    #print(f"SLAVE ID:{slave_ids},\nINPUT DATA: {input_data},\nMODBUS TEMPT: {modbus_templates}")
+    print(f"SLAVE CONTEXT: {slave_contexts}")
     store = ModbusServerContext(slaves=slave_contexts.contexts, single=False)
 
     for idx, id in enumerate(slave_ids):

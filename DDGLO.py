@@ -15,18 +15,13 @@ from gekko import GEKKO
 
 
 class DDGLO():
-    def __init__(self, dataset, i,param):  # param yg bakal dipake (dataset, )
-        self.dataset = dataset
+    def __init__(self, GLIR, Qt, wc, i):  # list of GLIR and Qt
+        self.GLIR = GLIR
+        self.Qt = Qt
+        self.wc = wc
         self.i = i
-        self.param=param
     
-    def DataRef(self,param):
-        DF = pd.read_csv(self.dataset)
-        data_csv = DF[self.param].values
-        data = data_csv[self.i]
-        return data
-
-    def RegOpt(self, i):
+    def RegOpt(self):
         def objective(x, a, b, c, wc):
             fun = (a*x**2 + b*x + c)*(1-wc)
             return -fun  # maximation
@@ -51,9 +46,6 @@ class DDGLO():
         con = [con1]
 
         # ========================================== DATA PREPROCESS ==========================================
-        df1 = pd.read_csv(self.dataset)  # bisa sorted or not]
-        # print(df1.head())
-
         ff = list(range(8, 16, 2))
         #print(f"variasi batch data: {ff}")
 
@@ -67,35 +59,27 @@ class DDGLO():
         #print('======================= DATA-DRIVEN GAS LIFT INJECTION OPTIMIZER PREDICTION =======================\n')
 
         # ========================================== PARAMETERS ==========================================
-        n_test = len(df1)
+        #n_test = len(df1)
         n_train = 8
-        n = n_test-n_train
+        #n = n_test-n_train
         # print(n)
         # n = 3
 
-        df = df1.iloc[self.i:self.i+n_train]
-        # DF di sort untuk keperluan Regresi
-        df_regresi = df1.iloc[self.i:self.i+n_train]
-        df_reg = df_regresi.copy()
-        df_reg.sort_values(by='GLIR', ascending=True, inplace=True)
+        x = self.GLIR[self.i:self.i+n_train]
+        y = self.Qt[self.i:self.i+n_train]
+        print(f"NILAI X : {x}")
+        print(f"NILAI Y : {y}")
 
-        x_reg = df_reg['GLIR'].values  # Sorted GLIR Val Well a
-        y_reg = df_reg['Qt'].values  # Sorted Qt Val Well a
+        x_reg = self.GLIR[self.i:self.i+n_train]
+        y_reg = self.Qt[self.i:self.i+n_train]
+        x_reg.sort()
+        y_reg.sort()
         x_reg = np.insert(x_reg, 0, 0)
         y_reg = np.insert(y_reg, 0, 0)
+        #print(f"NILAI X REG : {x_reg}")
+        #print(f"NILAI Y REG: {y_reg}")
 
-        x = df['GLIR'].values  # GLIR
-        y = df['Qt'].values  # Qt
-
-        x1 = df['GLIR'].values  # GLIR
-        x1 = np.insert(x1, 0, 0)
-
-        y1 = df['Qt'].values  # Qt
-        y1 = np.insert(y1, 0, 0)
-
-        z = df['Qo'].values  # Qo
-        wc = df['wc'].values  # wc
-        date = df['Date'].values
+        wc = self.wc#[self.i:self.i+n_train]
 
         # ========================================== GLPC REGRESSION ==========================================
         poly = np.polyfit(x_reg, y_reg, 2)
@@ -119,22 +103,23 @@ class DDGLO():
 
         # ========================================== DATA HANDLING ==========================================
         # Qo to Plot
-        y_obj_fun = objectives(x, poly[0], poly[1], poly[2], wc[-1])
+        #y_obj_fun = objectives(x, poly[0], poly[1], poly[2], wc[-1])
         # Qt to Scatter Optimal Point
-        y_optimal = regress(sol.x, poly[0], poly[1], poly[2])
+        y_optimal = regress(int(sol.x), poly[0], poly[1], poly[2])
         # Qo to Scatter Optimal Point
         yy = objectives(int(sol.x[0]), poly[0],
                         poly[1], poly[2], wc[-1])
         # Qo from Data
-        y_comparison = z[-1]
+        #y_comparison = z[-1]
 
         # ========================================== R^2 SCORED ==========================================
-        R = np.corrcoef(y1, y_pred, rowvar=False)[0, 1]
+        """R = np.corrcoef(y1, y_pred, rowvar=False)[0, 1]
         R2 = R**2
 
-        r2_total.append(R2)
+        r2_total.append(R2)"""
 
-        output = [z[-1], y[-1], wc[-1], x[-1], int(sol.x),yy]
+        #output = [z[-1], y[-1], wc[-1], x[-1], int(sol.x),yy]
+        output = int(sol.x)
 
         return output
 
@@ -198,6 +183,8 @@ class WellDyn():
         res = ctl.forced_response(sys,T=None,U=u_sys,X0=0)
         y_sys = res.outputs
         x_sys = res.inputs
+
+        #y_sys = 2*x_dident + u_sys
         
         return y_sys
 
