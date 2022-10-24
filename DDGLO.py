@@ -67,8 +67,8 @@ class DDGLO():
 
         x = self.GLIR[self.i:self.i+n_train]
         y = self.Qt[self.i:self.i+n_train]
-        print(f"NILAI X : {x}")
-        print(f"NILAI Y : {y}")
+        #print(f"NILAI X : {x}")
+        #print(f"NILAI Y : {y}")
 
         x_reg = self.GLIR[self.i:self.i+n_train]
         y_reg = self.Qt[self.i:self.i+n_train]
@@ -84,7 +84,39 @@ class DDGLO():
         # ========================================== GLPC REGRESSION ==========================================
         poly = np.polyfit(x_reg, y_reg, 2)
         # Predict Qt
-        y_pred = regress(x_reg, poly[0], poly[1], poly[2])
+        #y_pred = regress(x_reg, poly[0], poly[1], poly[2])
+
+        # ========================================== REGRESSION CONDITIONING ==========================================
+        if poly[0] > 0:
+            if poly[1] > 0 and poly[2] > 0:
+                y_pred = regress(x_reg,-poly[0], poly[1], poly[2])
+                par = (-poly[0], poly[1], poly[2], wc[-1])
+                y_plot = regress(np.arange(0, max(x), 25), poly[0], poly[1], poly[2])
+                print("c1:", [-poly[0], poly[1], poly[2]])
+
+            elif poly[1] > 0 and poly[2] < 0:
+                y_pred = regress(x_reg,-poly[0], poly[1], -poly[2])
+                par = (-poly[0], poly[1], -poly[2], wc[-1])
+                y_plot = regress(np.arange(0, max(x), 25),-poly[0], poly[1], -poly[2])
+                print("c2:", [-poly[0], poly[1], -poly[2]])
+
+            elif poly[1] < 0 and poly[2] > 0:
+                y_pred = regress(x_reg,-poly[0], -poly[1], poly[2])
+                par = (-poly[0], -poly[1], poly[2], wc[-1])
+                y_plot = regress(np.arange(0, max(x), 25), -poly[0], -poly[1], poly[2])
+                print("c3:", [-poly[0], -poly[1], poly[2]])
+
+            #elif poly[1] < 0 and poly[2] < 0:
+            else:
+                y_pred = regress(x_reg,-poly[0], -poly[1], -poly[2])
+                par = (-poly[0], -poly[1], -poly[2], wc[-1])
+                y_plot = regress(np.arange(0, max(x), 25),-poly[0], -poly[1], -poly[2])
+                print("c4:", [-poly[0], -poly[1], -poly[2]])
+        else:
+            y_pred = regress(x_reg,poly[0], poly[1], poly[2])
+            par = (poly[0], poly[1], poly[2], wc[-1])
+            y_plot = regress(np.arange(0, max(x), 25),poly[0], poly[1], poly[2])
+            print("c5:", poly[0], poly[1], poly[2])
 
         # ========================================== OPTIMIZATION OBJ FUNC ==========================================
 
@@ -93,7 +125,12 @@ class DDGLO():
 
         x0 = x[-1]  # initial guess
 
-        par = (poly[0], poly[1], poly[2], wc[-1])  # parameters
+        """if poly[0] > 0:
+            par = (-poly[0], -poly[1], -poly[2], wc[-1])  # parameters
+        else:
+            par = (poly[0], poly[1], poly[2], wc[-1])  # parameters
+        sol = minimize(objective, x0, args=par, method='SLSQP', bounds=bound, constraints=con)"""
+
         if poly[0] < 0:
             sol = minimize(objective, x0, args=par,
                            method='SLSQP', bounds=bound, constraints=con)
@@ -112,6 +149,22 @@ class DDGLO():
         # Qo from Data
         #y_comparison = z[-1]
 
+        mymodel = np.poly1d(np.polyfit(x_reg, y_pred, 2))
+        myline = np.linspace(min(x_reg), max(x_reg), len(x_reg))
+        #plt.plot(myline, mymodel(myline), color="orange")
+
+        plt.figure(2)
+        plt.scatter(x_reg, y_pred)  # Qt plot
+        plt.scatter(x_reg, y_reg)  # Qt point optimal
+        #plt.plot(np.arange(0, max(x), 25),y_plot)
+        plt.plot(myline, mymodel(myline), color="orange")
+        plt.grid()
+        plt.xlabel('GLIR (MSCFD)')
+        plt.ylabel('Qt (BFPD)')
+        plt.title("Qt Regression Curve vs Qt Plot Data")
+        #plt.pause(0.05)
+        #plt.clf()
+
         # ========================================== R^2 SCORED ==========================================
         """R = np.corrcoef(y1, y_pred, rowvar=False)[0, 1]
         R2 = R**2
@@ -119,7 +172,7 @@ class DDGLO():
         r2_total.append(R2)"""
 
         #output = [z[-1], y[-1], wc[-1], x[-1], int(sol.x),yy]
-        output = int(sol.x)
+        output = [int(sol.x), y_optimal]
 
         return output
 

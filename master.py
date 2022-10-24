@@ -36,10 +36,13 @@ def main():
     GLIR = []
     Qt = []
     wc = []
+
     GLIR_predict = []
+    Qt_predict = []
 
     plt.ion()
     while 1:
+        print("=========================================================================================")
         print(i)
         #num = 8
         #val = DDGLO("well_VX2_calc.csv",i,'Qt')
@@ -65,12 +68,6 @@ def main():
         val_wc = decoded3.decode_32bit_float()
         val_GLIR = decoded4.decode_32bit_float()
         
-        
-        """Qo.append(decoded1.decode_32bit_float())
-        Qt.append(decoded2.decode_32bit_float())
-        wc.append(decoded3.decode_32bit_float())
-        GLIR.append(decoded4.decode_32bit_float())"""
-
         # ========================== LOGGING INPUT REGISTER (VX) ===============================
         logging.info("{} Qo: {}".format(datetime.now(), val_Qo))
         logging.info("{} Qt: {}".format(datetime.now(), val_Qt))
@@ -85,24 +82,35 @@ def main():
         #print(f"NILAI READ DATA: {Qo} || {Qt} || {wc} || {GLIR}")
 
         if len(Qo) < 8:
-            print("data not sufficient")
+            logging.error("REGRESSION DATA IS NOT SUFFICIENT")
+            #print("data not sufficient")
         else:
             regoptim = DDGLO(GLIR, Qt, wc, i-7)
-            glir_pred = regoptim.RegOpt()
+            glir_pred = regoptim.RegOpt()[0]
+            qt_pred = regoptim.RegOpt()[1]
+
+            val5 = client.write_register(7001, glir_pred, unit=114)  #GLIR_opt
+            val5 = client.read_holding_registers(7001, 10, unit=114)  # GLIR
+            
+            Qt_predict.append(qt_pred)
             GLIR_predict.append(glir_pred)
         
-        logging.info("{} GLIR Pred: {}".format(datetime.now(), GLIR_predict))
+            logging.info(f"{datetime.now()} GLIR SETPOINT: {val5.registers[0]}")
+        
+        #logging.info("{} GLIR Pred: {}".format(datetime.now(), len(GLIR_predict)))  
+        #logging.info("{} Qt Pred: {}".format(datetime.now(), len(Qt_predict)))
+
+        #logging.info("{} GLIR: {}".format(datetime.now(), len(GLIR[7:])))
+        #logging.info("{} Qt: {}".format(datetime.now(), len(Qt[7:])))
         
         # ========================== HOLDING REGISTERS (ABB) ===============================
-        """val5 = client.write_register(7001, GLIR_opt, unit=114)  #GLIR_opt
-        val5 = client.read_holding_registers(7001, 10, unit=114)  # GLIR
-        val_GLIR.append(GLIR_opt)
-        val_GLIR_data.append(GLIR_data)
-
-        val_Qt.append(Qt_opt)"""
+        #val5 = client.write_register(7001, GLIR_opt, unit=114)  #GLIR_opt
+        
+        #val_GLIR.append(GLIR_opt)
+        #val_GLIR_data.append(GLIR_data)
+        #val_Qt.append(Qt_opt)
 
         # ========================== LOGGING HOLDING REGISTER (ABB) ===============================
-        #logging.info(f"{datetime.now()} GLIR: {val5.registers[0]}")
         #logging.info(f"{datetime.now()} GLIR OPT: {val5.registers[0]} || {np.shape(val_GLIR)}")
 
         # ========================== WELL SYSTEM DYNAMICS ===============================
@@ -111,6 +119,7 @@ def main():
 
         qt = val.DataRef('Qt')
         qt_data.append(qt)"""
+
         # ========================== REAL-TIME PLOTTING ===============================
         
         """t = np.arange(0,i+1,1)
@@ -127,19 +136,30 @@ def main():
         #logging.info(f"NILAI tt: {tt}")
         #logging.info(f"NILAI len y_sys: {len(y_sys)}")
 
-        """plt.plot(t1,qt_data, label = 'Qt Data')
-        plt.plot(t1,val_GLIR, label='GLIR OPT')
-        plt.plot(t1,val_Qt, label='QT PRED DATA')
-        plt.plot(t1,val_GLIR_data, label='GLIR Data')
-        plt.plot(tt,y_sys, label='Qt Pred')
+        if i < 8:
+            print("\n")
+        else:
+            # ========================== R2 VALUE of QT PREDICTION (REGRESSION BASED) ===============================
+            R = np.corrcoef(Qt_predict, Qt[7:], rowvar=False)[0, 1]
+            R2 = R**2
+
+            #r2_total.append(R2)
+            logging.info("{}-th Day || R2 VALUE : {}".format(i-7,R2))
+
+            t = np.arange(0,i-6,1)
+            plt.figure(1)
+            plt.plot(t,GLIR_predict, label = 'Predicted GLIR')
+            plt.plot(t,Qt_predict, label='Predicted Qt')
+            plt.plot(t,GLIR[7:], label='GLIR DATA')
+            plt.plot(t,Qt[7:], label='Qt Data')
         
-        plt.title("Historical Data and Prediction Comparison of Qt and GLIR")
-        plt.xlabel(f"Day {i}-th")
-        plt.ylabel('GLIR (mscfd)')
-        plt.legend()
-        plt.grid()
-        plt.pause(0.05)
-        plt.clf()"""
+            plt.title("Historical Data and Prediction Comparison of Qt and GLIR\nnote: Qt Prediction based on Regression")
+            plt.xlabel(f"Day {i-7}-th")
+            plt.ylabel('GLIR (mscfd) & Qt (bopd)')
+            plt.legend()
+            plt.grid()
+            plt.pause(0.05)
+            plt.clf()
 
         sleep(1)
         i += 1
