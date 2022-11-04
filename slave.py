@@ -157,10 +157,11 @@ class SlaveContexts:
                 continue  # skipping invalid io_name
 
             sim_data_index = data.headers.get(entry.io_name)
+            sim_data_index_WD = sim_data_index
             #print(f"OBJECT DATA: {data}") #MERUPAKAN OBJECT InputData
             #print(f"SIM INDEX : {data.headers}") #MERUPAKAN DICTIONARY 'Headers': Nomor Collumn
             #print(f"SIM INDEX : {entry.io_name}") #MERUPAKAN DICTIONARY 'Headers': Nomor Collumn
-            #print(f"SIM INDEX : {data.headers.get(entry.io_name)}")
+            #print(f"SIM INDEX : {sim_data_index}")
             if sim_data_index is None:
                 simulated_value = 0
             else:
@@ -178,6 +179,7 @@ class SlaveContexts:
             register_values = self.__pack_by_endiannes(
                 simulated_value, entry.endiannes, entry.data_type
             )
+            print(f"REGISTER VALUES: {register_values}")
 
             if entry.register_type == "0":
                 ctx.store["d"].setValues(

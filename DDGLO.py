@@ -89,14 +89,14 @@ class DDGLO():
         # ========================================== REGRESSION CONDITIONING ==========================================
         if poly[0] > 0:
             if poly[1] > 0 and poly[2] > 0:
-                y_pred = regress(x_reg,-poly[0], poly[1], poly[2])
-                par = (-poly[0], poly[1], poly[2], wc[-1])
+                y_pred = regress(x_reg,-poly[0], -poly[1], -poly[2])
+                par = (-poly[0], -poly[1], -poly[2], wc[-1])
                 y_plot = regress(np.arange(0, max(x), 25), poly[0], poly[1], poly[2])
                 print("c1:", [-poly[0], poly[1], poly[2]])
 
             elif poly[1] > 0 and poly[2] < 0:
-                y_pred = regress(x_reg,-poly[0], poly[1], -poly[2])
-                par = (-poly[0], poly[1], -poly[2], wc[-1])
+                y_pred = regress(x_reg,-poly[0], -poly[1], poly[2])
+                par = (-poly[0], -poly[1], poly[2], wc[-1])
                 y_plot = regress(np.arange(0, max(x), 25),-poly[0], poly[1], -poly[2])
                 print("c2:", [-poly[0], poly[1], -poly[2]])
 
@@ -130,6 +130,8 @@ class DDGLO():
         else:
             par = (poly[0], poly[1], poly[2], wc[-1])  # parameters
         sol = minimize(objective, x0, args=par, method='SLSQP', bounds=bound, constraints=con)"""
+
+        #par = (poly[0], poly[1], poly[2], wc[-1])
 
         if poly[0] < 0:
             sol = minimize(objective, x0, args=par,
@@ -173,6 +175,7 @@ class DDGLO():
 
         #output = [z[-1], y[-1], wc[-1], x[-1], int(sol.x),yy]
         output = [int(sol.x), y_optimal]
+        print(f"NILAI OUT: {output}")
 
         return output
 

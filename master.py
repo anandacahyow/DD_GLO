@@ -40,9 +40,11 @@ def main():
     GLIR_predict = []
     Qt_predict = []
 
+    day = 8
+
     plt.ion()
     while 1:
-        print("=========================================================================================")
+        print("==================================================================")
         print(i)
         #num = 8
         #val = DDGLO("well_VX2_calc.csv",i,'Qt')
@@ -55,7 +57,6 @@ def main():
         val1 = client.read_input_registers(address=109, count=2, unit=113)  # qo_lc
         val2 = client.read_input_registers(address=2024, count=2, unit=113)  # qt_lc
         val3 = client.read_input_registers(address=191, count=2, unit=113)  # wc
-        # val4 = client.read_input_registers(address=999, count=3, unit=113)  
         val4 = client.read_holding_registers(2022, 2, unit=113) # GLIR
 
         decoded1 = BinaryPayloadDecoder.fromRegisters(val1.registers, byteorder=Endian.Big, wordorder=Endian.Little)  # qo_lc
@@ -81,7 +82,7 @@ def main():
         GLIR.append(val_GLIR)
         #print(f"NILAI READ DATA: {Qo} || {Qt} || {wc} || {GLIR}")
 
-        if len(Qo) < 8:
+        if len(Qo) <= day-1:
             logging.error("REGRESSION DATA IS NOT SUFFICIENT")
             #print("data not sufficient")
         else:
@@ -135,23 +136,27 @@ def main():
         #logging.info(f"NILAI y_sys: {y_sys}")
         #logging.info(f"NILAI tt: {tt}")
         #logging.info(f"NILAI len y_sys: {len(y_sys)}")
-
-        if i < 8:
+        
+        if len(Qo) <= day-1:
             print("\n")
         else:
             # ========================== R2 VALUE of QT PREDICTION (REGRESSION BASED) ===============================
-            R = np.corrcoef(Qt_predict, Qt[7:], rowvar=False)[0, 1]
+            R = np.corrcoef(Qt_predict, Qt[7:], rowvar=False)[0, 1] # R2 Qt
+            R = np.corrcoef(GLIR_predict, GLIR[7:], rowvar=False)[0, 1] # R2 GLIR
             R2 = R**2
 
             #r2_total.append(R2)
-            logging.info("{}-th Day || R2 VALUE : {}".format(i-7,R2))
+            logging.info("{}-th Day || GLIR R2 VALUE : {}".format(i-7,R2))
 
-            t = np.arange(0,i-6,1)
+            """t = np.arange(0,i-6,1)
+            #t1 = np.arange(0,i-5,1)
+            #print(f"LENGTH T: {len(t)} nilainya: {t}")
             plt.figure(1)
-            plt.plot(t,GLIR_predict, label = 'Predicted GLIR')
-            plt.plot(t,Qt_predict, label='Predicted Qt')
-            plt.plot(t,GLIR[7:], label='GLIR DATA')
-            plt.plot(t,Qt[7:], label='Qt Data')
+            plt.plot(t,GLIR_predict, label = 'Predicted GLIR', color = 'red')
+            plt.plot(t,Qt_predict, label='Predicted Qt', color = 'green')
+            #plt.plot(t1,GLIR[6:], label='GLIR DATA', alpha = 0.4, linewidth = 3, color = 'blue')
+            plt.plot(t,GLIR[6:], label='GLIR DATA', alpha = 0.4, linewidth = 3, color = 'blue')
+            plt.plot(t,Qt[7:], label='Qt Data', color = 'orange')
         
             plt.title("Historical Data and Prediction Comparison of Qt and GLIR\nnote: Qt Prediction based on Regression")
             plt.xlabel(f"Day {i-7}-th")
@@ -159,7 +164,9 @@ def main():
             plt.legend()
             plt.grid()
             plt.pause(0.05)
-            plt.clf()
+            plt.clf()"""
+
+            #GLIR.remove(0)
 
         sleep(1)
         i += 1
