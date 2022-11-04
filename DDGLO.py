@@ -155,7 +155,7 @@ class DDGLO():
         myline = np.linspace(min(x_reg), max(x_reg), len(x_reg))
         #plt.plot(myline, mymodel(myline), color="orange")
 
-        plt.figure(2)
+        """plt.figure(2)
         plt.scatter(x_reg, y_pred)  # Qt plot
         plt.scatter(x_reg, y_reg)  # Qt point optimal
         #plt.plot(np.arange(0, max(x), 25),y_plot)
@@ -163,7 +163,7 @@ class DDGLO():
         plt.grid()
         plt.xlabel('GLIR (MSCFD)')
         plt.ylabel('Qt (BFPD)')
-        plt.title("Qt Regression Curve vs Qt Plot Data")
+        plt.title("Qt Regression Curve vs Qt Plot Data")"""
         #plt.pause(0.05)
         #plt.clf()
 
