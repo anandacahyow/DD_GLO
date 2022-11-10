@@ -179,7 +179,7 @@ class SlaveContexts:
             register_values = self.__pack_by_endiannes(
                 simulated_value, entry.endiannes, entry.data_type
             )
-            print(f"REGISTER VALUES: {register_values}")
+            #print(f"REGISTER VALUES: {register_values}")
 
             if entry.register_type == "0":
                 ctx.store["d"].setValues(

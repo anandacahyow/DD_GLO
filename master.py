@@ -96,6 +96,7 @@ def main():
             Qt_predict.append(qt_pred)
             GLIR_predict.append(glir_pred)
         
+            #logging.info(f"{datetime.now()} GLIR SETPOINT: {val5.registers}")
             logging.info(f"{datetime.now()} GLIR SETPOINT: {val5.registers[0]}")
         
         #logging.info("{} GLIR Pred: {}".format(datetime.now(), len(GLIR_predict)))  
@@ -148,15 +149,16 @@ def main():
             #r2_total.append(R2)
             logging.info("{}-th Day || GLIR R2 VALUE : {}".format(i-7,R2))
 
-            """t = np.arange(0,i-6,1)
+            t = np.arange(0,i-6,1)
             #t1 = np.arange(0,i-5,1)
             #print(f"LENGTH T: {len(t)} nilainya: {t}")
             plt.figure(1)
             plt.plot(t,GLIR_predict, label = 'Predicted GLIR', color = 'red')
             plt.plot(t,Qt_predict, label='Predicted Qt', color = 'green')
             #plt.plot(t1,GLIR[6:], label='GLIR DATA', alpha = 0.4, linewidth = 3, color = 'blue')
-            plt.plot(t,GLIR[6:], label='GLIR DATA', alpha = 0.4, linewidth = 3, color = 'blue')
+            plt.plot(t,GLIR[7:], label='GLIR DATA', alpha = 0.4, linewidth = 3, color = 'blue')
             plt.plot(t,Qt[7:], label='Qt Data', color = 'orange')
+
         
             plt.title("Historical Data and Prediction Comparison of Qt and GLIR\nnote: Qt Prediction based on Regression")
             plt.xlabel(f"Day {i-7}-th")
@@ -164,8 +166,7 @@ def main():
             plt.legend()
             plt.grid()
             plt.pause(0.05)
-            plt.clf()"""
-
+            plt.clf()
             #GLIR.remove(0)
 
         sleep(1)
