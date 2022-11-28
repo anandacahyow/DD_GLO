@@ -194,9 +194,16 @@ class SlaveContexts:
                     int(entry.register_offset) + 1, register_values
                 )
             elif entry.register_type == "40000":
+                """retrieved_values = ctx.store["h"].getValues(
+                    int(entry.register_offset) + 1, register_values
+                )"""
+                #NEW_Q = PREV * CCCC
                 ctx.store["h"].setValues(
                     int(entry.register_offset) + 1, register_values
                 )
+                """if entry.register_type == "40000" and int(entry.register_offset) == 7001: #GLIR Write to ABB
+                    retrieved_val = getValues(int(entry.register_offset) + 1, count=1)
+                    print(retrieved_val)"""
             else:
                 continue  # skipping invalid entry
 
@@ -293,10 +300,17 @@ def main():
     input_data = {}
     modbus_templates = {}
 
+    print(slave_ids)
+    print(input_data_paths)
+    print(modbus_template_paths)
+
     for idx, id in enumerate(slave_ids):
         data = InputData(input_data_paths[idx])
         template = ModbusTemplate(modbus_template_paths[idx])
         input_data[int(id)] = data
+
+        print(modbus_template_paths[idx])
+
         modbus_templates[int(id)] = template
         logging.info(
             "simulating slave id {} from {} and {}".format(
@@ -304,10 +318,19 @@ def main():
             )
         )
 
+    print(f"TYPE MODTEMP: {modbus_templates}")
+    print(f"TYPE IMPUTTEMP: {input_data}")
     slave_contexts = SlaveContexts(slave_ids, input_data, modbus_templates)
     #print(f"SLAVE ID:{slave_ids},\nINPUT DATA: {input_data},\nMODBUS TEMPT: {modbus_templates}")
     print(f"SLAVE CONTEXT: {slave_contexts}")
     store = ModbusServerContext(slaves=slave_contexts.contexts, single=False)
+
+    print(f"CTX: {slave_contexts}")
+    print(f"STORE: {store}\n \n")
+
+    print(f"SLAVE CTX 113: {slave_contexts.contexts[113]}")
+    print(f"SLAVE CTX 114: {slave_contexts.contexts[114]}")
+
 
     for idx, id in enumerate(slave_ids):
         updater = threading.Thread(
