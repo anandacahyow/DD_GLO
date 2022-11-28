@@ -67,8 +67,8 @@ class DDGLO():
 
         x = self.GLIR[self.i:self.i+n_train]
         y = self.Qt[self.i:self.i+n_train]
-        #print(f"NILAI X : {x}")
-        #print(f"NILAI Y : {y}")
+        print(f"NILAI X : {x}")
+        print(f"NILAI Y : {y}")
 
         x_reg = self.GLIR[self.i:self.i+n_train]
         y_reg = self.Qt[self.i:self.i+n_train]
@@ -90,31 +90,31 @@ class DDGLO():
         if poly[0] > 0:
             if poly[1] > 0 and poly[2] > 0:
                 y_pred = regress(x_reg,-poly[0], -poly[1], -poly[2])
-                par = (-poly[0], -poly[1], -poly[2], wc[-1])
+                par = (-poly[0], -poly[1], -poly[2], wc)
                 y_plot = regress(np.arange(0, max(x), 25), poly[0], poly[1], poly[2])
                 print("c1:", [-poly[0], poly[1], poly[2]])
 
             elif poly[1] > 0 and poly[2] < 0:
                 y_pred = regress(x_reg,-poly[0], -poly[1], poly[2])
-                par = (-poly[0], -poly[1], poly[2], wc[-1])
+                par = (-poly[0], -poly[1], poly[2], wc)
                 y_plot = regress(np.arange(0, max(x), 25),-poly[0], poly[1], -poly[2])
                 print("c2:", [-poly[0], poly[1], -poly[2]])
 
             elif poly[1] < 0 and poly[2] > 0:
                 y_pred = regress(x_reg,-poly[0], -poly[1], poly[2])
-                par = (-poly[0], -poly[1], poly[2], wc[-1])
+                par = (-poly[0], -poly[1], poly[2], wc)
                 y_plot = regress(np.arange(0, max(x), 25), -poly[0], -poly[1], poly[2])
                 print("c3:", [-poly[0], -poly[1], poly[2]])
 
             #elif poly[1] < 0 and poly[2] < 0:
             else:
                 y_pred = regress(x_reg,-poly[0], -poly[1], -poly[2])
-                par = (-poly[0], -poly[1], -poly[2], wc[-1])
+                par = (-poly[0], -poly[1], -poly[2], wc)
                 y_plot = regress(np.arange(0, max(x), 25),-poly[0], -poly[1], -poly[2])
                 print("c4:", [-poly[0], -poly[1], -poly[2]])
         else:
             y_pred = regress(x_reg,poly[0], poly[1], poly[2])
-            par = (poly[0], poly[1], poly[2], wc[-1])
+            par = (poly[0], poly[1], poly[2], wc)
             y_plot = regress(np.arange(0, max(x), 25),poly[0], poly[1], poly[2])
             print("c5:", poly[0], poly[1], poly[2])
 
@@ -126,12 +126,12 @@ class DDGLO():
         x0 = x[-1]  # initial guess
 
         """if poly[0] > 0:
-            par = (-poly[0], -poly[1], -poly[2], wc[-1])  # parameters
+            par = (-poly[0], -poly[1], -poly[2], wc)  # parameters
         else:
-            par = (poly[0], poly[1], poly[2], wc[-1])  # parameters
+            par = (poly[0], poly[1], poly[2], wc)  # parameters
         sol = minimize(objective, x0, args=par, method='SLSQP', bounds=bound, constraints=con)"""
 
-        #par = (poly[0], poly[1], poly[2], wc[-1])
+        #par = (poly[0], poly[1], poly[2], wc)
 
         if poly[0] < 0:
             sol = minimize(objective, x0, args=par,
@@ -142,12 +142,12 @@ class DDGLO():
 
         # ========================================== DATA HANDLING ==========================================
         # Qo to Plot
-        #y_obj_fun = objectives(x, poly[0], poly[1], poly[2], wc[-1])
+        #y_obj_fun = objectives(x, poly[0], poly[1], poly[2], wc)
         # Qt to Scatter Optimal Point
         y_optimal = regress(int(sol.x), poly[0], poly[1], poly[2])
         # Qo to Scatter Optimal Point
         yy = objectives(int(sol.x[0]), poly[0],
-                        poly[1], poly[2], wc[-1])
+                        poly[1], poly[2], wc)
         # Qo from Data
         #y_comparison = z[-1]
 
@@ -155,7 +155,7 @@ class DDGLO():
         myline = np.linspace(min(x_reg), max(x_reg), len(x_reg))
         #plt.plot(myline, mymodel(myline), color="orange")
 
-        """plt.figure(2)
+        plt.figure(2)
         plt.scatter(x_reg, y_pred)  # Qt plot
         plt.scatter(x_reg, y_reg)  # Qt point optimal
         #plt.plot(np.arange(0, max(x), 25),y_plot)
@@ -163,9 +163,9 @@ class DDGLO():
         plt.grid()
         plt.xlabel('GLIR (MSCFD)')
         plt.ylabel('Qt (BFPD)')
-        plt.title("Qt Regression Curve vs Qt Plot Data")"""
-        #plt.pause(0.05)
-        #plt.clf()
+        plt.title("Qt Regression Curve vs Qt Plot Data")
+        plt.pause(0.05)
+        plt.clf()
 
         # ========================================== R^2 SCORED ==========================================
         """R = np.corrcoef(y1, y_pred, rowvar=False)[0, 1]
@@ -173,7 +173,7 @@ class DDGLO():
 
         r2_total.append(R2)"""
 
-        #output = [z[-1], y[-1], wc[-1], x[-1], int(sol.x),yy]
+        #output = [z[-1], y[-1], wc, x[-1], int(sol.x),yy]
         output = [int(sol.x), y_optimal]
         print(f"NILAI OUT: {output}")
 
@@ -219,6 +219,51 @@ class WellDyn():
         #u_sys = np.subtract(np.array(x_ident),np.array(self.temp))
         #u_sys.tolist()
 
+        #zero delay
+        num = np.array([0.3678,-0.3667])
+        den = np.array([1.0000,-1.3745,0.4767,-0.0976])
+
+        #second order delay
+        num = np.array([0.343188420833007,-0.343090293948511,0,0])
+        den = np.array([1,-1.369332042280427,0.473411287445827,-0.101420313022513]) 
+
+        #second order delay ARX
+        #num = np.array([0,0,0.291967330160550,-0.242849422368530])
+        #den = np.array([1,-0.690217748679766,0.081126624658709,-0.287692951198518]) 
+
+        K = 1.5
+        K = 2
+        Ts = 3600*24  #1 day sampling day
+        sys = ctl.TransferFunction(K*num,den, dt=Ts)
+
+        res = ctl.forced_response(sys,T=None,U=u_sys,X0=0)
+        y_sys = res.outputs
+        x_sys = res.inputs
+
+        #y_sys = 2*x_dident + u_sys
+        
+        return y_sys
+
+class WellDynSys():
+    def __init__(self, u,i):  # param yg bakal dipake (dataset, )
+        self.u = u
+        self.i = i
+        #self.header=header
+
+    def WellSys(self,u,i):
+        import control as ctl
+        
+        if np.shape(self.u) == (1,):
+            x_ident = [0,0,self.u[0]]
+        elif np.shape(self.u) == (2,):
+            x_ident = [0,self.u[0],self.u[1]]
+        else:
+            x_ident1 = [0,self.u[0],self.u[1]]
+            x_ident_temp = x_ident1.copy()
+            x_ident = x_ident_temp + self.u[2:self.i+1]
+            
+        #u_sys = np.subtract(np.array(x_dident),np.array(x_ident))
+        u_sys = x_ident
         #zero delay
         num = np.array([0.3678,-0.3667])
         den = np.array([1.0000,-1.3745,0.4767,-0.0976])

@@ -6,6 +6,8 @@ from math import nan
 import threading
 import pandas
 import random
+import math
+import numpy as np
 
 from time import sleep
 from pymodbus.server.sync import StartSerialServer
@@ -118,26 +120,31 @@ class SlaveContexts:
         for entry in template.modbus_entries:
             if slave_id == 113:
                 if entry.register_type == "30000" and int(entry.register_offset) == 167: # Qw VX
-                    simulated_value = round(values,3)
-                    # ========================================== SET VALUES to REGISTER ==========================================
-                    register_values = self.__pack_by_endiannes(
-                        simulated_value, entry.endiannes, entry.data_type)
-                    ctx.store["i"].setValues(int(entry.register_offset) + 1, register_values)
-
+                    simulated_value = round(values[0],3)
+                elif entry.register_type == "30000" and int(entry.register_offset) == 191: # Wc
+                    simulated_value = round(values[1],3)
+                elif entry.register_type == "30000" and int(entry.register_offset) == 111: # Qw_lc
+                    simulated_value = round(values[2],3)
                 else:
                     continue
             elif slave_id ==114: 
-                if entry.register_type == "40000" and int(entry.register_offset) == 7036: #GLIR ABB
+                if entry.register_type == "40000" and int(entry.register_offset) == 7031: #GLIR ABB
                     simulated_value = int(values)
-
-                    # ========================================== SET VALUES to REGISTER ==========================================
-                    register_values = self.__pack_by_endiannes(
-                        simulated_value, entry.endiannes, entry.data_type)
-                    ctx.store["h"].setValues(int(entry.register_offset) + 1, register_values)
                 else:
                     continue
             else:
                 continue
+
+            register_values = self.__pack_by_endiannes(simulated_value, entry.endiannes, entry.data_type)
+
+            if entry.register_type == "0":
+                ctx.store["d"].setValues(int(entry.register_offset)+1, register_values)
+            elif entry.register_type == "10000":
+                ctx.store["c"].setValues(int(entry.register_offset)+1, register_values)
+            elif entry.register_type == "30000":
+                ctx.store["i"].setValues(int(entry.register_offset)+1, register_values)
+            elif entry.register_type == "40000":
+                ctx.store["h"].setValues(int(entry.register_offset)+1, register_values)
             # ========================================== LOG VALUEs ==========================================
             #print(f"SLVAE-{slave_id} REG VAL:{register_values} REGIST: {int(entry.register_type) + int(entry.register_offset)}")
             logging.info(
@@ -187,42 +194,86 @@ def WellDyn(GLIR,a,b,c,e):
     Qt_rand = Qt + Qt*random.uniform(-e/100, e/100)
     return Qt_rand
 
+def WC_dyn(t):
+    return ((0.4)/(1+20*(math.exp(-0.1*t))))+0.35
+
+def WellSys(u,i):
+    import control as ctl
+    
+    if np.shape(u) == (1,):
+        x_ident = [0,0,u[0]]
+    elif np.shape(u) == (2,):
+        x_ident = [0,u[0],u[1]]
+    else:
+        x_ident1 = [0,u[0],u[1]]
+        x_ident_temp = x_ident1.copy()
+        x_ident = x_ident_temp + u[2:i+1]
+        
+    #u_sys = np.subtract(np.array(x_dident),np.array(x_ident))
+    #print(f"NILAI SETPOINT TF: {x_ident}")
+    u_sys = x_ident
+    #zero delay
+    num = np.array([0.3678,-0.3667])
+    den = np.array([1.0000,-1.3745,0.4767,-0.0976])
+
+    #second order delay
+    num = np.array([0.343188420833007,-0.343090293948511,0,0])
+    den = np.array([1,-1.369332042280427,0.473411287445827,-0.101420313022513]) 
+
+    #second order delay ARX
+    #num = np.array([0,0,0.291967330160550,-0.242849422368530])
+    #den = np.array([1,-0.690217748679766,0.081126624658709,-0.287692951198518]) 
+
+    K = 1.5
+    K = 2
+    Ts = 3600*24  #1 day sampling day
+    sys = ctl.TransferFunction(K*num,den, dt=Ts)
+
+    res = ctl.forced_response(sys,T=None,U=u_sys,X0=0)
+    y_sys = res.outputs
+    x_sys = res.inputs
+
+    #y_sys = 2*x_dident + u_sys
+    
+    return y_sys
+
 def updater_entrypoint(contexts, id, period, val_data):
+    t = 0
+    qt_cum_val = 0.0
+    setpoint_glir = []
     while 1:
         # ========================================== WELL DYNAMICS (f_Qt(GLIR)) ==========================================
-        setpoint = contexts.contexts[114].store["h"].getValues(7036+1,count=1)[0] #GLIR
+        setpoint = contexts.contexts[114].store["h"].getValues(7031+1,count=1)[0] #GLIR
         qt_simulated = WellDyn(setpoint, -0.001, 1.4, 110, 5)
 
+        setpoint_glir.append(setpoint)
+        #print(f"NILAI SETPOINT TF: {setpoint_glir}")
+        #qt_simulated = WellSys(setpoint_glir, t)[-1]
+        print(f"NILAI SETPOINT TF: {qt_simulated}")
+
+
         test_value = contexts.contexts[113].store["i"].getValues(167+1,count=2)[0] #qw
-        #print(f"NILAI TEST 114: {setpoint}")
-        #print(f"NILAI TEST 113: {test_value}")
-        
-        dict_data = {113: qt_simulated,
+        wc_val = WC_dyn(t)
+
+        qt_cum_val += qt_simulated
+
+        dict_data = {113: [qt_simulated,wc_val,qt_cum_val],
                     114: setpoint
                     }
         val_data[id] = dict_data[id]
-        #print(val_data)
+        #print(val_data[id])
         
         # ========================================== STORE to REGISTERS ==========================================
-        contexts.update_context(id,val_data)
-        
-        # ========================================== GLIR INPUT SIMULATED ==========================================
-        #Simulation of Changing GLIR Setpoints should be changed by the value written by master.py
-        if id == 114:
-            temp_a = random.uniform(500, 800)
-            #dict_data[114] = temp_a
-            setpoint = temp_a
-        else:
-            1 == 1
-        
+        contexts.update_context(id,val_data[id])        
         #print("=================================================================================================")
+        t += 1
         sleep(int(period))
 
 def main():
 
     # ========================================== INPUT to SLAVE ==========================================
     slave_ids = [113,114]
-    input_data = [0,550]
+    input_data = [[0,0.5,0],550]
     periods = [1,1]
     modbus_template_paths = ['VX1.xlsx','ABB.xlsx']
     
