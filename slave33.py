@@ -226,11 +226,15 @@ def WellSys(u,i):
     
     #Third Order Transfer Function
     num = np.array([0,0,0,0.131622045538569,-0.129567288395182])
-    den = np.array([1,-1.277134737340689,0.048037715938000,0.234916375650429])  
+    den = np.array([1,-1.277134737340689,0.048037715938000,0.234916375650429])
+
+    #Third Order Transfer Function Delay of 2
+    num = np.array([0,0,0.190904336050159,-0.189899401826588])
+    den = np.array([1,-1.221349138175800,0.100981241074881,0.123753106411842])  
 
     K = 1.5
     K = 2
-    Ts = 3600*24  #1 day sampling day
+    Ts = 1  #1 day sampling day
     sys = ctl.TransferFunction(K*num,den, dt=Ts)
 
     res = ctl.forced_response(sys,T=None,U=u_sys,X0=0)
