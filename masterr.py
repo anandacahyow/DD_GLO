@@ -30,15 +30,15 @@ def main():
 
     plot_glir = []
     plot_qt = []
-    period_cond = 12
+    period_cond = 15
     while 1:
-
+        # ========================================== INITIALIZATION STATE ==========================================
         if i < 8:
+            # ========================================== AGREGATING STATE ==========================================
             t = 0
-            rand_glir = random.uniform(300, 900)
-            #rand_glir = [550,580,660,690,700,750,770,800]
-            #rand_glir = [340,375,435,460,490,510,535,570]
-            val2 = client.write_register(7031, int(rand_glir), unit=114)  #GLIR_opt
+            rand_glir = random.uniform(0, 1000)
+            rand_glir = [410,575,450,430,710,860,870,890]
+            val2 = client.write_register(7031, int(rand_glir[i]), unit=114)  #GLIR_opt
             val2 = client.read_holding_registers(7031, 1, unit=114) #GLIR_opt
             val_GLIR = val2.registers[0]
             logging.info(f"[{i}] {datetime.now()} GLIR : {val_GLIR}")
@@ -71,18 +71,15 @@ def main():
             print(f"{i} GLIR Instance: {glir_input}")
             print(f"{i} INSTANCE from Cumulative: {cum_qt_ins}")
         else:
-            #input DD GLO
+            # ========================================== INDEPENDENT STATE ==========================================
             val3 = client.read_input_registers(address=191, count=2, unit=113)
             decoded3 = BinaryPayloadDecoder.fromRegisters(val3.registers, byteorder=Endian.Big, wordorder=Endian.Little)  # GLIR
             val_wc = decoded3.decode_32bit_float()
-            #print(f"{i} INSTANCE from Cumulative: {val_wc}")
-            
             # ========================================== SOLVER ==========================================
             regoptim = DDGLO(glir_input, cum_qt_ins, val_wc, i-7)
             glir_pred = regoptim.RegOpt()[0]
             qt_pred = regoptim.RegOpt()[1]
-
-            # ========================================== SET UP GLIR VAL to Qt ==========================================
+            # ========================================== AGREGATING STATE ==========================================
             t = 0
             val2 = client.write_register(7031, int(glir_pred), unit=114)  #GLIR_opt
             val2 = client.read_holding_registers(7031, 1, unit=114) #GLIR_opt
@@ -110,27 +107,16 @@ def main():
             
             cum_qt_ins.append(cum_qt_instance)
             glir_input.append(val_GLIR)
-            
-            #print(f"{i} GLIR Instance: {glir_input}")
-            #print(f"{i} INSTANCE from Cumulative: {cum_qt_ins}")
 
-            #print(f"[{i}] GLIR opt: {glir_pred}")
-            #print(f"{i} INSTANCE from Cumulative: {cum_qt_ins}")
-            #print('done')
-
-            # ========================================== VISUALIZATION ==========================================
-        print(f"LENGTH plot_glir {len(plot_glir)}")
+        # ========================================== VISUALIZATION ==========================================
+        #print(f"LENGTH plot_glir {len(plot_glir)}")
         time2 = np.arange(0,len(plot_glir),1)
-        #t1 = np.arange(0,i-5,1)
-        #print(f"LENGTH T: {len(t)} nilainya: {t}")
         time = np.arange(0,i+1,1)
         plt.figure(1)
         plt.plot(time2,plot_glir, label = 'Predicted GLIR', color = 'red')
         plt.plot(time2,plot_qt, label='Predicted Qt', color = 'green')
-        #plt.plot(time,glir_input, label = 'Predicted GLIR', color = 'red')
-        #plt.plot(time,cum_qt_ins, label='Predicted Qt', color = 'green')
         
-        plt.title("Historical Data and Prediction Comparison of Qt and GLIR\nnote: Qt Prediction based on Regression")
+        plt.title("Historical Data and Prediction Comparison of Qt and GLIR\nnote: Qt Prediction based on 3rd Order Transfer Function")
         plt.xlabel(f"Day {i-7}-th")
         plt.ylabel('GLIR (mscfd) & Qt (bopd)')
         plt.legend()

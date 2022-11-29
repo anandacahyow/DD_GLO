@@ -208,10 +208,10 @@ def WellSys(u,i):
         x_ident1 = [0,u[0],u[1]]
         x_ident_temp = x_ident1.copy()
         x_ident = x_ident_temp + u[2:i+1]
-        
-    #u_sys = np.subtract(np.array(x_dident),np.array(x_ident))
-    #print(f"NILAI SETPOINT TF: {x_ident}")
+
     u_sys = x_ident
+    
+    # ========================================== WELL DYNAMICS VARIATIONS ==========================================
     #zero delay
     num = np.array([0.3678,-0.3667])
     den = np.array([1.0000,-1.3745,0.4767,-0.0976])
@@ -222,7 +222,11 @@ def WellSys(u,i):
 
     #second order delay ARX
     #num = np.array([0,0,0.291967330160550,-0.242849422368530])
-    #den = np.array([1,-0.690217748679766,0.081126624658709,-0.287692951198518]) 
+    #den = np.array([1,-0.690217748679766,0.081126624658709,-0.287692951198518])
+    
+    #Third Order Transfer Function
+    num = np.array([0,0,0,0.131622045538569,-0.129567288395182])
+    den = np.array([1,-1.277134737340689,0.048037715938000,0.234916375650429])  
 
     K = 1.5
     K = 2
@@ -261,8 +265,7 @@ def updater_entrypoint(contexts, id, period, val_data):
                     114: setpoint
                     }
         val_data[id] = dict_data[id]
-        #print(val_data[id])
-        
+
         # ========================================== STORE to REGISTERS ==========================================
         contexts.update_context(id,val_data[id])        
         #print("=================================================================================================")
@@ -307,7 +310,6 @@ def main():
     
     #slave_contexts.contexts[113].store["i"].setValues(int(entry.register_offset) + 1, val_data) #coba pake enumerate dan loop nanti 
     #slave_contexts.contexts[114].store["h"].setValues(int(entry.register_offset) + 1, val_data)
-
 
     # ========================================== THREADING EACH SLAVE IDs ==========================================
     for idx, id in enumerate(slave_ids):
