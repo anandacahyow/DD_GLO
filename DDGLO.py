@@ -173,9 +173,7 @@ class DDGLO():
 
         r2_total.append(R2)"""
 
-        #output = [z[-1], y[-1], wc, x[-1], int(sol.x),yy]
-        output = [int(sol.x), y_optimal]
-        print(f"NILAI OUT: {output}")
+        output = [int(sol.x), y_optimal, x_reg, y_pred]
 
         return output
 

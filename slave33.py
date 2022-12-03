@@ -125,6 +125,10 @@ class SlaveContexts:
                     simulated_value = round(values[1],3)
                 elif entry.register_type == "30000" and int(entry.register_offset) == 111: # Qw_lc
                     simulated_value = round(values[2],3)
+                elif entry.register_type == "30000" and int(entry.register_offset) == 165: # Qo VX
+                    simulated_value = round(values[3],3)
+                elif entry.register_type == "30000" and int(entry.register_offset) == 109: # Qo_lc
+                    simulated_value = round(values[4],3)
                 else:
                     continue
             elif slave_id ==114: 
@@ -197,7 +201,7 @@ def WellDyn(GLIR,a,b,c,e):
 def WC_dyn(t):
     return ((0.4)/(1+20*(math.exp(-0.1*t))))+0.35
 
-def WellSys(u,i):
+def WellSys(u,i,mode):
     import control as ctl
     
     if np.shape(u) == (1,):
@@ -230,7 +234,7 @@ def WellSys(u,i):
 
     #Third Order Transfer Function Delay of 2
     num = np.array([0,0,0.190904336050159,-0.189899401826588])
-    den = np.array([1,-1.221349138175800,0.100981241074881,0.123753106411842])  
+    den = np.array([1,-1.221349138175800,0.100981241074881,0.123753106411842])
 
     K = 1.5
     K = 2
@@ -241,31 +245,38 @@ def WellSys(u,i):
     y_sys = res.outputs
     x_sys = res.inputs
 
-    #y_sys = 2*x_dident + u_sys
-    
+    if mode == 'qt':
+        y_sys  = y_sys
+    elif mode == 'qo':
+        y_sys = y_sys*(1 - WC_dyn(i))
+    #print(sys)
     return y_sys
 
 def updater_entrypoint(contexts, id, period, val_data):
     t = 0
     qt_cum_val = 0.0
+    qo_cum_val = 0.0
     setpoint_glir = []
     while 1:
         # ========================================== WELL DYNAMICS (f_Qt(GLIR)) ==========================================
         setpoint = contexts.contexts[114].store["h"].getValues(7031+1,count=1)[0] #GLIR
-        qt_simulated = WellDyn(setpoint, -0.001, 1.4, 110, 5)
-
         setpoint_glir.append(setpoint)
-        #print(f"NILAI SETPOINT TF: {setpoint_glir}")
-        #qt_simulated = WellSys(setpoint_glir, t)[-1]
-        print(f"NILAI SETPOINT TF: {qt_simulated}")
+
+        # WELL MODEL
+
+        #qt_simulated = WellDyn(setpoint, -0.001, 1.4, 110, 5) #REGRESSION BASED MODEL
+        qt_simulated = WellSys(setpoint_glir, t, 'qt')[-1] #TF BASED MODEL
+        qo_simulated = WellSys(setpoint_glir, t, 'qo')[-1] #TF BASED MODEL
+        #print(f"NILAI SETPOINT TF: {qt_simulated}")
 
 
-        test_value = contexts.contexts[113].store["i"].getValues(167+1,count=2)[0] #qw
+        qw = contexts.contexts[113].store["i"].getValues(167+1,count=2)[0] #qw
         wc_val = WC_dyn(t)
 
         qt_cum_val += qt_simulated
+        qo_cum_val += qo_simulated
 
-        dict_data = {113: [qt_simulated,wc_val,qt_cum_val],
+        dict_data = {113: [qt_simulated,wc_val,qt_cum_val,qo_simulated,qo_cum_val],
                     114: setpoint
                     }
         val_data[id] = dict_data[id]
@@ -280,7 +291,7 @@ def main():
 
     # ========================================== INPUT to SLAVE ==========================================
     slave_ids = [113,114]
-    input_data = [[0,0.5,0],550]
+    input_data = [[0,0.5,0,0,0],550]
     periods = [1,1]
     modbus_template_paths = ['VX1.xlsx','ABB.xlsx']
     
