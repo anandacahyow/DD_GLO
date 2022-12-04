@@ -199,7 +199,9 @@ def WellDyn(GLIR,a,b,c,e):
     return Qt_rand
 
 def WC_dyn(t):
-    return ((0.4)/(1+20*(math.exp(-0.1*t))))+0.35
+    wc = ((0.4)/(1+20*(math.exp(-0.1*t))))+0.35
+    #wc = 0.75
+    return wc
 
 def WellSys(u,i,mode):
     import control as ctl
@@ -261,17 +263,18 @@ def updater_entrypoint(contexts, id, period, val_data):
         # ========================================== WELL DYNAMICS (f_Qt(GLIR)) ==========================================
         setpoint = contexts.contexts[114].store["h"].getValues(7031+1,count=1)[0] #GLIR
         setpoint_glir.append(setpoint)
+        wc_val = WC_dyn(t)
 
-        # WELL MODEL
-
+        # WELL MODEL TF
         #qt_simulated = WellDyn(setpoint, -0.001, 1.4, 110, 5) #REGRESSION BASED MODEL
-        qt_simulated = WellSys(setpoint_glir, t, 'qt')[-1] #TF BASED MODEL
-        qo_simulated = WellSys(setpoint_glir, t, 'qo')[-1] #TF BASED MODEL
-        #print(f"NILAI SETPOINT TF: {qt_simulated}")
-
+        #qt_simulated = WellSys(setpoint_glir, t, 'qt')[-1] #TF BASED MODEL
+        #qo_simulated = WellSys(setpoint_glir, t, 'qo')[-1] #TF BASED MODEL
+        
+        #WELL MODEL REGRESSION
+        qt_simulated = WellDyn(setpoint, -0.001, 1.4, 110, 5) #REGRESSION BASED MODEL
+        qo_simulated = qt_simulated*(1 - WC_dyn(t)) #TF BASED MODEL
 
         qw = contexts.contexts[113].store["i"].getValues(167+1,count=2)[0] #qw
-        wc_val = WC_dyn(t)
 
         qt_cum_val += qt_simulated
         qo_cum_val += qo_simulated
