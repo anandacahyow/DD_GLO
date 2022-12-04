@@ -27,14 +27,14 @@ logging.basicConfig(level=logging.INFO)
 # ======================================== INITIAL ========================================
 window = tk.Tk()
 window.configure(bg="white")
-window.geometry("1180x610")
+window.geometry("965x590")
 #window.resizable(False,False)
 window.title("DD GLO Solver")
 
 # ======================================== FRAME ========================================
 frame_dragdown = tk.Frame(window, bg='white')
 #frame_dragdown.grid(row=0,column=0,padx=5,pady=5,ipadx=75,ipady=590)
-frame_dragdown.grid(row=0,column=0,padx=5,pady=5)
+frame_dragdown.grid(row=0,column=0)
 #frame_dragdown.pack(padx=5,pady=5,ipadx=200,ipady=590)
 
 frame_dashboard = tk.Frame(window,bg='white')
@@ -85,13 +85,12 @@ def structure():
     if i < 8:
         # ========================================== AGREGATING STATE ==========================================
         t = 0
-        #rand_glir = random.uniform(650, 750)
-        rand_glir = [410,575,450,430,710,860,870,890]
-        #rand_glir = []
+        rand_glir = random.uniform(400, 800)
+        #rand_glir = [410,575,450,430,710,860,870,890]
         #rand_glir.reverse()
         #rand_glir = 854
         
-        val2 = client.write_register(7031, int(rand_glir[i]), unit=114)  #GLIR_opt
+        val2 = client.write_register(7031, int(rand_glir), unit=114)  #GLIR_opt
         val2 = client.read_holding_registers(7031, 1, unit=114) #GLIR_opt
         val_GLIR = val2.registers[0]
         
@@ -194,10 +193,10 @@ def structure():
     style.configure("Treeview",
         background="white",
         foreground="grey",
-        fieldbackground="white")
+        fieldbackground="white",)
     style.map('Treeview',background=[('selected','blue')])        
 
-    meas_table = ttk.Treeview(meas_frame, columns=("Variables","Values","Unit"),show='headings')
+    meas_table = ttk.Treeview(meas_frame, columns=("Variables","Values","Unit"),show='headings',height=8)
     meas_table.column("# 1", width=100,anchor='center')
     meas_table.heading("# 1", text="Variables")
     meas_table.column("# 2", width=150, anchor='center')
@@ -233,12 +232,16 @@ def structure():
     time2 = np.arange(0,len(plot_glir),1)
 
     plot_fig = Figure(figsize=(5,3))
-    plot_fig.add_subplot().set_title('GLIR and Qo FLow Rate')
-    plot_fig.add_subplot(211).plot(time2,plot_glir, label = 'Predicted GLIR', color = 'red')
-    """plot_fig.add_subplot(212).set_ylabel('Qo (bbl)')
-    plot_fig.add_subplot(212).set_xlabel('Period (day)')"""
-    plot_fig.add_subplot(212).plot(time2,plot_qo, label='Predicted Qt', color = 'green')
-    #plot_fig.clf()
+    ax = plot_fig.add_subplot(211)
+    ax.set_title('GLIR and Qo FLow Rate')
+    ax.plot(time2,plot_glir, label = 'Predicted GLIR', color = 'red')
+    ax.set_ylabel('GLIR (MSCFD)')
+    ax.grid(True)
+    ax1 = plot_fig.add_subplot(212)
+    ax1.plot(time2,plot_qo, label='Predicted Qt', color = 'green')
+    ax1.set_xlabel('Period')
+    ax1.set_ylabel('Qo (STB/day)')
+    ax1.grid(True)
     
     canvas = FigureCanvasTkAgg(plot_fig,master=trend_label)
     canvas.draw()
@@ -262,7 +265,7 @@ def structure():
         foreground="grey",
         fieldbackground="white") """              
 
-    GLPV_table = ttk.Treeview(GLPV_frame, columns=("GLIR","Qt"),show='headings')
+    GLPV_table = ttk.Treeview(GLPV_frame, columns=("GLIR","Qt"),show='headings', height=8)
     GLPV_table.column("# 1", width=100,anchor='center')
     GLPV_table.heading("# 1", text="GLIR (MCF/day)")
     GLPV_table.column("# 2", width=150,anchor='center')
@@ -310,13 +313,14 @@ def structure():
     mymodel = np.poly1d(np.polyfit(x_reg, y_reg, 2))
     myline = np.linspace(min(x_reg), max(x_reg), len(x_reg))
     
-    plot_fig2 = Figure(figsize=(5,3))
-    """plot_fig2.add_subplot(111).set_xlabel('time')
-    plot_fig2.add_subplot(111).set_xticks([])
-    plot_fig2.add_subplot(111).set_ylabel('val')
-    plot_fig2.add_subplot(111).set_yticks([])"""
-    plot_fig2.add_subplot(111).set_title('GLPC Curve')
-    plot_fig2.add_subplot(111).plot(myline, mymodel(myline), color="orange")
+    plot_fig2 = Figure(figsize=(3,3))
+    ax2 = plot_fig2.add_subplot(111)
+    ax2.set_title('GLPC Curve')
+    ax2.plot(myline, mymodel(myline), color="orange")
+    ax2.scatter(x_reg,y_reg)
+    ax2.set_xlabel('GLIR (MSCFD)')
+    ax2.set_ylabel('Qt (STB/day)')
+    ax2.grid(True)
     
     canvas2 = FigureCanvasTkAgg(plot_fig2,master=GLPC_label)
     canvas2.draw()
