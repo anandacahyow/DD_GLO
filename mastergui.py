@@ -27,7 +27,7 @@ logging.basicConfig(level=logging.INFO)
 # ======================================== INITIAL ========================================
 window = tk.Tk()
 window.configure(bg="white")
-window.geometry("965x590")
+window.geometry("965x660")
 #window.resizable(False,False)
 window.title("DD GLO Solver")
 
@@ -39,7 +39,7 @@ frame_dragdown.grid(row=0,column=0)
 
 frame_dashboard = tk.Frame(window,bg='white')
 #frame_dashboard.grid(row=0,column=1,padx=5,pady=5,ipadx=850,ipady=590)
-frame_dashboard.grid(row=0,column=1,padx=5,pady=5)
+frame_dashboard.grid(row=1,column=0)
 #frame_dashboard.pack(padx=210,pady=5,ipadx=685,ipady=590)
 
 # ======================================== LABEL FRAME DRAGDOWN ========================================
@@ -47,7 +47,7 @@ frame_dashboard.grid(row=0,column=1,padx=5,pady=5)
 #logo_label.grid()
 
 #img = ImageTk.PhotoImage(Image.open("foto.png"))
-img = tk.PhotoImage(file="foto.png")
+#img = tk.PhotoImage(file="header.png")
 
 # ======================================== ALGORITHM ========================================
 
@@ -337,7 +337,7 @@ def structure():
 # ======================================== MAIN LOOP GUI ========================================
 b = 0
 i = 0
-img = ImageTk.PhotoImage(Image.open("foto.png"))
+img = ImageTk.PhotoImage(Image.open("header.png"))
 window.after(1000,structure)
 
 dragdown_label = tk.Label(frame_dragdown,image = img)
