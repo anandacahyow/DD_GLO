@@ -27,28 +27,19 @@ logging.basicConfig(level=logging.INFO)
 # ======================================== INITIAL ========================================
 window = tk.Tk()
 window.configure(bg="white")
-window.geometry("965x660")
+window.geometry("965x710")
 #window.resizable(False,False)
 window.title("DD GLO Solver")
 
 # ======================================== FRAME ========================================
 frame_dragdown = tk.Frame(window, bg='white')
-#frame_dragdown.grid(row=0,column=0,padx=5,pady=5,ipadx=75,ipady=590)
 frame_dragdown.grid(row=0,column=0)
-#frame_dragdown.pack(padx=5,pady=5,ipadx=200,ipady=590)
 
 frame_dashboard = tk.Frame(window,bg='white')
-#frame_dashboard.grid(row=0,column=1,padx=5,pady=5,ipadx=850,ipady=590)
 frame_dashboard.grid(row=1,column=0)
-#frame_dashboard.pack(padx=210,pady=5,ipadx=685,ipady=590)
 
-# ======================================== LABEL FRAME DRAGDOWN ========================================
-#logo_label = tk.LabelFrame(frame_dragdown,bg='white')
-#logo_label.grid()
-
-#img = ImageTk.PhotoImage(Image.open("foto.png"))
-#img = tk.PhotoImage(file="header.png")
-
+frame_button = tk.Frame(window, bg='white')
+frame_button.grid(row=2,column=0,pady=2)
 # ======================================== ALGORITHM ========================================
 
 val_Qt = []
@@ -57,19 +48,41 @@ Qt = []
 cum_qt_ins = []
 cum_qt_ins_list = []
 cum_qo_ins_list = []
+
 glpc_pred = []
 glir_predict = []
 glir_input = []
-#i = 0
 
 plot_glir = []
 plot_qt = []
 plot_qo = []
 
+def input_glir():
+    global set_glir
+    if set_glir.get() != '':
+        set_input = int(set_glir.get())
+    else:
+        set_input = 0
+    print('NILAI SETTING GLIR:', set_input)
+    
+    cond = 'manual'
+    return [set_input, cond]
+
+def input_auto():
+    cond = 'automatic'
+    if input_glir() != 0:
+        cond = 'manual'
+    return cond
+
+def clear():
+    set_glir.delete(0,'end')
+
+
 def structure():
     global window
     global b
     global i
+    global glir_input
 
     client = ModbusSerialClient(method="rtu", port='COM7', baudrate=9600)
     client.connect()
@@ -131,14 +144,29 @@ def structure():
         glir_input.append(val_GLIR)
         #glpc_pred.append(cum_qt_instance)
     else:
-        # ========================================== INDEPENDENT STATE ==========================================
+        # ========================================== INDEPENDENT STATE =========s=================================
         val3 = client.read_input_registers(address=191, count=2, unit=113)
         decoded3 = BinaryPayloadDecoder.fromRegisters(val3.registers, byteorder=Endian.Big, wordorder=Endian.Little)  # GLIR
         val_wc = decoded3.decode_32bit_float()
+        # ========================================== BUTTONS ==========================================
+        cond = 'automatic'
+        cond = input_auto()
+        if cond == 'manual':
+            val_set_glir = input_glir()[0]
+            if val_set_glir != 0:
+                glir_input[-1] = val_set_glir
+            #else:
+            #    1 == 1
+                #glir_input = glir_input
+            #val_set_glir == 0
+        elif cond == 'automatic':
+            print('GLIR INPUT',glir_input)
+            glir_input = glir_input
         # ========================================== SOLVER ==========================================
         regoptim = DDGLO(glir_input, cum_qt_ins, val_wc, i-7)
         glir_pred = regoptim.RegOpt()[0]
         qt_pred = regoptim.RegOpt()[1]
+
         x_pred = regoptim.RegOpt()[2]
         y_pred = regoptim.RegOpt()[3]
         # ========================================== AGREGATING STATE ==========================================
@@ -330,16 +358,34 @@ def structure():
     toolbar2.update()
     canvas2.get_tk_widget().pack()"""
 
-    window.after(1000, structure)
+    window.after(2000, structure)
     b+=1
     i+=1
 
-# ======================================== MAIN LOOP GUI ========================================
 b = 0
 i = 0
 img = ImageTk.PhotoImage(Image.open("header.png"))
-window.after(1000,structure)
+window.after(2000,structure)
 
 dragdown_label = tk.Label(frame_dragdown,image = img)
 dragdown_label.pack()
+
+# ======================================== BUTTON FRAME ========================================
+# ======================================== GLPCs ========================================
+button_label = tk.LabelFrame(frame_button, text="ACTIONS COMMANDS")
+button_label.grid(row=0,column=0,padx=10,pady=10)
+
+set_glir = tk.Entry(button_label)
+set_glir.grid(row=0,column=0,padx=10)
+
+setting_button = tk.Button(button_label, text="SET GLIR", command=input_glir)
+setting_button.grid(row=0,column=1,padx=10)
+
+automatic_button = tk.Button(button_label, text="AUTOMATIC", command=clear)
+automatic_button.grid(row=0,column=2,padx=10)
+
+#auto_button = tk.Button(button_label, text="MODE : AUTOMATIC",command=input_auto)
+#auto_button.grid(row=0,column=3,padx=10)
+
+# ======================================== MAIN LOOP GUI ========================================
 window.mainloop()
