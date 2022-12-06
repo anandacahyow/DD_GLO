@@ -121,6 +121,32 @@ class DDGLO():
             par = (poly[0], poly[1], poly[2], wc, poly2[0], poly2[1], poly2[2], wc2)
             #print("c5:", poly[0], poly[1], poly[2])
 
+        # ========================================== REGRESSION CONDITIONING ==========================================
+        if poly2[0] > 0:
+            if poly2[1] > 0 and poly2[2] > 0:
+                y_pred2 = regress(x_reg2,-poly2[0], -poly2[1], -poly2[2])
+                #par = (-poly[0], -poly[1], -poly[2], wc,-poly2[0], -poly2[1], -poly2[2], wc2)
+                #print("c1:", [-poly[0], poly[1], poly[2]])
+
+            elif poly2[1] > 0 and poly2[2] < 0:
+                y_pred2 = regress(x_reg2,-poly2[0], -poly2[1], poly2[2])
+                #par = (-poly[0], -poly[1], poly[2], wc,-poly2[0], -poly2[1], poly2[2],wc2)
+                #print("c2:", [-poly[0], poly[1], -poly[2]])
+
+            elif poly2[1] < 0 and poly2[2] > 0:
+                y_pred2 = regress(x_reg2,-poly2[0], -poly2[1], poly2[2])
+                #par = (-poly[0], -poly[1], poly[2], wc, -poly2[0], -poly2[1], poly2[2], wc2)
+                #print("c3:", [-poly[0], -poly[1], poly[2]])
+            #elif poly[1] < 0 and poly[2] < 0:
+            else:
+                y_pred2 = regress(x_reg2,-poly2[0], -poly2[1], -poly2[2])
+                #par = (-poly[0], -poly[1], -poly[2], wc, -poly2[0], -poly2[1], -poly2[2], wc2)
+                #print("c4:", [-poly[0], -poly[1], -poly[2]])
+        else:
+            y_pred2 = regress(x_reg2,poly2[0], poly2[1], poly2[2])
+            #par = (poly[0], poly[1], poly[2], wc, poly2[0], poly2[1], poly2[2], wc2)
+            #print("c5:", poly[0], poly[1], poly[2])
+
         # ========================================== OPTIMIZATION OBJ FUNC ==========================================
 
         b = (0.75*x[-2], 1*x[-2])  # normalize bounds
@@ -146,8 +172,6 @@ class DDGLO():
         #yy = objectives(int(sol.x[0]), poly[0],poly[1], poly[2], wc)
         # Qo from Data
         #y_comparison = z[-1]
-
-        print('SOLUTION', solx)
 
         output = [solx[0],solx[1], y_optimal, y_optimal2, x_reg, x_reg2, y_pred, y_pred2]
 

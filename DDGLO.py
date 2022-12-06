@@ -15,34 +15,27 @@ from gekko import GEKKO
 
 
 class DDGLO():
-    def __init__(self, GLIR, Qt, wc,GLIR2, Qt2, wc2, i):  # list of GLIR and Qt
+    def __init__(self, GLIR, Qt, wc, i):  # list of GLIR and Qt
         self.GLIR = GLIR
         self.Qt = Qt
         self.wc = wc
         self.i = i
-        self.GLIR2 = GLIR2
-        self.Qt2 = Qt2
-        self.wc2 = wc2
-        self.i2 = i2
     
     def RegOpt(self):
-        def objective(x, a, b, c, wc, a2, b2, c2, wc2):
-            x1 = x[0]
-            x2 = x[1]
-            fun = (a*x1**2 + b*x1 + c)*(1-wc) + (a2*x2**2 + b2*x2 + c2)*(1-wc2)
+        def objective(x, a, b, c, wc):
+            fun = (a*x**2 + b*x + c)*(1-wc)
             return -fun  # maximation
 
-
-        def objectives(x, a, b, c, wc, a2, b2, c2, wc2):
-            x1 = x[0]
-            x2 = x[1]
-            fun = (a*x1**2 + b*x1 + c)*(1-wc) + (a2*x2**2 + b2*x2 + c2)*(1-wc2)
+        def objectives(x, a, b, c, wc):
+            fun = (a*x**2 + b*x + c)*(1-wc)
             return fun  # minimation
 
+        def regress(x, a, b, c):
+            fun = a*x**2 + b*x + c
+            return fun
+
         def constraint(x):
-            x1 = x[0]
-            x2 = x[1]
-            return 2000 - x1 - x2
+            return 1000 - x
 
         def constraint2(x):
             return x/x - 1
@@ -56,67 +49,74 @@ class DDGLO():
         ff = list(range(8, 16, 2))
         #print(f"variasi batch data: {ff}")
 
+        r2_total = []  # r2 for each iteration
+        R2_all = []  # r2 for each day
+        rate = []
+        avg_all = []  # avg increase each iteration
+        avg_inc = []  # avg increase each day
+
         ff = [8]  # test
         #print('======================= DATA-DRIVEN GAS LIFT INJECTION OPTIMIZER PREDICTION =======================\n')
 
         # ========================================== PARAMETERS ==========================================
+        #n_test = len(df1)
         n_train = 8
+        #n = n_test-n_train
+        # print(n)
+        # n = 3
 
         x = self.GLIR[self.i:self.i+n_train]
         y = self.Qt[self.i:self.i+n_train]
+        print(f"NILAI X : {x}")
+        print(f"NILAI Y : {y}")
+
         x_reg = self.GLIR[self.i:self.i+n_train]
         y_reg = self.Qt[self.i:self.i+n_train]
         x_reg.sort()
         y_reg.sort()
         x_reg = np.insert(x_reg, 0, 0)
         y_reg = np.insert(y_reg, 0, 0)
+        #print(f"NILAI X REG : {x_reg}")
+        #print(f"NILAI Y REG: {y_reg}")
 
-        x2 = self.GLIR2[self.i:self.i+n_train]
-        y2 = self.Qt2[self.i:self.i+n_train]
-        x_reg2 = self.GLIR2[self.i:self.i+n_train]
-        y_reg2 = self.Qt2[self.i:self.i+n_train]
-        x_reg2.sort()
-        y_reg2.sort()
-        x_reg2 = np.insert(x_reg2, 0, 0)
-        y_reg2 = np.insert(y_reg2, 0, 0)
-
-        wc = self.wc
-        wc2 = self.wc2
+        wc = self.wc#[self.i:self.i+n_train]
 
         # ========================================== GLPC REGRESSION ==========================================
         poly = np.polyfit(x_reg, y_reg, 2)
-        poly2 = np.polyfit(x_reg2, y_reg2, 2)
+        # Predict Qt
+        #y_pred = regress(x_reg, poly[0], poly[1], poly[2])
+
         # ========================================== REGRESSION CONDITIONING ==========================================
         if poly[0] > 0:
             if poly[1] > 0 and poly[2] > 0:
                 y_pred = regress(x_reg,-poly[0], -poly[1], -poly[2])
-                y_pred2 = regress(x_reg2,-poly2[0], -poly2[1], -poly2[2])
-                par = (-poly[0], -poly[1], -poly[2], wc,-poly2[0], -poly2[1], -poly2[2], wc2)
-                #print("c1:", [-poly[0], poly[1], poly[2]])
+                par = (-poly[0], -poly[1], -poly[2], wc)
+                y_plot = regress(np.arange(0, max(x), 25), poly[0], poly[1], poly[2])
+                print("c1:", [-poly[0], poly[1], poly[2]])
 
             elif poly[1] > 0 and poly[2] < 0:
                 y_pred = regress(x_reg,-poly[0], -poly[1], poly[2])
-                y_pred2 = regress(x_reg2,-poly2[0], -poly2[1], poly2[2])
-                par = (-poly[0], -poly[1], poly[2], wc,-poly2[0], -poly2[1], poly2[2],wc2)
-                #print("c2:", [-poly[0], poly[1], -poly[2]])
+                par = (-poly[0], -poly[1], poly[2], wc)
+                y_plot = regress(np.arange(0, max(x), 25),-poly[0], poly[1], -poly[2])
+                print("c2:", [-poly[0], poly[1], -poly[2]])
 
             elif poly[1] < 0 and poly[2] > 0:
                 y_pred = regress(x_reg,-poly[0], -poly[1], poly[2])
-                y_pred2 = regress(x_reg2,-poly2[0], -poly2[1], poly2[2])
-                par = (-poly[0], -poly[1], poly[2], wc, -poly2[0], -poly2[1], poly2[2], wc2)
-                #print("c3:", [-poly[0], -poly[1], poly[2]])
+                par = (-poly[0], -poly[1], poly[2], wc)
+                y_plot = regress(np.arange(0, max(x), 25), -poly[0], -poly[1], poly[2])
+                print("c3:", [-poly[0], -poly[1], poly[2]])
 
             #elif poly[1] < 0 and poly[2] < 0:
             else:
                 y_pred = regress(x_reg,-poly[0], -poly[1], -poly[2])
-                y_pred2 = regress(x_reg2,-poly2[0], -poly2[1], -poly2[2])
-                par = (-poly[0], -poly[1], -poly[2], wc, -poly2[0], -poly2[1], -poly2[2], wc2)
-                #print("c4:", [-poly[0], -poly[1], -poly[2]])
+                par = (-poly[0], -poly[1], -poly[2], wc)
+                y_plot = regress(np.arange(0, max(x), 25),-poly[0], -poly[1], -poly[2])
+                print("c4:", [-poly[0], -poly[1], -poly[2]])
         else:
             y_pred = regress(x_reg,poly[0], poly[1], poly[2])
-            y_pred2 = regress(x_reg2,poly2[0], poly2[1], poly2[2])
-            par = (poly[0], poly[1], poly[2], wc, poly2[0], poly2[1], poly2[2], wc2)
-            #print("c5:", poly[0], poly[1], poly[2])
+            par = (poly[0], poly[1], poly[2], wc)
+            y_plot = regress(np.arange(0, max(x), 25),poly[0], poly[1], poly[2])
+            print("c5:", poly[0], poly[1], poly[2])
 
         # ========================================== OPTIMIZATION OBJ FUNC ==========================================
 

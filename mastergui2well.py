@@ -91,8 +91,27 @@ def input_auto():
         cond = 'manual'
     return cond
 
+def input_glir2():
+    global set_glir2
+    if set_glir2.get() != '':
+        set_input2 = int(set_glir2.get())
+    else:
+        set_input2 = 0
+    #print('NILAI SETTING GLIR:', set_input)
+    cond = 'manual'
+    return [set_input2, cond]
+
+def input_auto2():
+    cond = 'automatic'
+    if input_glir2() != 0:
+        cond = 'manual'
+    return cond
+
 def clear():
     set_glir.delete(0,'end')
+
+def clear2():
+    set_glir2.delete(0,'end')
 
 def read_reg(register,address,unit):
     if register == '3000':
@@ -192,12 +211,18 @@ def structure():
         cond = input_auto()
         if cond == 'manual':
             val_set_glir = input_glir()[0]
-            val_set_glir2 = input_glir()[0]
             if val_set_glir != 0:
                 glir_input[-1] = val_set_glir
-                glir_input2[-1] = val_set_glir2
         elif cond == 'automatic':
             glir_input = glir_input
+        
+        cond2 = 'automatic'
+        cond2 = input_auto2()
+        if cond2 == 'manual':
+            val_set_glir2 = input_glir2()[0]
+            if val_set_glir2 != 0:
+                glir_input2[-1] = val_set_glir2
+        elif cond == 'automatic':
             glir_input2 = glir_input2
         # ========================================== SOLVER ==========================================
         regoptim = DDGLO(glir_input, cum_qt_ins, val_wc,glir_input2, cum_qt_ins2, val_wc2, i-7)
@@ -279,29 +304,29 @@ def structure():
         fieldbackground="white",)
     style.map('Treeview',background=[('selected','blue')])        
 
-    meas_table = ttk.Treeview(meas_frame, columns=("Variables","Values","Unit"),show='headings',height=8)
+    meas_table = ttk.Treeview(meas_frame, columns=("Variables","Well 1","Well 2","Unit"),show='headings',height=8)
     meas_table.column("# 1", width=100,anchor='center')
     meas_table.heading("# 1", text="Variables")
     meas_table.column("# 2", width=150, anchor='center')
-    meas_table.heading("# 2", text="Values")
-    meas_table.column("# 3", width=100,anchor='center')
-    meas_table.heading("# 3", text="Unit")
+    meas_table.heading("# 2", text="Well 1")
+    meas_table.column("# 3", width=150,anchor='center')
+    meas_table.heading("# 3", text="Well 2")
+    meas_table.column("# 4", width=100,anchor='center')
+    meas_table.heading("# 4", text="Unit")
 
-    qo = (1-val_wc)*cum_qt_ins[-1]
     qw = (val_wc)*val_Qt
-    #qw = val_Qt - val_Qo   
+    qw2 = (val_wc2)*val_Qt2
+
     meas_table.tag_configure('odd',background='lightblue')
 
-    #meas_frame.insert
-
-    meas_table.insert('', 'end', text="1", values=('GLIR', str(val_GLIR), 'MCF/day'),tags=('odd'))
+    meas_table.insert('', 'end', text="1", values=('GLIR', str(val_GLIR), str(val_GLIR2), 'MCF/day'),tags=('odd'))
     #meas_table.insert('', 'end', text="1", values=('Qt', str(cum_qt_ins[-1]), 'STB/day')) #aggregation needed
-    meas_table.insert('', 'end', text="1", values=('Qt', str(val_Qt), 'STB/day')) #aggregation needed
-    meas_table.insert('', 'end', text="1", values=('Qt_cum', str(cum_qt), 'bbl'),tags=('odd'))
-    meas_table.insert('', 'end', text="1", values=('Qo', str(val_Qo), 'STB/day'))
-    meas_table.insert('', 'end', text="1", values=('Qo_cum', str(cum_qo), 'bbl'),tags=('odd'))
-    meas_table.insert('', 'end', text="1", values=('wc', str(val_wc), '%'))
-    meas_table.insert('', 'end', text="1", values=('Qw', str(qw), 'STB/day'),tags=('odd'))
+    meas_table.insert('', 'end', text="1", values=('Qt', str(round(val_Qt,3)),str(round(val_Qt2,3)), 'STB/day')) #aggregation needed
+    meas_table.insert('', 'end', text="1", values=('Qt_cum', str(round(cum_qt,3)),str(round(cum_qt2,3)), 'bbl'),tags=('odd'))
+    meas_table.insert('', 'end', text="1", values=('Qo', str(round(val_Qo,3)),str(round(val_Qo2,3)), 'STB/day'))
+    meas_table.insert('', 'end', text="1", values=('Qo_cum', str(round(cum_qo,3)), str(round(cum_qo2,3)), 'bbl'),tags=('odd'))
+    meas_table.insert('', 'end', text="1", values=('wc', str(round(val_wc,3)), str(round(val_wc2,3)), '%'))
+    meas_table.insert('', 'end', text="1", values=('Qw', str(round(qw,3)), str(round(qw2,3)), 'STB/day'),tags=('odd'))
     meas_table.pack()
     # ======================================== TRENDs ========================================
     trend_frame = tk.LabelFrame(frame_dashboard, text="TRENDS")
@@ -321,12 +346,15 @@ def structure():
     ax.plot(time2,plot_glir2, label = 'Predicted GLIR Well 2', color = 'blue')
     ax.set_ylabel('GLIR (MSCFD)')
     ax.grid(True)
+    ax.legend()
+
     ax1 = plot_fig.add_subplot(212)
     ax1.plot(time2,plot_qo, label='Predicted Qt Well 2', color = 'green')
     ax1.plot(time2,plot_qo2, label='Predicted Qt Well 2', color = 'orange')
     ax1.set_xlabel('Period')
     ax1.set_ylabel('Qo (STB/day)')
     ax1.grid(True)
+    ax1.legend()
     
     canvas = FigureCanvasTkAgg(plot_fig,master=trend_label)
     canvas.draw()
@@ -350,28 +378,32 @@ def structure():
         foreground="grey",
         fieldbackground="white") """              
 
-    GLPV_table = ttk.Treeview(GLPV_frame, columns=("GLIR","Qt"),show='headings', height=8)
-    GLPV_table.column("# 1", width=100,anchor='center')
+    GLPV_table = ttk.Treeview(GLPV_frame, columns=("GLIR","Qt","GLIR","Qt"),show='headings', height=8)
+    GLPV_table.column("# 1", width=75,anchor='center')
     GLPV_table.heading("# 1", text="GLIR (MCF/day)")
-    GLPV_table.column("# 2", width=150,anchor='center')
+    GLPV_table.column("# 2", width=100,anchor='center')
     GLPV_table.heading("# 2", text="Qt (STB/day)")
+    GLPV_table.column("# 3", width=75,anchor='center')
+    GLPV_table.heading("# 3", text="GLIR (MCF/day)")
+    GLPV_table.column("# 4", width=100,anchor='center')
+    GLPV_table.heading("# 4", text="Qt (STB/day)")
 
     GLPV_table.tag_configure('latest',background='yellow')
 
     if i == 0:
-        GLPV_table.insert('', 'end', text="1", values=(str(glir_input[i]), str(cum_qt_ins[i])),tags=('latest'))
+        GLPV_table.insert('', 'end', text="1", values=(str(glir_input[i]), str(round(cum_qt_ins[i],3)),str(glir_input2[i]), str(round(cum_qt_ins2[i],3))),tags=('latest'))
     elif i > 0 and i < 8:
         for l in range(0,i+1):
             if l != i:
-                GLPV_table.insert('', 'end', text="1", values=(str(glir_input[l]), str(cum_qt_ins[l])))
+                GLPV_table.insert('', 'end', text="1", values=(str(glir_input[l]), str(round(cum_qt_ins[l],3)),str(glir_input2[l]), str(round(cum_qt_ins2[l],3))))
             else:
-                GLPV_table.insert('', 'end', text="1", values=(str(glir_input[l]), str(cum_qt_ins[l])),tags=('latest'))
+                GLPV_table.insert('', 'end', text="1", values=(str(glir_input[l]), str(round(cum_qt_ins[l],3)),str(glir_input2[l]), str(round(cum_qt_ins2[l],3))),tags=('latest'))
     else:
         for k in range(i-7,i):
             if k < i-1:
-                GLPV_table.insert('', 'end', text="1", values=(str(glir_input[k]), str(cum_qt_ins[k])))
+                GLPV_table.insert('', 'end', text="1", values=(str(glir_input[k]), str(round(cum_qt_ins[k],3)),str(glir_input2[k]), str(round(cum_qt_ins2[k],3))))
             else:
-                GLPV_table.insert('', 'end', text="1", values=(str(glir_input[k]), str(cum_qt_ins[k])), tags=('latest'))
+                GLPV_table.insert('', 'end', text="1", values=(str(glir_input[k]), str(round(cum_qt_ins[k],3)),str(glir_input2[k]), str(round(cum_qt_ins2[k],3))), tags=('latest'))
 
     GLPV_table.pack()
 
@@ -414,13 +446,14 @@ def structure():
     plot_fig2 = Figure(figsize=(3,3))
     ax2 = plot_fig2.add_subplot(111)
     ax2.set_title('GLPC Curve')
-    ax2.plot(myline, mymodel(myline), color="orange")
+    ax2.plot(myline, mymodel(myline), color="orange", label='Well 1')
     ax2.scatter(x_reg,y_reg)
-    ax2.plot(myline2, mymodel2(myline2), color="purple")
+    ax2.plot(myline2, mymodel2(myline2), color="purple", label='Well 2')
     ax2.scatter(x_reg2,y_reg2)
     ax2.set_xlabel('GLIR (MSCFD)')
     ax2.set_ylabel('Qt (STB/day)')
     ax2.grid(True)
+    ax2.legend()
     
     canvas2 = FigureCanvasTkAgg(plot_fig2,master=GLPC_label)
     canvas2.draw()
@@ -435,7 +468,7 @@ def structure():
 
 b = 0
 i = 0
-img = ImageTk.PhotoImage(Image.open("header.png"))
+img = ImageTk.PhotoImage(Image.open("head.png"))
 window.after(2000,structure)
 
 dragdown_label = tk.Label(frame_dragdown,image = img)
@@ -454,6 +487,17 @@ setting_button.grid(row=0,column=1,padx=10)
 
 automatic_button = tk.Button(button_label, text="AUTOMATIC", command=clear)
 automatic_button.grid(row=0,column=2,padx=10)
+
+set_glir2 = tk.Entry(button_label)
+set_glir2.grid(row=0,column=3,padx=10)
+
+setting_button = tk.Button(button_label, text="SET GLIR", command=input_glir)
+setting_button.grid(row=0,column=4,padx=10)
+
+automatic_button2 = tk.Button(button_label, text="AUTOMATIC", command=clear2)
+automatic_button2.grid(row=0,column=5,padx=10)
+
+
 
 #auto_button = tk.Button(button_label, text="MODE : AUTOMATIC",command=input_auto)
 #auto_button.grid(row=0,column=3,padx=10)
