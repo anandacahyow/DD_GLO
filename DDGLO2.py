@@ -15,7 +15,7 @@ from gekko import GEKKO
 
 
 class DDGLO():
-    def __init__(self, GLIR, Qt, wc,GLIR2, Qt2, wc2, i):  # list of GLIR and Qt
+    def __init__(self, GLIR, Qt, wc, GLIR2, Qt2, wc2, i):  # list of GLIR and Qt
         self.GLIR = GLIR
         self.Qt = Qt
         self.wc = wc
@@ -23,7 +23,6 @@ class DDGLO():
         self.GLIR2 = GLIR2
         self.Qt2 = Qt2
         self.wc2 = wc2
-        self.i2 = i2
     
     def RegOpt(self):
         def objective(x, a, b, c, wc, a2, b2, c2, wc2):
@@ -38,6 +37,10 @@ class DDGLO():
             x2 = x[1]
             fun = (a*x1**2 + b*x1 + c)*(1-wc) + (a2*x2**2 + b2*x2 + c2)*(1-wc2)
             return fun  # minimation
+        
+        def regress(x, a, b, c):
+            fun = a*x**2 + b*x + c
+            return fun
 
         def constraint(x):
             x1 = x[0]
@@ -121,17 +124,10 @@ class DDGLO():
         # ========================================== OPTIMIZATION OBJ FUNC ==========================================
 
         b = (0.75*x[-2], 1*x[-2])  # normalize bounds
-        bound = [b]
+        b2 = (0.75*x2[-2], 1*x2[-2])  # normalize bounds
+        bound = [b,b2]
 
-        x0 = x[-1]  # initial guess
-
-        """if poly[0] > 0:
-            par = (-poly[0], -poly[1], -poly[2], wc)  # parameters
-        else:
-            par = (poly[0], poly[1], poly[2], wc)  # parameters
-        sol = minimize(objective, x0, args=par, method='SLSQP', bounds=bound, constraints=con)"""
-
-        #par = (poly[0], poly[1], poly[2], wc)
+        x0 = [x[-1],x2[-1]]  # initial guess
 
         if poly[0] < 0:
             sol = minimize(objective, x0, args=par,
@@ -139,41 +135,21 @@ class DDGLO():
         else:
             sol = minimize(objectives, x0, args=par,
                            method='SLSQP', bounds=bound, constraints=con)
-
+        solx = [int(sol.x[0]),int(sol.x[1])]
         # ========================================== DATA HANDLING ==========================================
         # Qo to Plot
         #y_obj_fun = objectives(x, poly[0], poly[1], poly[2], wc)
         # Qt to Scatter Optimal Point
-        y_optimal = regress(int(sol.x), poly[0], poly[1], poly[2])
+        y_optimal = regress(solx[0], poly[0], poly[1], poly[2])
+        y_optimal2 = regress(solx[1], poly2[0], poly2[1], poly2[2])
         # Qo to Scatter Optimal Point
-        yy = objectives(int(sol.x[0]), poly[0],
-                        poly[1], poly[2], wc)
+        #yy = objectives(int(sol.x[0]), poly[0],poly[1], poly[2], wc)
         # Qo from Data
         #y_comparison = z[-1]
 
-        mymodel = np.poly1d(np.polyfit(x_reg, y_pred, 2))
-        myline = np.linspace(min(x_reg), max(x_reg), len(x_reg))
-        #plt.plot(myline, mymodel(myline), color="orange")
+        print('SOLUTION', solx)
 
-        """plt.figure(2)
-        plt.scatter(x_reg, y_pred)  # Qt plot
-        plt.scatter(x_reg, y_reg)  # Qt point optimal
-        #plt.plot(np.arange(0, max(x), 25),y_plot)
-        plt.plot(myline, mymodel(myline), color="orange")
-        plt.grid()
-        plt.xlabel('GLIR (MSCFD)')
-        plt.ylabel('Qt (BFPD)')
-        plt.title("Qt Regression Curve vs Qt Plot Data")
-        plt.pause(0.05)
-        plt.clf()"""
-
-        # ========================================== R^2 SCORED ==========================================
-        """R = np.corrcoef(y1, y_pred, rowvar=False)[0, 1]
-        R2 = R**2
-
-        r2_total.append(R2)"""
-
-        output = [int(sol.x), y_optimal, x_reg, y_pred]
+        output = [solx[0],solx[1], y_optimal, y_optimal2, x_reg, x_reg2, y_pred, y_pred2]
 
         return output
 

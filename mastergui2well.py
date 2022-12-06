@@ -20,7 +20,7 @@ from pymodbus.client.sync import ModbusSerialClient
 from pymodbus.payload import BinaryPayloadDecoder
 from pymodbus.constants import Endian
 
-from DDGLO import DDGLO
+from DDGLO2 import DDGLO
 
 logging.basicConfig(level=logging.INFO)
 
@@ -41,6 +41,8 @@ frame_dashboard.grid(row=1,column=0)
 frame_button = tk.Frame(window, bg='white')
 frame_button.grid(row=2,column=0,pady=2)
 # ======================================== ALGORITHM ========================================
+client = ModbusSerialClient(method="rtu", port='COM7', baudrate=9600)
+client.connect()
 
 val_Qt = []
 Qt = []
@@ -56,6 +58,21 @@ glir_input = []
 plot_glir = []
 plot_qt = []
 plot_qo = []
+
+val_Qt2 = []
+Qt2 = []
+
+cum_qt_ins2 = []
+cum_qt_ins_list2 = []
+cum_qo_ins_list2 = []
+
+glpc_pred2 = []
+glir_predict2 = []
+glir_input2 = []
+
+plot_glir2 = []
+plot_qt2 = []
+plot_qo2 = []
 
 def input_glir():
     global set_glir
@@ -77,22 +94,32 @@ def input_auto():
 def clear():
     set_glir.delete(0,'end')
 
+def read_reg(register,address,unit):
+    if register == '3000':
+        regist = client.read_input_registers(address=address, count=2, unit=unit)
+        decode = BinaryPayloadDecoder.fromRegisters(regist.registers, byteorder=Endian.Big, wordorder=Endian.Little)  # GLIR
+        val = decode.decode_32bit_float()
+    elif register == '4000':
+        regists = client.read_holding_registers(address, 1, unit=unit) #GLIR_opt
+        val = regists.registers[0]
+    return val
 
 def structure():
     global window
-    global b
     global i
     global glir_input
-
-    client = ModbusSerialClient(method="rtu", port='COM7', baudrate=9600)
-    client.connect()
+    global glir_input2
     
     if i == 0:
         cum_qt = 0
         cum_qo = 0
+        cum_qt2 = 0
+        cum_qo2 = 0
     else:
         cum_qt = cum_qt_ins_list[-1]
         cum_qo = cum_qo_ins_list[-1]
+        cum_qt2 = cum_qt_ins_list2[-1]
+        cum_qo2 = cum_qo_ins_list2[-1]
     period_cond = 10
     # ========================================== INITIALIZATION STATE ==========================================
     if i < 8:
@@ -100,112 +127,145 @@ def structure():
         t = 0
         #rand_glir = random.uniform(400, 800)
         rand_glir = [410,575,450,430,710,860,870,890]
+        rand_glir2 = [410,575,450,430,710,860,870,890]
+        rand_glir2.reverse()
         #rand_glir.reverse()
         #rand_glir = 854
         
         val2 = client.write_register(7031, int(rand_glir[i]), unit=114)  #GLIR_opt
-        val2 = client.read_holding_registers(7031, 1, unit=114) #GLIR_opt
-        val_GLIR = val2.registers[0]
+        val22 = client.write_register(7031, int(rand_glir2[i]), unit=116)  #GLIR_opt
+        val_GLIR = read_reg('4000', 7031, 114)
+        val_GLIR2 = read_reg('4000', 7031, 116)
+
+        val_wc = read_reg('3000', 191, 113)
+        val_wc2 = read_reg('3000', 191, 115)
         
-        val3 = client.read_input_registers(address=191, count=2, unit=113)
-        decoded3 = BinaryPayloadDecoder.fromRegisters(val3.registers, byteorder=Endian.Big, wordorder=Endian.Little)  # GLIR
-        val_wc = decoded3.decode_32bit_float()
-        
-        logging.info(f"[{i}] {datetime.now()} GLIR : {val_GLIR}")
+        logging.info(f"[{i}] {datetime.now()} GLIR Well (1) : {val_GLIR}")
+        logging.info(f"[{i}] {datetime.now()} GLIR Well (2) : {val_GLIR2}")
         
         while t < period_cond: # Periods of Sampling Time Condition 1            
-            val1 = client.read_input_registers(address=167, count=2, unit=113)
-            decoded1 = BinaryPayloadDecoder.fromRegisters(val1.registers, byteorder=Endian.Big, wordorder=Endian.Little)  # Qt
-            val_Qt = decoded1.decode_32bit_float()
             
-            val4 = client.read_input_registers(address=165, count=2, unit=113)
-            decoded4 = BinaryPayloadDecoder.fromRegisters(val4.registers, byteorder=Endian.Big, wordorder=Endian.Little)  # Qt
-            val_Qo = decoded4.decode_32bit_float()
+            val_Qt = read_reg('3000', 167, 113)
+            val_Qt2 = read_reg('3000', 167, 115)
+            
+            val_Qo = read_reg('3000', 165, 113)
+            val_Qo2 = read_reg('3000', 165, 115)
 
             cum_qt += val_Qt
             cum_qo += val_Qo
-            logging.info(f"[{i}] {datetime.now()} Qt rate : {val_Qt}")
+            cum_qt2 += val_Qt2
+            cum_qo2 += val_Qo2
+            #logging.info(f"[{i}] {datetime.now()} Qt rate Well (1): {val_Qt}")
+            #logging.info(f"[{i}] {datetime.now()} Qt rate Well (2): {val_Qt2}")
             
             plot_glir.append(val_GLIR)    
             plot_qt.append(val_Qt)
             plot_qo.append(val_Qo)
+            plot_glir2.append(val_GLIR2)    
+            plot_qt2.append(val_Qt2)
+            plot_qo2.append(val_Qo2)
             #sleep(1) #sampling period same with slave
             t += 1
  
         cum_qt_ins_list.append(cum_qt)
         cum_qo_ins_list.append(cum_qo)
+        cum_qt_ins_list2.append(cum_qt2)
+        cum_qo_ins_list2.append(cum_qo2)
         
         if i == 0:
             cum_qt_instance = (cum_qt_ins_list[i])/period_cond
+            cum_qt_instance2 = (cum_qt_ins_list2[i])/period_cond
         else:
             cum_qt_instance = (cum_qt_ins_list[i]-cum_qt_ins_list[i-1])/period_cond
+            cum_qt_instance2 = (cum_qt_ins_list2[i]-cum_qt_ins_list2[i-1])/period_cond
         
         cum_qt_ins.append(cum_qt_instance)
         glir_input.append(val_GLIR)
-        #glpc_pred.append(cum_qt_instance)
+        cum_qt_ins2.append(cum_qt_instance2)
+        glir_input2.append(val_GLIR2)
     else:
         # ========================================== INDEPENDENT STATE =========s=================================
-        val3 = client.read_input_registers(address=191, count=2, unit=113)
-        decoded3 = BinaryPayloadDecoder.fromRegisters(val3.registers, byteorder=Endian.Big, wordorder=Endian.Little)  # GLIR
-        val_wc = decoded3.decode_32bit_float()
+        val_wc = read_reg('3000', 191, 113)
+        val_wc2 = read_reg('3000', 191, 115)
         # ========================================== AUTOMATICS CONDITIONING ==========================================
         cond = 'automatic'
         cond = input_auto()
         if cond == 'manual':
             val_set_glir = input_glir()[0]
+            val_set_glir2 = input_glir()[0]
             if val_set_glir != 0:
                 glir_input[-1] = val_set_glir
+                glir_input2[-1] = val_set_glir2
         elif cond == 'automatic':
             glir_input = glir_input
+            glir_input2 = glir_input2
         # ========================================== SOLVER ==========================================
-        regoptim = DDGLO(glir_input, cum_qt_ins, val_wc, i-7)
+        regoptim = DDGLO(glir_input, cum_qt_ins, val_wc,glir_input2, cum_qt_ins2, val_wc2, i-7)
         glir_pred = regoptim.RegOpt()[0]
-        qt_pred = regoptim.RegOpt()[1]
+        qt_pred = regoptim.RegOpt()[2]
 
-        x_pred = regoptim.RegOpt()[2]
-        y_pred = regoptim.RegOpt()[3]
+        x_pred = regoptim.RegOpt()[4]
+        y_pred = regoptim.RegOpt()[6]
+        
+        glir_pred2 = regoptim.RegOpt()[1]
+        qt_pred2 = regoptim.RegOpt()[3]
+
+        x_pred2 = regoptim.RegOpt()[5]
+        y_pred2 = regoptim.RegOpt()[7]
         # ========================================== AGREGATING STATE ==========================================
         t = 0
         val2 = client.write_register(7031, int(glir_pred), unit=114)  #GLIR_opt
-        val2 = client.read_holding_registers(7031, 1, unit=114) #GLIR_opt
-        val_GLIR = val2.registers[0]
-        logging.info(f"[{i}] {datetime.now()} GLIR : {val_GLIR}")
+        val22 = client.write_register(7031, int(glir_pred2), unit=116)  #GLIR_opt
+        
+        val_GLIR = read_reg('4000', 7031, 114)
+        val_GLIR2 = read_reg('4000', 7031, 116)
+        logging.info(f"[{i}] {datetime.now()} GLIR Well (1) : {val_GLIR}")
+        logging.info(f"[{i}] {datetime.now()} GLIR Well (2) : {val_GLIR2}")
         
 
         while t < period_cond: # Periods of Sampling Time Condition 1              
-            val1 = client.read_input_registers(address=167, count=2, unit=113)
-            decoded1 = BinaryPayloadDecoder.fromRegisters(val1.registers, byteorder=Endian.Big, wordorder=Endian.Little)  # Qt
-            val_Qt = decoded1.decode_32bit_float()
+            val_Qt = read_reg('3000', 167, 113)
+            val_Qt2 = read_reg('3000', 167, 115)
             
-            val4 = client.read_input_registers(address=165, count=2, unit=113)
-            decoded4 = BinaryPayloadDecoder.fromRegisters(val4.registers, byteorder=Endian.Big, wordorder=Endian.Little)  # Qt
-            val_Qo = decoded4.decode_32bit_float()
+            val_Qo = read_reg('3000', 165, 113)
+            val_Qo2 = read_reg('3000', 165, 115)
 
             cum_qt += val_Qt
             cum_qo += val_Qo
-            logging.info(f"[{i}] {datetime.now()} Qt rate : {val_Qt}")
+            cum_qt2 += val_Qt2
+            cum_qo2 += val_Qo2
+            #logging.info(f"[{i}] {datetime.now()} Qt rate Well (1): {val_Qt}")
+            #logging.info(f"[{i}] {datetime.now()} Qt rate Well (2): {val_Qt2}")
             
             plot_glir.append(val_GLIR)    
             plot_qt.append(val_Qt)
             plot_qo.append(val_Qo)
+            plot_glir2.append(val_GLIR2)    
+            plot_qt2.append(val_Qt2)
+            plot_qo2.append(val_Qo2)
             #sleep(1) #sampling period same with slave
             t += 1
 
         cum_qt_ins_list.append(cum_qt)
         cum_qo_ins_list.append(cum_qo)
+        cum_qt_ins_list2.append(cum_qt2)
+        cum_qo_ins_list2.append(cum_qo2)
+        
         if i == 0:
             cum_qt_instance = (cum_qt_ins_list[i])/period_cond
+            cum_qt_instance2 = (cum_qt_ins_list2[i])/period_cond
         else:
             cum_qt_instance = (cum_qt_ins_list[i]-cum_qt_ins_list[i-1])/period_cond
+            cum_qt_instance2 = (cum_qt_ins_list2[i]-cum_qt_ins_list2[i-1])/period_cond
         
         cum_qt_ins.append(cum_qt_instance)
         glir_input.append(val_GLIR)
-        #glpc_pred.append(y_pred)
-        #glir_predict.append(x_pred)
+        cum_qt_ins2.append(cum_qt_instance2)
+        glir_input2.append(val_GLIR2)
     #i += 1
     #sleep(1)
     client.close()
-    
+
     # ======================================== LABEL FRAME DASHBOARD ========================================
     # ======================================== MEASUREMENTs ========================================
     meas_frame = tk.LabelFrame(frame_dashboard, text="MEASUREMENT")
@@ -257,11 +317,13 @@ def structure():
     plot_fig = Figure(figsize=(5,3))
     ax = plot_fig.add_subplot(211)
     ax.set_title('GLIR and Qo FLow Rate')
-    ax.plot(time2,plot_glir, label = 'Predicted GLIR', color = 'red')
+    ax.plot(time2,plot_glir, label = 'Predicted GLIR Well 1', color = 'red')
+    ax.plot(time2,plot_glir2, label = 'Predicted GLIR Well 2', color = 'blue')
     ax.set_ylabel('GLIR (MSCFD)')
     ax.grid(True)
     ax1 = plot_fig.add_subplot(212)
-    ax1.plot(time2,plot_qo, label='Predicted Qt', color = 'green')
+    ax1.plot(time2,plot_qo, label='Predicted Qt Well 2', color = 'green')
+    ax1.plot(time2,plot_qo2, label='Predicted Qt Well 2', color = 'orange')
     ax1.set_xlabel('Period')
     ax1.set_ylabel('Qo (STB/day)')
     ax1.grid(True)
@@ -328,19 +390,34 @@ def structure():
         y_reg.sort()
         x_reg = np.insert(x_reg, 0, 0)
         y_reg = np.insert(y_reg, 0, 0)
+
+        x_reg2 = glir_input2[0:i+1]
+        y_reg2 = cum_qt_ins2[0:i+1]
+        x_reg2.sort()
+        y_reg2.sort()
+        x_reg2 = np.insert(x_reg2, 0, 0)
+        y_reg2 = np.insert(y_reg2, 0, 0)
     else:
         x_reg = x_pred
         y_reg = y_pred
+
+        x_reg2 = x_pred2
+        y_reg2 = y_pred2
     #print(f"X REG: {x_reg}\n Y REG: {y_reg}")
 
     mymodel = np.poly1d(np.polyfit(x_reg, y_reg, 2))
     myline = np.linspace(min(x_reg), max(x_reg), len(x_reg))
     
+    mymodel2 = np.poly1d(np.polyfit(x_reg2, y_reg2, 2))
+    myline2 = np.linspace(min(x_reg2), max(x_reg2), len(x_reg2))
+
     plot_fig2 = Figure(figsize=(3,3))
     ax2 = plot_fig2.add_subplot(111)
     ax2.set_title('GLPC Curve')
     ax2.plot(myline, mymodel(myline), color="orange")
     ax2.scatter(x_reg,y_reg)
+    ax2.plot(myline2, mymodel2(myline2), color="purple")
+    ax2.scatter(x_reg2,y_reg2)
     ax2.set_xlabel('GLIR (MSCFD)')
     ax2.set_ylabel('Qt (STB/day)')
     ax2.grid(True)
@@ -354,7 +431,6 @@ def structure():
     canvas2.get_tk_widget().pack()"""
 
     window.after(2000, structure)
-    b+=1
     i+=1
 
 b = 0

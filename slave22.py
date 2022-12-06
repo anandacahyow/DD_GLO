@@ -116,6 +116,7 @@ class SlaveContexts:
         ctx = self.contexts[slave_id]
         template = self.__templates[slave_id]
         values = self.__val_data[slave_id]
+        #print(f"NILAI SLAVE inside loop: {values}")
         
         for entry in template.modbus_entries:
             if slave_id == 113:
@@ -136,10 +137,30 @@ class SlaveContexts:
                     simulated_value = int(values)
                 else:
                     continue
+            elif slave_id == 115:
+                if entry.register_type == "30000" and int(entry.register_offset) == 167: # Qw VX
+                    simulated_value = round(values[0],3)
+                elif entry.register_type == "30000" and int(entry.register_offset) == 191: # Wc
+                    simulated_value = round(values[1],3)
+                elif entry.register_type == "30000" and int(entry.register_offset) == 111: # Qw_lc
+                    simulated_value = round(values[2],3)
+                elif entry.register_type == "30000" and int(entry.register_offset) == 165: # Qo VX
+                    simulated_value = round(values[3],3)
+                elif entry.register_type == "30000" and int(entry.register_offset) == 109: # Qo_lc
+                    simulated_value = round(values[4],3)
+                else:
+                    continue
+            elif slave_id ==116: 
+                if entry.register_type == "40000" and int(entry.register_offset) == 7031: #GLIR ABB
+                    simulated_value = int(values)
+                else:
+                    continue
             else:
                 continue
 
+                       
             register_values = self.__pack_by_endiannes(simulated_value, entry.endiannes, entry.data_type)
+
 
             if entry.register_type == "0":
                 ctx.store["d"].setValues(int(entry.register_offset)+1, register_values)
@@ -151,6 +172,7 @@ class SlaveContexts:
                 ctx.store["h"].setValues(int(entry.register_offset)+1, register_values)
             # ========================================== LOG VALUEs ==========================================
             #print(f"SLVAE-{slave_id} REG VAL:{register_values} REGIST: {int(entry.register_type) + int(entry.register_offset)}")
+
             logging.info(
                     "{} slave: {} | tag: {} \t- {}\t | value: {} {}".format(
                         datetime.now(),
@@ -200,8 +222,9 @@ def WellDyn(GLIR,a,b,c,e):
 
 def WC_dyn(t):
     wc = ((0.4)/(1+20*(math.exp(-0.1*t))))+0.35
+    wc2 = ((0.4)/(1+20*(math.exp(-0.1*t))))+0.35
     #wc = 0.75
-    return wc
+    return [wc,wc2]
 
 def WellSys(u,i,mode):
     import control as ctl
@@ -250,7 +273,7 @@ def WellSys(u,i,mode):
     if mode == 'qt':
         y_sys  = y_sys
     elif mode == 'qo':
-        y_sys = y_sys*(1 - WC_dyn(i))
+        y_sys = y_sys*(1 - WC_dyn(i)[0])
     #print(sys)
     return y_sys
 
@@ -259,13 +282,20 @@ def updater_entrypoint(contexts, id, period, val_data):
     qt_cum_val = 0.0
     qo_cum_val = 0.0
     setpoint_glir = []
+    qt_cum_val2 = 0.0
+    qo_cum_val2 = 0.0
+    setpoint_glir2 = []
     while 1:
         # ========================================== WELL DYNAMICS (f_Qt(GLIR)) ==========================================
         setpoint = contexts.contexts[114].store["h"].getValues(7031+1,count=1)[0] #GLIR
         setpoint_glir.append(setpoint)
-        wc_val = WC_dyn(t)
+        wc_val = WC_dyn(t)[0]
 
-        # WELL MODEL TF
+        setpoint2 = contexts.contexts[116].store["h"].getValues(7031+1,count=1)[0] #GLIR
+        setpoint_glir2.append(setpoint2)
+        wc_val2 = WC_dyn(t)[1]
+
+        """# WELL MODEL TF
         #qt_simulated = WellDyn(setpoint, -0.001, 1.4, 110, 5) #REGRESSION BASED MODEL
         #qt_simulated = WellSys(setpoint_glir, t, 'qt')[-1] #TF BASED MODEL
         #qo_simulated = WellSys(setpoint_glir, t, 'qo')[-1] #TF BASED MODEL
@@ -278,16 +308,25 @@ def updater_entrypoint(contexts, id, period, val_data):
         #WELL MODEL REGRESSION
         #qo_simulated = 0.3*WellDyn(setpoint, -0.001, 1.4, 110, 5)*math.exp(-0.0000455*t)
         qo_simulated = 0.3*WellDyn(setpoint, -0.001, 1.4, 110, 5)*math.exp(-0.0455*t)
-        qt_simulated = qo_simulated/(1 - WC_dyn(t)) #TF BASED MODEL
+        qt_simulated = qo_simulated/(1 - WC_dyn(t)) #TF BASED MODEL"""
         #(248.37-85.725)/248.37
+        qo_simulated = 0.3*WellDyn(setpoint, -0.001, 1.4, 110, 5)#*math.exp(-0.0455*t)
+        qt_simulated = qo_simulated/(1 - WC_dyn(t)[0]) #TF BASED MODEL
 
-        qw = contexts.contexts[113].store["i"].getValues(167+1,count=2)[0] #qw
+        qo_simulated2 = 0.2*WellDyn(setpoint2, -0.001, 1.4, 110, 5)#*math.exp(-0.0455*t)
+        qt_simulated2 = qo_simulated2/(1 - WC_dyn(t)[1]) #TF BASED MODEL
+
+        #qw = contexts.contexts[113].store["i"].getValues(167+1,count=2)[0] #qw
 
         qt_cum_val += qt_simulated
         qo_cum_val += qo_simulated
+        qt_cum_val2 += qt_simulated2
+        qo_cum_val2 += qo_simulated2
 
         dict_data = {113: [qt_simulated,wc_val,qt_cum_val,qo_simulated,qo_cum_val],
-                    114: setpoint
+                    114: setpoint,
+                    115: [qt_simulated2,wc_val2,qt_cum_val2,qo_simulated2,qo_cum_val2],
+                    116: setpoint2,
                     }
         val_data[id] = dict_data[id]
 
@@ -300,10 +339,10 @@ def updater_entrypoint(contexts, id, period, val_data):
 def main():
 
     # ========================================== INPUT to SLAVE ==========================================
-    slave_ids = [113,114]
-    input_data = [[0,0.5,0,0,0],550]
-    periods = [1,1]
-    modbus_template_paths = ['VX1.xlsx','ABB.xlsx']
+    slave_ids = [113,114,115,116]
+    input_data = [[0,0.5,0,0,0],550,[0,0.5,0,0,0],550]
+    periods = [1,1,1,1]
+    modbus_template_paths = ['VX1.xlsx','ABB.xlsx','VX1.xlsx','ABB.xlsx']
     
     # ========================================== LOOPING SLAVE IDs ==========================================
     modbus_templates = {}
