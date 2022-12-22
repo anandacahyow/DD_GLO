@@ -221,8 +221,8 @@ def WellDyn(GLIR,a,b,c,e):
     return Qt_rand
 
 def WC_dyn(t):
-    wc = ((0.4)/(1+20*(math.exp(-0.1*t))))+0.35
-    wc2 = ((0.4)/(1+20*(math.exp(-0.1*t))))+0.35
+    wc = ((0.4)/(1+20*(math.exp(-0.01*t))))+0.35
+    wc2 = ((0.4)/(1+20*(math.exp(-0.01*t))))+0.35
     #wc = 0.75
     return [wc,wc2]
 
@@ -261,8 +261,12 @@ def WellSys(u,i,mode):
     num = np.array([0,0,0.190904336050159,-0.189899401826588])
     den = np.array([1,-1.221349138175800,0.100981241074881,0.123753106411842])
 
+    #TOP ARX MODEL DARI SIMULASI MATLAB MIRIP GLPC
+    #num = np.array([0,0,0.005316678614879,0.003016444521920])
+    #den = np.array([1,-0.343003247838182,-0.315806100635974,-0.331126343991686])
+
     K = 1.5
-    K = 2
+    K = 1
     Ts = 1  #1 day sampling day
     sys = ctl.TransferFunction(K*num,den, dt=Ts)
 
@@ -271,7 +275,7 @@ def WellSys(u,i,mode):
     x_sys = res.inputs
 
     if mode == 'qt':
-        y_sys  = y_sys
+        y_sys  = y_sys + y_sys*random.uniform(-10/100, 10/100)
     elif mode == 'qo':
         y_sys = y_sys*(1 - WC_dyn(i)[0])
     #print(sys)
@@ -295,12 +299,13 @@ def updater_entrypoint(contexts, id, period, val_data):
         setpoint_glir2.append(setpoint2)
         wc_val2 = WC_dyn(t)[1]
 
-        """# WELL MODEL TF
-        #qt_simulated = WellDyn(setpoint, -0.001, 1.4, 110, 5) #REGRESSION BASED MODEL
+        # WELL MODEL TF
         #qt_simulated = WellSys(setpoint_glir, t, 'qt')[-1] #TF BASED MODEL
-        #qo_simulated = WellSys(setpoint_glir, t, 'qo')[-1] #TF BASED MODEL
-        
-        #WELL MODEL REGRESSION
+        qo_simulated = 0.3*WellSys(setpoint_glir, t, 'qt')[-1]*math.exp(-0.000455*t) #TF BASED MODEL
+        qt_simulated = qo_simulated/(1 - WC_dyn(t)[1]) #TF BASED MODEL
+        qo_simulated2 = 0.2*WellSys(setpoint_glir, t, 'qt')[-1]*math.exp(-0.000455*t) #TF BASED MODEL
+        qt_simulated2 = qo_simulated2/(1 - WC_dyn(t)[1]) #TF BASED MODEL
+        """#WELL MODEL REGRESSION
         qt_simulated = WellDyn(setpoint, -0.001, 1.4, 110, 5) #REGRESSION BASED MODEL
         qo_simulated = qt_simulated*(1 - WC_dyn(t))*math.exp(-0.0000455*t) #TF BASED MODEL
         #(248.37-85.725)/248.37
@@ -310,11 +315,13 @@ def updater_entrypoint(contexts, id, period, val_data):
         qo_simulated = 0.3*WellDyn(setpoint, -0.001, 1.4, 110, 5)*math.exp(-0.0455*t)
         qt_simulated = qo_simulated/(1 - WC_dyn(t)) #TF BASED MODEL"""
         #(248.37-85.725)/248.37
-        qo_simulated = 0.3*WellDyn(setpoint, -0.001, 1.4, 110, 5)#*math.exp(-0.0455*t)
+        
+        #MULTI WELL WELL MODEL REGRESSION
+        """qo_simulated = 0.3*WellDyn(setpoint, -0.001, 1.4, 110, 5)*math.exp(-0.0000455*t)
         qt_simulated = qo_simulated/(1 - WC_dyn(t)[0]) #TF BASED MODEL
 
-        qo_simulated2 = 0.2*WellDyn(setpoint2, -0.001, 1.4, 110, 5)#*math.exp(-0.0455*t)
-        qt_simulated2 = qo_simulated2/(1 - WC_dyn(t)[1]) #TF BASED MODEL
+        qo_simulated2 = 0.2*WellDyn(setpoint2, -0.001, 1.4, 110, 5)*math.exp(-0.0000455*t)
+        qt_simulated2 = qo_simulated2/(1 - WC_dyn(t)[1]) #TF BASED MODEL"""
 
         #qw = contexts.contexts[113].store["i"].getValues(167+1,count=2)[0] #qw
 

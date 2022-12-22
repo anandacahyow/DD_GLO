@@ -7,7 +7,10 @@ from PIL import ImageTk, Image
 import argparse
 import logging
 from datetime import datetime
-from time import sleep
+
+import paho.mqtt.client as paho
+from paho import mqtt
+import json
 
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
@@ -26,8 +29,8 @@ logging.basicConfig(level=logging.INFO)
 
 # ======================================== INITIAL ========================================
 window = tk.Tk()
-
-window.geometry("965x710")
+window.configure(bg='white')
+window.geometry("1175x710")
 #window.resizable(False,False)
 window.title("DD GLO Solver")
 
@@ -35,21 +38,47 @@ window.title("DD GLO Solver")
 frame_dragdown = tk.Frame(window, bg='white')
 frame_dragdown.grid(row=0,column=0)
 
-frame_dashboard = tk.Frame(window,bg='white')
+frame_content = tk.Frame(window, bg='white')
+frame_content.grid(row=1,column=0)
+
+frame_dashboard = tk.Frame(frame_content,bg='white')
 frame_dashboard.grid(row=1,column=0)
 
-frame_button = tk.Frame(window, bg='white')
-frame_button.grid(row=2,column=0,pady=2)
-# ======================================== ALGORITHM ========================================
+frame_button = tk.Frame(frame_content, bg='white')
+frame_button.grid(row=1,column=1,pady=2)
+
+# ======================================== SET-UP NETWORKINGs ========================================
 client = ModbusSerialClient(method="rtu", port='COM7', baudrate=9600)
 client.connect()
 
+broker = "broker.hivemq.com"  # for online version
+port = 1883
+timeout = 60
+
+username = 'agori'
+password = '12345678'
+topic = "DD-GLO"
+
+def on_connect(client, userdata, flags, rc):
+    print("Connected with result code "+str(rc))
+ 
+def on_publish(client,userdata,result):
+	print("data published \n")
+	
+client1 = paho.Client("device1",userdata=None,protocol=paho.MQTTv5)
+client1.username_pw_set(username=username,password=password)
+client1.on_connect = on_connect
+client1.on_publish = on_publish
+client1.connect(broker,port,timeout)
+
+# ======================================== ALGORITHM ========================================
 val_Qt = []
 Qt = []
 
 cum_qt_ins = []
 cum_qt_ins_list = []
 cum_qo_ins_list = []
+cum_glir_ins_list = []
 
 glpc_pred = []
 glir_predict = []
@@ -65,6 +94,7 @@ Qt2 = []
 cum_qt_ins2 = []
 cum_qt_ins_list2 = []
 cum_qo_ins_list2 = []
+cum_glir_ins_list2 = []
 
 glpc_pred2 = []
 glir_predict2 = []
@@ -128,18 +158,23 @@ def structure():
     global i
     global glir_input
     global glir_input2
-    
+
+
     if i == 0:
         cum_qt = 0
         cum_qo = 0
         cum_qt2 = 0
         cum_qo2 = 0
+        cum_glir = 0
+        cum_glir2 = 0
     else:
         cum_qt = cum_qt_ins_list[-1]
         cum_qo = cum_qo_ins_list[-1]
         cum_qt2 = cum_qt_ins_list2[-1]
         cum_qo2 = cum_qo_ins_list2[-1]
-    period_cond = 10
+        cum_glir = cum_glir_ins_list[-1]
+        cum_glir2 = cum_glir_ins_list2[-1]
+    period_cond = 2
     # ========================================== INITIALIZATION STATE ==========================================
     if i < 8:
         # ========================================== AGREGATING STATE ==========================================
@@ -174,8 +209,33 @@ def structure():
             cum_qo += val_Qo
             cum_qt2 += val_Qt2
             cum_qo2 += val_Qo2
-            #logging.info(f"[{i}] {datetime.now()} Qt rate Well (1): {val_Qt}")
-            #logging.info(f"[{i}] {datetime.now()} Qt rate Well (2): {val_Qt2}")
+            cum_glir += val_GLIR
+            cum_glir2 += val_GLIR2
+            logging.info(f"[{i}] {datetime.now()} Qt rate Well (1): {val_Qt}")
+            logging.info(f"[{i}] {datetime.now()} Qt rate Well (2): {val_Qt2}")
+            
+            GLIR_Well1 = {"GLIR_Well1":val_GLIR}
+            GLIR_Well2 = {"GLIR_Well2":val_GLIR2}
+            Qt_Well1 = {"Qt_Well1":round(val_Qt,3)}
+            Qt_Well2 = {"Qt_Well2":round(val_Qt2,3)}
+            Qo_Well1 = {"Qo_Well1":round(val_Qo,3)}
+            Qo_Well2 = {"Qo_Well2":round(val_Qo2,3)}
+            wc_Well1 = {"wc_Well1":round(val_wc,3)}
+            wc_Well2 = {"wc_Well2":round(val_wc2,3)}
+            Cum_Qt_Well1 = {"Cum_Qt_Well1":round(cum_qt/period_cond,3)}
+            Cum_Qt_Well2 = {"Cum_Qt_Well2":round(cum_qt2/period_cond,3)}
+            Cum_Qo_Well1 = {"Cum_Qo_Well1":round(cum_qo/period_cond,3)}
+            Cum_Qo_Well2 = {"Cum_Qo_Well2":round(cum_qo2/period_cond,3)}
+            Total_Qt = {"Total_Qt":round(val_Qt+val_Qt2,3)}
+            Total_Qo = {"Total_Qo":round(val_Qo+val_Qo2,3)}
+            Total_GLIR = {"Total_Inj":round(val_GLIR+val_GLIR2,3)}
+            Cum_GLIR1 = {"Total_GLIR":round(cum_glir/period_cond,3)}
+            Cum_GLIR2 = {"Total_GLIR2":round(cum_glir2/period_cond,3)}
+            
+            val_dict = {"time":str(datetime.now()),
+                        "values": [GLIR_Well1,GLIR_Well2,Qt_Well1,Qt_Well2,Qo_Well1,Qo_Well2,wc_Well1,wc_Well2,Cum_Qt_Well1,Cum_Qt_Well2,Cum_Qo_Well1,Cum_Qo_Well2,Total_Qt,Total_Qo,Total_GLIR,Cum_GLIR1,Cum_GLIR2]}
+            message = json.dumps(val_dict)
+            ret = client1.publish(topic,payload=message,qos=0)
             
             plot_glir.append(val_GLIR)    
             plot_qt.append(val_Qt)
@@ -183,13 +243,31 @@ def structure():
             plot_glir2.append(val_GLIR2)    
             plot_qt2.append(val_Qt2)
             plot_qo2.append(val_Qo2)
+
+            qw = (val_wc)*val_Qt
+            qw2 = (val_wc2)*val_Qt2
+
+            for p in meas_table.get_children():
+                meas_table.delete(p)
+                
+            meas_table.insert('', 'end', text="1", values=('GLIR', str(val_GLIR), str(val_GLIR2), 'MCF/day'),tags=('odd'))
+            #meas_table.insert('', 'end', text="1", values=('Qt', str(cum_qt_ins[-1]), 'STB/day')) #aggregation needed
+            meas_table.insert('', 'end', text="1", values=('Qt', str(round(val_Qt,3)),str(round(val_Qt2,3)), 'STB/day')) #aggregation needed
+            meas_table.insert('', 'end', text="1", values=('Qt_cum', str(round(cum_qt,3)),str(round(cum_qt2,3)), 'bbl'),tags=('odd'))
+            meas_table.insert('', 'end', text="1", values=('Qo', str(round(val_Qo,3)),str(round(val_Qo2,3)), 'STB/day'))
+            meas_table.insert('', 'end', text="1", values=('Qo_cum', str(round(cum_qo,3)), str(round(cum_qo2,3)), 'bbl'),tags=('odd'))
+            meas_table.insert('', 'end', text="1", values=('wc', str(round(val_wc,3)), str(round(val_wc2,3)), '%'))
+            meas_table.insert('', 'end', text="1", values=('Qw', str(round(qw,3)), str(round(qw2,3)), 'STB/day'),tags=('odd'))
+            meas_table.pack()
             #sleep(1) #sampling period same with slave
             t += 1
  
         cum_qt_ins_list.append(cum_qt)
         cum_qo_ins_list.append(cum_qo)
+        cum_glir_ins_list.append(cum_glir)
         cum_qt_ins_list2.append(cum_qt2)
         cum_qo_ins_list2.append(cum_qo2)
+        cum_glir_ins_list2.append(cum_glir2)
         
         if i == 0:
             cum_qt_instance = (cum_qt_ins_list[i])/period_cond
@@ -259,8 +337,33 @@ def structure():
             cum_qo += val_Qo
             cum_qt2 += val_Qt2
             cum_qo2 += val_Qo2
-            #logging.info(f"[{i}] {datetime.now()} Qt rate Well (1): {val_Qt}")
-            #logging.info(f"[{i}] {datetime.now()} Qt rate Well (2): {val_Qt2}")
+            cum_glir += val_GLIR
+            cum_glir2 += val_GLIR2
+            logging.info(f"[{i}] {datetime.now()} Qt rate Well (1): {val_Qt}")
+            logging.info(f"[{i}] {datetime.now()} Qt rate Well (2): {val_Qt2}")
+
+            GLIR_Well1 = {"GLIR_Well1":val_GLIR}
+            GLIR_Well2 = {"GLIR_Well2":val_GLIR2}
+            Qt_Well1 = {"Qt_Well1":round(val_Qt,3)}
+            Qt_Well2 = {"Qt_Well2":round(val_Qt2,3)}
+            Qo_Well1 = {"Qo_Well1":round(val_Qo,3)}
+            Qo_Well2 = {"Qo_Well2":round(val_Qo2,3)}
+            wc_Well1 = {"wc_Well1":round(val_wc,3)}
+            wc_Well2 = {"wc_Well2":round(val_wc2,3)}
+            Cum_Qt_Well1 = {"Cum_Qt_Well1":round(cum_qt/period_cond,3)}
+            Cum_Qt_Well2 = {"Cum_Qt_Well2":round(cum_qt2/period_cond,3)}
+            Cum_Qo_Well1 = {"Cum_Qo_Well1":round(cum_qo/period_cond,3)}
+            Cum_Qo_Well2 = {"Cum_Qo_Well2":round(cum_qo2/period_cond,3)}
+            Total_Qt = {"Total_Qt":round(val_Qt+val_Qt2,3)}
+            Total_Qo = {"Total_Qo":round(val_Qo+val_Qo2,3)}
+            Total_GLIR = {"Total_Inj":round(val_GLIR+val_GLIR2,3)}
+            Cum_GLIR1 = {"Total_GLIR":round(cum_glir/period_cond,3)}
+            Cum_GLIR2 = {"Total_GLIR2":round(cum_glir2/period_cond,3)}
+            
+            val_dict = {"time":str(datetime.now()),
+                        "values": [GLIR_Well1,GLIR_Well2,Qt_Well1,Qt_Well2,Qo_Well1,Qo_Well2,wc_Well1,wc_Well2,Cum_Qt_Well1,Cum_Qt_Well2,Cum_Qo_Well1,Cum_Qo_Well2,Total_Qt,Total_Qo,Total_GLIR,Cum_GLIR1,Cum_GLIR2]}
+            message = json.dumps(val_dict)
+            ret = client1.publish(topic,payload=message,qos=0)
             
             plot_glir.append(val_GLIR)    
             plot_qt.append(val_Qt)
@@ -268,6 +371,22 @@ def structure():
             plot_glir2.append(val_GLIR2)    
             plot_qt2.append(val_Qt2)
             plot_qo2.append(val_Qo2)
+
+            qw = (val_wc)*val_Qt
+            qw2 = (val_wc2)*val_Qt2
+
+            for p in meas_table.get_children():
+                meas_table.delete(p)
+                
+            meas_table.insert('', 'end', text="1", values=('GLIR', str(val_GLIR), str(val_GLIR2), 'MCF/day'),tags=('odd'))
+            #meas_table.insert('', 'end', text="1", values=('Qt', str(cum_qt_ins[-1]), 'STB/day')) #aggregation needed
+            meas_table.insert('', 'end', text="1", values=('Qt', str(round(val_Qt,3)),str(round(val_Qt2,3)), 'STB/day')) #aggregation needed
+            meas_table.insert('', 'end', text="1", values=('Qt_cum', str(round(cum_qt,3)),str(round(cum_qt2,3)), 'bbl'),tags=('odd'))
+            meas_table.insert('', 'end', text="1", values=('Qo', str(round(val_Qo,3)),str(round(val_Qo2,3)), 'STB/day'))
+            meas_table.insert('', 'end', text="1", values=('Qo_cum', str(round(cum_qo,3)), str(round(cum_qo2,3)), 'bbl'),tags=('odd'))
+            meas_table.insert('', 'end', text="1", values=('wc', str(round(val_wc,3)), str(round(val_wc2,3)), '%'))
+            meas_table.insert('', 'end', text="1", values=('Qw', str(round(qw,3)), str(round(qw2,3)), 'STB/day'),tags=('odd'))
+            meas_table.pack()
             #sleep(1) #sampling period same with slave
             t += 1
 
@@ -292,42 +411,7 @@ def structure():
     client.close()
 
     # ======================================== LABEL FRAME DASHBOARD ========================================
-    # ======================================== MEASUREMENTs ========================================
-    meas_frame = tk.LabelFrame(frame_dashboard, text="MEASUREMENT")
-    meas_frame.grid(row=0,column=0,padx=10,pady=10)
 
-    style = ttk.Style()
-    style.theme_use('clam')
-    style.configure("Treeview",
-        background="white",
-        foreground="grey",
-        fieldbackground="white",)
-    style.map('Treeview',background=[('selected','blue')])        
-
-    meas_table = ttk.Treeview(meas_frame, columns=("Variables","Well 1","Well 2","Unit"),show='headings',height=8)
-    meas_table.column("# 1", width=100,anchor='center')
-    meas_table.heading("# 1", text="Variables")
-    meas_table.column("# 2", width=150, anchor='center')
-    meas_table.heading("# 2", text="Well 1")
-    meas_table.column("# 3", width=150,anchor='center')
-    meas_table.heading("# 3", text="Well 2")
-    meas_table.column("# 4", width=100,anchor='center')
-    meas_table.heading("# 4", text="Unit")
-
-    qw = (val_wc)*val_Qt
-    qw2 = (val_wc2)*val_Qt2
-
-    meas_table.tag_configure('odd',background='lightblue')
-
-    meas_table.insert('', 'end', text="1", values=('GLIR', str(val_GLIR), str(val_GLIR2), 'MCF/day'),tags=('odd'))
-    #meas_table.insert('', 'end', text="1", values=('Qt', str(cum_qt_ins[-1]), 'STB/day')) #aggregation needed
-    meas_table.insert('', 'end', text="1", values=('Qt', str(round(val_Qt,3)),str(round(val_Qt2,3)), 'STB/day')) #aggregation needed
-    meas_table.insert('', 'end', text="1", values=('Qt_cum', str(round(cum_qt,3)),str(round(cum_qt2,3)), 'bbl'),tags=('odd'))
-    meas_table.insert('', 'end', text="1", values=('Qo', str(round(val_Qo,3)),str(round(val_Qo2,3)), 'STB/day'))
-    meas_table.insert('', 'end', text="1", values=('Qo_cum', str(round(cum_qo,3)), str(round(cum_qo2,3)), 'bbl'),tags=('odd'))
-    meas_table.insert('', 'end', text="1", values=('wc', str(round(val_wc,3)), str(round(val_wc2,3)), '%'))
-    meas_table.insert('', 'end', text="1", values=('Qw', str(round(qw,3)), str(round(qw2,3)), 'STB/day'),tags=('odd'))
-    meas_table.pack()
     # ======================================== TRENDs ========================================
     trend_frame = tk.LabelFrame(frame_dashboard, text="TRENDS")
     trend_frame.grid(row=1,column=0,padx=10,pady=10)
@@ -349,7 +433,7 @@ def structure():
     ax.legend()
 
     ax1 = plot_fig.add_subplot(212)
-    ax1.plot(time2,plot_qo, label='Predicted Qt Well 2', color = 'green')
+    ax1.plot(time2,plot_qo, label='Predicted Qt Well 1', color = 'green')
     ax1.plot(time2,plot_qo2, label='Predicted Qt Well 2', color = 'orange')
     ax1.set_xlabel('Period')
     ax1.set_ylabel('Qo (STB/day)')
@@ -359,37 +443,9 @@ def structure():
     canvas = FigureCanvasTkAgg(plot_fig,master=trend_label)
     canvas.draw()
     canvas.get_tk_widget().pack()
-
-    """toolbar = NavigationToolbar2Tk(canvas, trend_label)
-    toolbar.update()
-    canvas.get_tk_widget().pack()"""
-    
-    #plot_fig.pause(0.05)
-    #plot_fig.clf()"""  
-
     # ======================================== GLPVs ========================================
-    GLPV_frame = tk.LabelFrame(frame_dashboard, text="GAS LIFT VALUE")
-    GLPV_frame.grid(row=0,column=1,padx=10,pady=10)
-
-    style = ttk.Style()
-    style.theme_use('clam')
-    """style.configure("Treeview",
-        background="white",
-        foreground="grey",
-        fieldbackground="white") """              
-
-    GLPV_table = ttk.Treeview(GLPV_frame, columns=("GLIR","Qt","GLIR","Qt"),show='headings', height=8)
-    GLPV_table.column("# 1", width=75,anchor='center')
-    GLPV_table.heading("# 1", text="GLIR (MCF/day)")
-    GLPV_table.column("# 2", width=100,anchor='center')
-    GLPV_table.heading("# 2", text="Qt (STB/day)")
-    GLPV_table.column("# 3", width=75,anchor='center')
-    GLPV_table.heading("# 3", text="GLIR (MCF/day)")
-    GLPV_table.column("# 4", width=100,anchor='center')
-    GLPV_table.heading("# 4", text="Qt (STB/day)")
-
-    GLPV_table.tag_configure('latest',background='yellow')
-
+    for q in GLPV_table.get_children():
+        GLPV_table.delete(q)
     if i == 0:
         GLPV_table.insert('', 'end', text="1", values=(str(glir_input[i]), str(round(cum_qt_ins[i],3)),str(glir_input2[i]), str(round(cum_qt_ins2[i],3))),tags=('latest'))
     elif i > 0 and i < 8:
@@ -459,45 +515,86 @@ def structure():
     canvas2.draw()
     canvas2.get_tk_widget().pack()
 
-    """toolbar2 = NavigationToolbar2Tk(canvas2, GLPC_label)
-    toolbar2.update()
-    canvas2.get_tk_widget().pack()"""
-
     window.after(2000, structure)
     i+=1
 
 b = 0
 i = 0
-img = ImageTk.PhotoImage(Image.open("head.png"))
+img = ImageTk.PhotoImage(Image.open("header2.png"))
 window.after(2000,structure)
 
-dragdown_label = tk.Label(frame_dragdown,image = img)
-dragdown_label.pack()
+# ======================================== MEASUREMENTs ========================================
+meas_frame = tk.LabelFrame(frame_dashboard, text="MEASUREMENT")
+meas_frame.grid(row=0,column=0,padx=10,pady=10)
+
+style = ttk.Style()
+style.theme_use('clam')
+style.configure("Treeview",
+    background="white",
+    foreground="grey",
+    fieldbackground="white",)
+style.map('Treeview',background=[('selected','blue')])        
+
+meas_table = ttk.Treeview(meas_frame, columns=("Variables","Well 1","Well 2","Unit"),show='headings',height=8)
+meas_table.column("# 1", width=100,anchor='center')
+meas_table.heading("# 1", text="Variables")
+meas_table.column("# 2", width=150, anchor='center')
+meas_table.heading("# 2", text="Well 1")
+meas_table.column("# 3", width=150,anchor='center')
+meas_table.heading("# 3", text="Well 2")
+meas_table.column("# 4", width=100,anchor='center')
+meas_table.heading("# 4", text="Unit")
+meas_table.tag_configure('odd',background='lightblue')
+
+GLPV_frame = tk.LabelFrame(frame_dashboard, text="GAS LIFT VALUE")
+GLPV_frame.grid(row=0,column=1,padx=10,pady=10)
+
+style = ttk.Style()
+style.theme_use('clam')         
+
+# ======================================== GLPVs ========================================
+GLPV_table = ttk.Treeview(GLPV_frame, columns=("GLIR","Qt","GLIR","Qt"),show='headings', height=8)
+GLPV_table.column("# 1", width=75,anchor='center')
+GLPV_table.heading("# 1", text="GLIR (MCF/day)")
+GLPV_table.column("# 2", width=100,anchor='center')
+GLPV_table.heading("# 2", text="Qt (STB/day)")
+GLPV_table.column("# 3", width=75,anchor='center')
+GLPV_table.heading("# 3", text="GLIR (MCF/day)")
+GLPV_table.column("# 4", width=100,anchor='center')
+GLPV_table.heading("# 4", text="Qt (STB/day)")
+
+GLPV_table.tag_configure('latest',background='yellow')
 
 # ======================================== BUTTON FRAME ========================================
+dragdown_label = tk.Label(frame_dragdown,image = img)
+dragdown_label.pack()
 # ======================================== GLPCs ========================================
 button_label = tk.LabelFrame(frame_button, text="ACTIONS COMMANDS")
 button_label.grid(row=0,column=0,padx=10,pady=10)
 
-set_glir = tk.Entry(button_label)
-set_glir.grid(row=0,column=0,padx=10)
+button_label_well1 = tk.LabelFrame(button_label, text="WELL 1")
+button_label_well1.grid(row=0,column=0,padx=10,pady=10)
 
-setting_button = tk.Button(button_label, text="SET GLIR", command=input_glir)
-setting_button.grid(row=0,column=1,padx=10)
+set_glir = tk.Entry(button_label_well1)
+set_glir.grid(row=0,column=0,padx=10,pady=10)
 
-automatic_button = tk.Button(button_label, text="AUTOMATIC", command=clear)
-automatic_button.grid(row=0,column=2,padx=10)
+setting_button = tk.Button(button_label_well1, text="SET GLIR", command=input_glir)
+setting_button.grid(row=1,column=0,padx=10,pady=10)
 
-set_glir2 = tk.Entry(button_label)
-set_glir2.grid(row=0,column=3,padx=10)
+automatic_button = tk.Button(button_label_well1, text="AUTOMATIC", command=clear)
+automatic_button.grid(row=2,column=0,padx=10,pady=10)
 
-setting_button = tk.Button(button_label, text="SET GLIR", command=input_glir)
-setting_button.grid(row=0,column=4,padx=10)
+button_label_well2 = tk.LabelFrame(button_label, text="WELL 2")
+button_label_well2.grid(row=1,column=0,padx=10,pady=10)
 
-automatic_button2 = tk.Button(button_label, text="AUTOMATIC", command=clear2)
-automatic_button2.grid(row=0,column=5,padx=10)
+set_glir2 = tk.Entry(button_label_well2)
+set_glir2.grid(row=3,column=0,padx=10,pady=10)
 
+setting_button = tk.Button(button_label_well2, text="SET GLIR", command=input_glir)
+setting_button.grid(row=4,column=0,padx=10,pady=10)
 
+automatic_button2 = tk.Button(button_label_well2, text="AUTOMATIC", command=clear2)
+automatic_button2.grid(row=5,column=0,padx=10,pady=10)
 
 #auto_button = tk.Button(button_label, text="MODE : AUTOMATIC",command=input_auto)
 #auto_button.grid(row=0,column=3,padx=10)

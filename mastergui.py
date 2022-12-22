@@ -148,7 +148,7 @@ def structure():
         val3 = client.read_input_registers(address=191, count=2, unit=113)
         decoded3 = BinaryPayloadDecoder.fromRegisters(val3.registers, byteorder=Endian.Big, wordorder=Endian.Little)  # GLIR
         val_wc = decoded3.decode_32bit_float()
-        # ========================================== AUTOMATICS CONDITIONING ==========================================
+        # ========================================== BUTTONS ==========================================
         cond = 'automatic'
         cond = input_auto()
         if cond == 'manual':
