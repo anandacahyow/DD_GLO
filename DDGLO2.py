@@ -15,7 +15,7 @@ from gekko import GEKKO
 
 
 class DDGLO():
-    def __init__(self, GLIR, Qt, wc, GLIR2, Qt2, wc2, i):  # list of GLIR and Qt
+    def __init__(self, GLIR, Qt, wc, GLIR2, Qt2, wc2, cons,i):  # list of GLIR and Qt
         self.GLIR = GLIR
         self.Qt = Qt
         self.wc = wc
@@ -23,6 +23,7 @@ class DDGLO():
         self.GLIR2 = GLIR2
         self.Qt2 = Qt2
         self.wc2 = wc2
+        self.cons = cons
     
     def RegOpt(self):
         def objective(x, a, b, c, wc, a2, b2, c2, wc2):
@@ -45,7 +46,7 @@ class DDGLO():
         def constraint(x):
             x1 = x[0]
             x2 = x[1]
-            return 2000 - x1 - x2
+            return self.cons - x1 - x2
 
         def constraint2(x):
             return x/x - 1

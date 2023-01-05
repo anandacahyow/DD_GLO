@@ -1,0 +1,3578 @@
+[
+    {
+        "id": "88efecf86ef7329d",
+        "type": "tab",
+        "label": "Insight Dashboard",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "3bb97c917005d2ec",
+        "type": "tab",
+        "label": "Well 1 Dashboard",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "61b33a4c12f85731",
+        "type": "tab",
+        "label": "Well 2 Dashboard",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "a43624cb82c758cc",
+        "type": "tab",
+        "label": "Real Time Data",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "85baee48c9409b25",
+        "type": "tab",
+        "label": "Flow 5",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "3b3582d5284cceb6",
+        "type": "tab",
+        "label": "Flow 6",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "d8ada64b9fbc4e1d",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "fcc1e3fb4fccd7c4",
+        "type": "subflow",
+        "name": "Subflow 1",
+        "info": "",
+        "in": [
+            {
+                "x": 60,
+                "y": 80,
+                "wires": [
+                    {
+                        "id": "1fb6a5639c04d3b6"
+                    }
+                ]
+            }
+        ],
+        "out": []
+    },
+    {
+        "id": "0733f5f182dd6421",
+        "type": "group",
+        "z": "88efecf86ef7329d",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "5f64fd8e1cf59b8f",
+            "3e83ad5863480c11",
+            "9a3a90295a576489",
+            "5a8ef9f4b9707e85",
+            "0d0d4db502da51f7",
+            "4ac197b84c11b204",
+            "7a51696d40e2b160"
+        ],
+        "x": 534,
+        "y": 59,
+        "w": 592,
+        "h": 242
+    },
+    {
+        "id": "30e147fb8a81180b",
+        "type": "group",
+        "z": "3bb97c917005d2ec",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "176ebe35f4b5b174",
+            "b819355bce0972d6",
+            "775a1414edb64ba8",
+            "e4b09ba873df8b9e"
+        ],
+        "x": 714,
+        "y": 199,
+        "w": 492,
+        "h": 122
+    },
+    {
+        "id": "fa03babd2b1042cd",
+        "type": "group",
+        "z": "61b33a4c12f85731",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "cf49e71e794ccfda",
+            "24a1100406bd5694",
+            "e49d6fbdaa0380b4",
+            "cdcd57da69c45e09"
+        ],
+        "x": 734,
+        "y": 159
+    },
+    {
+        "id": "a6f8c462f30b8664",
+        "type": "group",
+        "z": "61b33a4c12f85731",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "cfa12f2c69d4c46d",
+            "0b407d3c05eb9d7a",
+            "6dcf07e23e795c12",
+            "c9c477b689c7fe87",
+            "53d439ee2fb32325",
+            "cd3edf7c3cb08c9a"
+        ],
+        "x": 734,
+        "y": 319
+    },
+    {
+        "id": "4309205464dbc355",
+        "type": "group",
+        "z": "88efecf86ef7329d",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "e27885a74dda9d98",
+            "1fe43a7ff4d28ac2",
+            "8c7ecde7ef7bb915",
+            "7d9e8a89bdd6d4ac",
+            "5dd7055aff15380d",
+            "a8a9869e503d787e"
+        ],
+        "x": 774,
+        "y": 319,
+        "w": 412,
+        "h": 202
+    },
+    {
+        "id": "ab091dab5efec34f",
+        "type": "group",
+        "z": "3bb97c917005d2ec",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "3cb6f92b44f1c3de",
+            "d89b715d3b8d5f8a",
+            "37ec8b61a52e9780"
+        ],
+        "x": 714,
+        "y": 599,
+        "w": 472,
+        "h": 122
+    },
+    {
+        "id": "68acde47a0a8f15f",
+        "type": "group",
+        "z": "3bb97c917005d2ec",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "8ebbd188762cc865",
+            "64bd68c7d53fe48b",
+            "c9b4a9a30c20ea05"
+        ],
+        "x": 714,
+        "y": 739,
+        "w": 532,
+        "h": 122
+    },
+    {
+        "id": "72453e7dd6aea786",
+        "type": "group",
+        "z": "88efecf86ef7329d",
+        "style": {
+            "stroke": "#999999",
+            "stroke-opacity": "1",
+            "fill": "none",
+            "fill-opacity": "1",
+            "label": true,
+            "label-position": "nw",
+            "color": "#a4a4a4"
+        },
+        "nodes": [
+            "5c6bfe6bac30ce08",
+            "0a873b152a639a5b",
+            "6d4b75a1c5afbc3c",
+            "4dabc8d119277828",
+            "ae90c5370f6ebaf9",
+            "77c1b0a7d7bb21a1",
+            "82bb29787e00b8a4",
+            "6e3395be9f25553d",
+            "7eeb7af4298be404"
+        ],
+        "x": 774,
+        "y": 539,
+        "w": 452,
+        "h": 342
+    },
+    {
+        "id": "880a2a509d53daf1",
+        "type": "mqtt-broker",
+        "name": "mosquitto",
+        "broker": "test.mosquitto.org",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "c7d3643ba8ed59ac",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0114dc",
+                "baseFont": "Arial,Arial,Helvetica,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#0114dc",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "customTheme": {
+                "name": "SLB",
+                "default": "#4B7930",
+                "baseColor": "#0114dc",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "reset": false
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0114dc",
+                    "edited": true
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0114dc",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#333333",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#2b3efe",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0114dc",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "Arial,Arial,Helvetica,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Node-RED Dashboard",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "false",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 48,
+                "sy": 48,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "5287045d2e42742c",
+        "type": "ui_group",
+        "name": "Measurement",
+        "tab": "8a8c450ddd017100",
+        "order": 3,
+        "disp": true,
+        "width": "12",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "a7ac9607114a5263",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "8a8c450ddd017100",
+        "type": "ui_tab",
+        "name": "Insights",
+        "icon": "equalizer",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "08bd6e0c8aab5d4d",
+        "type": "ui_tab",
+        "name": "Well 1",
+        "icon": "dashboard",
+        "order": 4,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "6f6734dcb1c01b89",
+        "type": "ui_spacer",
+        "z": "88efecf86ef7329d",
+        "name": "spacer",
+        "group": "5d846c6c6ada7c06",
+        "order": 3,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "283cfb7e6fe66276",
+        "type": "ui_spacer",
+        "z": "88efecf86ef7329d",
+        "name": "spacer",
+        "group": "5d846c6c6ada7c06",
+        "order": 3,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "0caa174d7a6e517e",
+        "type": "ui_group",
+        "name": "Measurements",
+        "tab": "08bd6e0c8aab5d4d",
+        "order": 2,
+        "disp": true,
+        "width": 16,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "6bc6f82ea6f327b6",
+        "type": "ui_tab",
+        "name": "DD-GLO App",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "ddfcfc88e2a680ca",
+        "type": "ui_tab",
+        "name": "Well 2",
+        "icon": "dashboard",
+        "order": 5,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "a33f0a6ba9fe9f2b",
+        "type": "ui_group",
+        "name": "Combined",
+        "tab": "8a8c450ddd017100",
+        "order": 1,
+        "disp": true,
+        "width": 12,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "44672f97bf851e0d",
+        "type": "ui_group",
+        "name": "Revenue",
+        "tab": "8a8c450ddd017100",
+        "order": 2,
+        "disp": true,
+        "width": 12,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "5a8dedaff41e41e4",
+        "type": "ui_group",
+        "name": "Input Parameters",
+        "tab": "ddfcfc88e2a680ca",
+        "order": 1,
+        "disp": true,
+        "width": 16,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "063accb9243ad5f8",
+        "type": "ui_group",
+        "name": "Measurements",
+        "tab": "ddfcfc88e2a680ca",
+        "order": 2,
+        "disp": true,
+        "width": 16,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "53bfe9d447a5691b",
+        "type": "ui_group",
+        "name": "Content",
+        "tab": "6bc6f82ea6f327b6",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "4e8c22e6f38bbe49",
+        "type": "ui_group",
+        "name": "Input Parameters",
+        "tab": "08bd6e0c8aab5d4d",
+        "order": 1,
+        "disp": true,
+        "width": 16,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f3d18bdf143f9b37",
+        "type": "ui_spacer",
+        "z": "61b33a4c12f85731",
+        "name": "spacer",
+        "group": "5a8dedaff41e41e4",
+        "order": 1,
+        "width": 16,
+        "height": 1
+    },
+    {
+        "id": "2f750caffb488271",
+        "type": "ui_spacer",
+        "z": "61b33a4c12f85731",
+        "name": "spacer",
+        "group": "5a8dedaff41e41e4",
+        "order": 2,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "da4a29cb19630444",
+        "type": "ui_spacer",
+        "z": "61b33a4c12f85731",
+        "name": "spacer",
+        "group": "5a8dedaff41e41e4",
+        "order": 5,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "59bbe888d38ed748",
+        "type": "ui_spacer",
+        "z": "61b33a4c12f85731",
+        "name": "spacer",
+        "group": "5a8dedaff41e41e4",
+        "order": 6,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "42ca2f9a5fb5b21b",
+        "type": "ui_spacer",
+        "z": "61b33a4c12f85731",
+        "name": "spacer",
+        "group": "5a8dedaff41e41e4",
+        "order": 7,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "bdac401620dc11d4",
+        "type": "ui_spacer",
+        "z": "61b33a4c12f85731",
+        "name": "spacer",
+        "group": "5a8dedaff41e41e4",
+        "order": 8,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "da3a84e9a8169f9d",
+        "type": "ui_spacer",
+        "z": "61b33a4c12f85731",
+        "name": "spacer",
+        "group": "5a8dedaff41e41e4",
+        "order": 9,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "188c9cb2564c3f60",
+        "type": "ui_spacer",
+        "z": "61b33a4c12f85731",
+        "name": "spacer",
+        "group": "5a8dedaff41e41e4",
+        "order": 10,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "ae0e7ed23571e849",
+        "type": "ui_spacer",
+        "z": "61b33a4c12f85731",
+        "name": "spacer",
+        "group": "5a8dedaff41e41e4",
+        "order": 11,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "6658e096fab51721",
+        "type": "ui_spacer",
+        "z": "61b33a4c12f85731",
+        "name": "spacer",
+        "group": "5a8dedaff41e41e4",
+        "order": 12,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "b830dd210a187281",
+        "type": "ui_spacer",
+        "z": "61b33a4c12f85731",
+        "name": "spacer",
+        "group": "5a8dedaff41e41e4",
+        "order": 13,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "abaaddbb717bf9b9",
+        "type": "ui_spacer",
+        "z": "61b33a4c12f85731",
+        "name": "spacer",
+        "group": "5a8dedaff41e41e4",
+        "order": 14,
+        "width": 16,
+        "height": 1
+    },
+    {
+        "id": "812d637eadf0a063",
+        "type": "ui_spacer",
+        "z": "61b33a4c12f85731",
+        "name": "spacer",
+        "group": "5a8dedaff41e41e4",
+        "order": 15,
+        "width": 16,
+        "height": 1
+    },
+    {
+        "id": "70f1a6fb958c3be1",
+        "type": "ui_spacer",
+        "z": "61b33a4c12f85731",
+        "name": "spacer",
+        "group": "063accb9243ad5f8",
+        "order": 6,
+        "width": 16,
+        "height": 1
+    },
+    {
+        "id": "872d8c57bd423e94",
+        "type": "ui_spacer",
+        "z": "61b33a4c12f85731",
+        "name": "spacer",
+        "group": "063accb9243ad5f8",
+        "order": 7,
+        "width": 16,
+        "height": 1
+    },
+    {
+        "id": "83194ab4fec63bf8",
+        "type": "ui_spacer",
+        "z": "3bb97c917005d2ec",
+        "name": "spacer",
+        "group": "4e8c22e6f38bbe49",
+        "order": 1,
+        "width": 16,
+        "height": 1
+    },
+    {
+        "id": "33de19d72ad0c9bc",
+        "type": "ui_spacer",
+        "z": "3bb97c917005d2ec",
+        "name": "spacer",
+        "group": "4e8c22e6f38bbe49",
+        "order": 2,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "2dff4c10df34660f",
+        "type": "ui_spacer",
+        "z": "3bb97c917005d2ec",
+        "name": "spacer",
+        "group": "4e8c22e6f38bbe49",
+        "order": 5,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "33c524b141affd95",
+        "type": "ui_spacer",
+        "z": "3bb97c917005d2ec",
+        "name": "spacer",
+        "group": "4e8c22e6f38bbe49",
+        "order": 6,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "157d7b1466ae35fd",
+        "type": "ui_spacer",
+        "z": "3bb97c917005d2ec",
+        "name": "spacer",
+        "group": "4e8c22e6f38bbe49",
+        "order": 7,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "7fb0315a6f63de72",
+        "type": "ui_spacer",
+        "z": "3bb97c917005d2ec",
+        "name": "spacer",
+        "group": "4e8c22e6f38bbe49",
+        "order": 8,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "e24becbff098e56c",
+        "type": "ui_spacer",
+        "z": "3bb97c917005d2ec",
+        "name": "spacer",
+        "group": "4e8c22e6f38bbe49",
+        "order": 9,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "a0300f59489d0a4e",
+        "type": "ui_spacer",
+        "z": "3bb97c917005d2ec",
+        "name": "spacer",
+        "group": "4e8c22e6f38bbe49",
+        "order": 10,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "a2af307a8056dcd5",
+        "type": "ui_spacer",
+        "z": "3bb97c917005d2ec",
+        "name": "spacer",
+        "group": "4e8c22e6f38bbe49",
+        "order": 11,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "d35363735c2457b1",
+        "type": "ui_spacer",
+        "z": "3bb97c917005d2ec",
+        "name": "spacer",
+        "group": "4e8c22e6f38bbe49",
+        "order": 12,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "c1155d6c75296674",
+        "type": "ui_spacer",
+        "z": "3bb97c917005d2ec",
+        "name": "spacer",
+        "group": "4e8c22e6f38bbe49",
+        "order": 13,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "19940a453ad02f87",
+        "type": "ui_spacer",
+        "z": "3bb97c917005d2ec",
+        "name": "spacer",
+        "group": "4e8c22e6f38bbe49",
+        "order": 14,
+        "width": 16,
+        "height": 1
+    },
+    {
+        "id": "2403674a4b730f01",
+        "type": "ui_spacer",
+        "z": "3bb97c917005d2ec",
+        "name": "spacer",
+        "group": "4e8c22e6f38bbe49",
+        "order": 15,
+        "width": 16,
+        "height": 1
+    },
+    {
+        "id": "c2853955cca219c1",
+        "type": "ui_spacer",
+        "z": "3bb97c917005d2ec",
+        "name": "spacer",
+        "group": "0caa174d7a6e517e",
+        "order": 6,
+        "width": 16,
+        "height": 1
+    },
+    {
+        "id": "6285cd8b0985acbc",
+        "type": "ui_spacer",
+        "z": "3bb97c917005d2ec",
+        "name": "spacer",
+        "group": "0caa174d7a6e517e",
+        "order": 10,
+        "width": 16,
+        "height": 1
+    },
+    {
+        "id": "01d91fcc6b9ebb7b",
+        "type": "ui_tab",
+        "name": "Real-Time Trends",
+        "icon": "access_time",
+        "order": 3,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "f2ddd08e13d6a7eb",
+        "type": "ui_group",
+        "name": "Trends",
+        "tab": "01d91fcc6b9ebb7b",
+        "order": 1,
+        "disp": true,
+        "width": 22,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "a8900ce7cb4edf7c",
+        "type": "ui_spacer",
+        "z": "a43624cb82c758cc",
+        "name": "spacer",
+        "group": "f2ddd08e13d6a7eb",
+        "order": 2,
+        "width": 7,
+        "height": 1
+    },
+    {
+        "id": "5ac2306b0607f861",
+        "type": "ui_spacer",
+        "z": "a43624cb82c758cc",
+        "name": "spacer",
+        "group": "f2ddd08e13d6a7eb",
+        "order": 4,
+        "width": 8,
+        "height": 1
+    },
+    {
+        "id": "1fb6a5639c04d3b6",
+        "type": "ui_chart",
+        "z": "fcc1e3fb4fccd7c4",
+        "name": "",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "label": "chart",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1F77B4",
+            "#AEC7E8",
+            "#FF7F0E",
+            "#2CA02C",
+            "#98DF8A",
+            "#D62728",
+            "#FF9896",
+            "#9467BD",
+            "#C5B0D5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 190,
+        "y": 80,
+        "wires": [
+            [
+                "dbc938809a711ff7"
+            ]
+        ]
+    },
+    {
+        "id": "dbc938809a711ff7",
+        "type": "ui_text",
+        "z": "fcc1e3fb4fccd7c4",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "text",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 330,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "b1d45593863fae2e",
+        "type": "mqtt in",
+        "z": "88efecf86ef7329d",
+        "name": "mqtt",
+        "topic": "DD-GLO",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "a7ac9607114a5263",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 90,
+        "y": 400,
+        "wires": [
+            [
+                "a775de67bb073b99",
+                "32092b950f131edf"
+            ]
+        ]
+    },
+    {
+        "id": "5c6bfe6bac30ce08",
+        "type": "ui_gauge",
+        "z": "88efecf86ef7329d",
+        "g": "72453e7dd6aea786",
+        "name": "",
+        "group": "a33f0a6ba9fe9f2b",
+        "order": 1,
+        "width": 12,
+        "height": 4,
+        "gtype": "gage",
+        "title": "Total GLIR",
+        "label": "MSCF/Day",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "2000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 1010,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "0a873b152a639a5b",
+        "type": "ui_text",
+        "z": "88efecf86ef7329d",
+        "g": "72453e7dd6aea786",
+        "group": "a33f0a6ba9fe9f2b",
+        "order": 3,
+        "width": 6,
+        "height": 2,
+        "name": "",
+        "label": "Total Oil Flow Rate",
+        "format": "<font size =5>{{msg.payload}} {{\"STB/Day\"}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 1110,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "6d4b75a1c5afbc3c",
+        "type": "ui_text",
+        "z": "88efecf86ef7329d",
+        "g": "72453e7dd6aea786",
+        "group": "a33f0a6ba9fe9f2b",
+        "order": 2,
+        "width": 6,
+        "height": 2,
+        "name": "",
+        "label": "Total Liquid Flow Rate",
+        "format": "<font size =5>{{msg.payload}} {{\"STB/Day\"}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 900,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "4dabc8d119277828",
+        "type": "ui_chart",
+        "z": "88efecf86ef7329d",
+        "g": "72453e7dd6aea786",
+        "name": "",
+        "group": "a33f0a6ba9fe9f2b",
+        "order": 6,
+        "width": 6,
+        "height": 5,
+        "label": "Total Qt",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "loading data...",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 900,
+        "y": 760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a775de67bb073b99",
+        "type": "function",
+        "z": "88efecf86ef7329d",
+        "name": "Well",
+        "func": "var test = msg.payload;\ntag1 = { payload: test.values[0].GLIR_Well1 };\ntag2 = { payload: test.values[1].GLIR_Well2 };\ntag3 = { payload: test.values[2].Qt_Well1 };\ntag4 = { payload: test.values[3].Qt_Well2 };\ntag5 = { payload: test.values[4].Qo_Well1 };\ntag6 = { payload: test.values[5].Qo_Well2 };\ntag7 = { payload: test.values[6].wc_Well1 };\ntag8 = { payload: test.values[7].wc_Well2 };\ntag9 = { payload: test.values[8].Cum_Qt_Well1 };\ntag10 = { payload: test.values[9].Cum_Qt_Well2 };\ntag11 = { payload: test.values[10].Cum_Qo_Well1 };\ntag12 = { payload: test.values[11].Cum_Qo_Well2 };\ntag13 = { payload: test.values[12].Total_Qt };\ntag14 = { payload: test.values[13].Total_Qo };\ntag15 = { payload: test.values[14].Total_Inj };\ntag16 = { payload: test.values[15].Total_GLIR };\ntag17 = { payload: test.values[16].Total_GLIR2 };\ntag18 = { payload: test.values[17].Total_Constraint };\nreturn [tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag9, tag10, tag11, tag12, tag13, tag14, tag15, tag16, tag17, tag18]",
+        "outputs": 18,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 330,
+        "y": 400,
+        "wires": [
+            [
+                "5f64fd8e1cf59b8f",
+                "e27885a74dda9d98"
+            ],
+            [
+                "5a8ef9f4b9707e85",
+                "7d9e8a89bdd6d4ac"
+            ],
+            [
+                "3e83ad5863480c11"
+            ],
+            [
+                "0d0d4db502da51f7"
+            ],
+            [
+                "9a3a90295a576489",
+                "1fe43a7ff4d28ac2"
+            ],
+            [
+                "4ac197b84c11b204",
+                "5dd7055aff15380d"
+            ],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [
+                "6d4b75a1c5afbc3c",
+                "6e3395be9f25553d"
+            ],
+            [
+                "0a873b152a639a5b",
+                "7eeb7af4298be404"
+            ],
+            [
+                "5c6bfe6bac30ce08"
+            ],
+            [],
+            [],
+            [
+                "7a51696d40e2b160"
+            ]
+        ],
+        "outputLabels": [
+            "GLIR_Well1",
+            "GLIR_Well2",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            null
+        ]
+    },
+    {
+        "id": "ae90c5370f6ebaf9",
+        "type": "ui_chart",
+        "z": "88efecf86ef7329d",
+        "g": "72453e7dd6aea786",
+        "name": "",
+        "group": "a33f0a6ba9fe9f2b",
+        "order": 7,
+        "width": 6,
+        "height": 5,
+        "label": "Total Qo",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "loading data...",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7700",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1100,
+        "y": 760,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e1ea70c092742865",
+        "type": "ui_button",
+        "z": "88efecf86ef7329d",
+        "name": "",
+        "group": "a33f0a6ba9fe9f2b",
+        "order": 8,
+        "width": 6,
+        "height": 1,
+        "passthru": false,
+        "label": "Reset Qo",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 940,
+        "y": 920,
+        "wires": [
+            [
+                "77c1b0a7d7bb21a1"
+            ]
+        ]
+    },
+    {
+        "id": "77c1b0a7d7bb21a1",
+        "type": "function",
+        "z": "88efecf86ef7329d",
+        "g": "72453e7dd6aea786",
+        "name": "reset1",
+        "func": "msg.payload = [];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 930,
+        "y": 840,
+        "wires": [
+            [
+                "4dabc8d119277828"
+            ]
+        ]
+    },
+    {
+        "id": "9b0137a7c9027de3",
+        "type": "ui_button",
+        "z": "88efecf86ef7329d",
+        "name": "",
+        "group": "a33f0a6ba9fe9f2b",
+        "order": 9,
+        "width": 6,
+        "height": 1,
+        "passthru": false,
+        "label": "Reset Qt",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 1120,
+        "y": 920,
+        "wires": [
+            [
+                "82bb29787e00b8a4"
+            ]
+        ]
+    },
+    {
+        "id": "82bb29787e00b8a4",
+        "type": "function",
+        "z": "88efecf86ef7329d",
+        "g": "72453e7dd6aea786",
+        "name": "reset1",
+        "func": "msg.payload = [];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1110,
+        "y": 840,
+        "wires": [
+            [
+                "ae90c5370f6ebaf9"
+            ]
+        ]
+    },
+    {
+        "id": "5f64fd8e1cf59b8f",
+        "type": "ui_gauge",
+        "z": "88efecf86ef7329d",
+        "g": "0733f5f182dd6421",
+        "name": "",
+        "group": "5287045d2e42742c",
+        "order": 2,
+        "width": 12,
+        "height": 4,
+        "gtype": "gage",
+        "title": "GLIR Well 1",
+        "label": "MSCFD",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 770,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "3e83ad5863480c11",
+        "type": "ui_text",
+        "z": "88efecf86ef7329d",
+        "g": "0733f5f182dd6421",
+        "group": "5287045d2e42742c",
+        "order": 3,
+        "width": 6,
+        "height": 2,
+        "name": "",
+        "label": "<font size =4>Well 1: Liquid Flow Rate",
+        "format": "<font size =5>{{msg.payload}} {{\"STB/Day\"}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 710,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "9a3a90295a576489",
+        "type": "ui_text",
+        "z": "88efecf86ef7329d",
+        "g": "0733f5f182dd6421",
+        "group": "5287045d2e42742c",
+        "order": 4,
+        "width": 6,
+        "height": 2,
+        "name": "",
+        "label": "<font size =4>Well 2: Liquid Flow Rate",
+        "format": "<font size =5>{{msg.payload}} {{\"STB/Day\"}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 950,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "5a8ef9f4b9707e85",
+        "type": "ui_gauge",
+        "z": "88efecf86ef7329d",
+        "g": "0733f5f182dd6421",
+        "name": "",
+        "group": "5287045d2e42742c",
+        "order": 5,
+        "width": 12,
+        "height": 4,
+        "gtype": "gage",
+        "title": "GLIR Well 2",
+        "label": "MSCFD",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 770,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "0d0d4db502da51f7",
+        "type": "ui_text",
+        "z": "88efecf86ef7329d",
+        "g": "0733f5f182dd6421",
+        "group": "5287045d2e42742c",
+        "order": 6,
+        "width": 6,
+        "height": 2,
+        "name": "",
+        "label": "<font size =4>Well 1: Oil Flow Rate",
+        "format": "<font size =5>{{msg.payload}} {{\"\\nSTB/Day\"}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 700,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "4ac197b84c11b204",
+        "type": "ui_text",
+        "z": "88efecf86ef7329d",
+        "g": "0733f5f182dd6421",
+        "group": "5287045d2e42742c",
+        "order": 7,
+        "width": 6,
+        "height": 2,
+        "name": "",
+        "label": "<font size =4>Well 2: Oil Flow Rate",
+        "format": "<font size =5>{{msg.payload}} {{\"STB/Day\"}}",
+        "layout": "col-center",
+        "className": "",
+        "x": 920,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "6439b807f9f1f7af",
+        "type": "ui_text",
+        "z": "88efecf86ef7329d",
+        "group": "44672f97bf851e0d",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Operational Cost ($5.71 per MSCFD)",
+        "format": "<font color = \"red\" font size =4>{{\"$ \"}}{{value}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 570,
+        "y": 680,
+        "wires": []
+    },
+    {
+        "id": "a25a9d7a1b7d758c",
+        "type": "ui_text",
+        "z": "88efecf86ef7329d",
+        "group": "44672f97bf851e0d",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Oil Selling Price ($83.54 per Barrel)",
+        "format": "<font color = \"blue\" font size =4>{{\"$ \"}}{{value}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 560,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "81a660467058d3e8",
+        "type": "ui_text",
+        "z": "88efecf86ef7329d",
+        "group": "44672f97bf851e0d",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Oil Revenue",
+        "format": "<font color = \"green\" font size =5>{{\"$\"}}{{value}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 490,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "ae371d61bfe6d7bc",
+        "type": "ui_template",
+        "z": "88efecf86ef7329d",
+        "group": "a33f0a6ba9fe9f2b",
+        "name": "",
+        "order": 4,
+        "width": 6,
+        "height": 1,
+        "format": "<script id=\"clockScript1\" type=\"text/javascript\">\n    var clockInterval;\n    $(function () {\n        if (clockInterval) return;\n\n        //add logo\n        var div1 = $('<div/>');\n        var logo = new Image();\n\n        logo.src = '/SLB_LOGO.png'\n        logo.height = 60;\n        div1[0].style.margin = '10px auto';\n\n        div1.append(logo);\n\n        //add clock\n        var div2 = $('<div/>');\n        var p = $('<p/>');\n\n        div2.append(p);\n        div2[0].style.margin = '5px';\n\n        function displayTime() {\n            p.text(new Date().toLocaleString());\n        }\n        \n        clockInterval = setInterval(displayTime, 1000);\n\n        //add to toolbar when it's available\n        var addToToolbarTimer;\n        \n        function addToToolbar() {\n            var toolbar = $('.md-toolbar-tools');\n            \n            if(!toolbar.length) return;\n            \n            toolbar.append(div1);\n            toolbar.append(div2);\n            clearInterval(addToToolbarTimer);\n        }\n        addToToolbarTimer = setInterval(addToToolbar, 100);\n    });\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "Logo / Clock",
+        "x": 100,
+        "y": 360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e27885a74dda9d98",
+        "type": "function",
+        "z": "88efecf86ef7329d",
+        "g": "4309205464dbc355",
+        "name": "GLIR Well 1",
+        "func": "msg.topic = 'GLIR Well 1'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 870,
+        "y": 360,
+        "wires": [
+            [
+                "8c7ecde7ef7bb915"
+            ]
+        ]
+    },
+    {
+        "id": "1fe43a7ff4d28ac2",
+        "type": "function",
+        "z": "88efecf86ef7329d",
+        "g": "4309205464dbc355",
+        "name": "Qo Well 1",
+        "func": "msg.topic = 'Qo Well 1'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 440,
+        "wires": [
+            [
+                "a8a9869e503d787e"
+            ]
+        ]
+    },
+    {
+        "id": "8c7ecde7ef7bb915",
+        "type": "ui_chart",
+        "z": "88efecf86ef7329d",
+        "g": "4309205464dbc355",
+        "name": "",
+        "group": "44672f97bf851e0d",
+        "order": 5,
+        "width": 12,
+        "height": 5,
+        "label": "GLIR Monitoring",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "step",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#fe8d0b",
+            "#db8439",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1060,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7d9e8a89bdd6d4ac",
+        "type": "function",
+        "z": "88efecf86ef7329d",
+        "g": "4309205464dbc355",
+        "name": "GLIR Well 2",
+        "func": "msg.topic = 'GLIR Well 2'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 870,
+        "y": 400,
+        "wires": [
+            [
+                "8c7ecde7ef7bb915"
+            ]
+        ]
+    },
+    {
+        "id": "5dd7055aff15380d",
+        "type": "function",
+        "z": "88efecf86ef7329d",
+        "g": "4309205464dbc355",
+        "name": "Qo Well 2",
+        "func": "msg.topic = 'Qo Well 2'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 480,
+        "wires": [
+            [
+                "a8a9869e503d787e"
+            ]
+        ]
+    },
+    {
+        "id": "a8a9869e503d787e",
+        "type": "ui_chart",
+        "z": "88efecf86ef7329d",
+        "g": "4309205464dbc355",
+        "name": "",
+        "group": "44672f97bf851e0d",
+        "order": 4,
+        "width": 12,
+        "height": 5,
+        "label": "Oil Flow Monitoring",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm",
+        "interpolate": "linear",
+        "nodata": "loading data",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#0693fe",
+            "#fe8d0b",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1070,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "32092b950f131edf",
+        "type": "function",
+        "z": "88efecf86ef7329d",
+        "name": "Cost Analysis",
+        "func": "var test = msg.payload;\n\nopr_cost = parseInt(5.571 * (test.values[15].Total_GLIR + test.values[16].Total_GLIR2));\noil_sell = parseInt(83.56* (test.values[10].Cum_Qo_Well1 + test.values[11].Cum_Qo_Well2));\nrevenue = parseInt(oil_sell - opr_cost);\n\na = {payload: opr_cost.toLocaleString()};\nb = { payload: oil_sell.toLocaleString()};\nc = { payload: revenue.toLocaleString()};\n\nreturn [a,b,c]",
+        "outputs": 3,
+        "noerr": 11,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 220,
+        "y": 700,
+        "wires": [
+            [
+                "cf34fb22a8d518fd",
+                "6439b807f9f1f7af"
+            ],
+            [
+                "a25a9d7a1b7d758c"
+            ],
+            [
+                "81a660467058d3e8"
+            ]
+        ],
+        "outputLabels": [
+            "GLIR_Well1",
+            "",
+            ""
+        ]
+    },
+    {
+        "id": "cf34fb22a8d518fd",
+        "type": "debug",
+        "z": "88efecf86ef7329d",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 460,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "7a51696d40e2b160",
+        "type": "ui_text",
+        "z": "88efecf86ef7329d",
+        "g": "0733f5f182dd6421",
+        "group": "5287045d2e42742c",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "<font size =4>GLIR Constraint",
+        "format": "<font size =5>{{msg.payload}} {{\"MSCFD\"}}",
+        "layout": "row-center",
+        "className": "",
+        "x": 790,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "6e3395be9f25553d",
+        "type": "function",
+        "z": "88efecf86ef7329d",
+        "g": "72453e7dd6aea786",
+        "name": "Total Qt (STB/day)",
+        "func": "msg.topic = 'Total Qt (STB/day)'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 680,
+        "wires": [
+            [
+                "4dabc8d119277828"
+            ]
+        ]
+    },
+    {
+        "id": "7eeb7af4298be404",
+        "type": "function",
+        "z": "88efecf86ef7329d",
+        "g": "72453e7dd6aea786",
+        "name": "Total Qo (STB/day)",
+        "func": "msg.topic = 'Total Qo (STB/day)'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1110,
+        "y": 680,
+        "wires": [
+            [
+                "ae90c5370f6ebaf9"
+            ]
+        ]
+    },
+    {
+        "id": "c29cdf2ae43dbea1",
+        "type": "mqtt in",
+        "z": "3bb97c917005d2ec",
+        "name": "mqtt",
+        "topic": "DD-GLO",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "a7ac9607114a5263",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 400,
+        "wires": [
+            [
+                "f7a8b3de610896fb"
+            ]
+        ]
+    },
+    {
+        "id": "f7a8b3de610896fb",
+        "type": "function",
+        "z": "3bb97c917005d2ec",
+        "name": "Well",
+        "func": "var test = msg.payload;\ntag1 = { payload: test.values[0].GLIR_Well1 };\ntag2 = { payload: test.values[1].GLIR_Well2 };\ntag3 = { payload: test.values[2].Qt_Well1 };\ntag4 = { payload: test.values[3].Qt_Well2 };\ntag5 = { payload: test.values[4].Qo_Well1 };\ntag6 = { payload: test.values[5].Qo_Well2 };\ntag7 = { payload: test.values[6].wc_Well1 };\ntag8 = { payload: test.values[7].wc_Well2 };\ntag9 = { payload: test.values[8].Cum_Qt_Well1 };\ntag10 = { payload: test.values[9].Cum_Qt_Well2 };\ntag11 = { payload: test.values[10].Cum_Qo_Well1 };\ntag12 = { payload: test.values[11].Cum_Qo_Well2 };\n\ntag13 = { payload: test.values[12].Total_Qt };\ntag14 = { payload: test.values[13].Total_Qo };\ntag15 = { payload: test.values[14].Total_Inj };\ntag16 = { payload: test.values[15].Total_GLIR };\ntag17 = { payload: test.values[16].Total_GLIR2 };\nreturn [tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag9, tag10, tag11, tag12, tag13, tag14, tag15, tag16, tag17]",
+        "outputs": 17,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 400,
+        "wires": [
+            [
+                "176ebe35f4b5b174",
+                "775a1414edb64ba8"
+            ],
+            [],
+            [
+                "cc7a6aad7e761f69",
+                "40ee29902f0d58f1",
+                "3cb6f92b44f1c3de"
+            ],
+            [],
+            [
+                "d9dcc82a18cb0195",
+                "c88d431fd765b52a",
+                "d89b715d3b8d5f8a"
+            ],
+            [],
+            [
+                "b819355bce0972d6",
+                "e4b09ba873df8b9e"
+            ],
+            [],
+            [
+                "1fa074ea2ac9d9ad",
+                "fd35439ddc426626",
+                "8ebbd188762cc865"
+            ],
+            [],
+            [
+                "4b08be0b4484724e",
+                "b4ca69ca57965490",
+                "64bd68c7d53fe48b"
+            ],
+            [],
+            [],
+            [],
+            [],
+            [],
+            []
+        ],
+        "outputLabels": [
+            "GLIR_Well1",
+            "GLIR_Well2",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ]
+    },
+    {
+        "id": "1fa074ea2ac9d9ad",
+        "type": "ui_text",
+        "z": "3bb97c917005d2ec",
+        "group": "0caa174d7a6e517e",
+        "order": 8,
+        "width": 8,
+        "height": 1,
+        "name": "",
+        "label": "Cumulative Liquid Flow Rate",
+        "format": "{{msg.payload}} {{\"STB\"}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 860,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "4b08be0b4484724e",
+        "type": "ui_text",
+        "z": "3bb97c917005d2ec",
+        "group": "0caa174d7a6e517e",
+        "order": 9,
+        "width": 8,
+        "height": 1,
+        "name": "",
+        "label": "Cumulative Oil Flow Rate",
+        "format": "{{msg.payload}} {{\"STB\"}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1110,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "cc7a6aad7e761f69",
+        "type": "ui_text",
+        "z": "3bb97c917005d2ec",
+        "group": "0caa174d7a6e517e",
+        "order": 4,
+        "width": 8,
+        "height": 1,
+        "name": "",
+        "label": "Liquid Flow Rate",
+        "format": "{{msg.payload}} {{\"STB/Day\"}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 830,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "d9dcc82a18cb0195",
+        "type": "ui_text",
+        "z": "3bb97c917005d2ec",
+        "group": "0caa174d7a6e517e",
+        "order": 5,
+        "width": 8,
+        "height": 1,
+        "name": "",
+        "label": "Oil Flow Rate",
+        "format": "{{msg.payload}} {{\"STB/Day\"}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1060,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "fd35439ddc426626",
+        "type": "ui_chart",
+        "z": "3bb97c917005d2ec",
+        "d": true,
+        "name": "",
+        "group": "0caa174d7a6e517e",
+        "order": 12,
+        "width": 8,
+        "height": 6,
+        "label": "Cumulative Liquid Rate",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#0f8ce6",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 850,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b4ca69ca57965490",
+        "type": "ui_chart",
+        "z": "3bb97c917005d2ec",
+        "d": true,
+        "name": "",
+        "group": "0caa174d7a6e517e",
+        "order": 11,
+        "width": 8,
+        "height": 6,
+        "label": "Cumulative Oil Rate",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1100,
+        "y": 500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "176ebe35f4b5b174",
+        "type": "ui_gauge",
+        "z": "3bb97c917005d2ec",
+        "g": "30e147fb8a81180b",
+        "name": "",
+        "group": "4e8c22e6f38bbe49",
+        "order": 3,
+        "width": 7,
+        "height": 5,
+        "gtype": "gage",
+        "title": "Gas Lift Injection Rate (MSCFD)",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 870,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "b819355bce0972d6",
+        "type": "ui_gauge",
+        "z": "3bb97c917005d2ec",
+        "g": "30e147fb8a81180b",
+        "name": "",
+        "group": "4e8c22e6f38bbe49",
+        "order": 4,
+        "width": 7,
+        "height": 5,
+        "gtype": "gage",
+        "title": "Watercut (%)",
+        "label": "%",
+        "format": "{{value*100}}",
+        "min": 0,
+        "max": "1",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 1090,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "775a1414edb64ba8",
+        "type": "ui_chart",
+        "z": "3bb97c917005d2ec",
+        "g": "30e147fb8a81180b",
+        "name": "",
+        "group": "4e8c22e6f38bbe49",
+        "order": 16,
+        "width": 8,
+        "height": 7,
+        "label": "GLIR (MSCFD)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "step",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 820,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e4b09ba873df8b9e",
+        "type": "ui_chart",
+        "z": "3bb97c917005d2ec",
+        "g": "30e147fb8a81180b",
+        "name": "",
+        "group": "4e8c22e6f38bbe49",
+        "order": 17,
+        "width": 8,
+        "height": 7,
+        "label": "Water Cut (%)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1100,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "40ee29902f0d58f1",
+        "type": "ui_chart",
+        "z": "3bb97c917005d2ec",
+        "d": true,
+        "name": "",
+        "group": "0caa174d7a6e517e",
+        "order": 1,
+        "width": 8,
+        "height": 6,
+        "label": "Liquid Flow Rate (Qt)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#0f8ce6",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 840,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c88d431fd765b52a",
+        "type": "ui_chart",
+        "z": "3bb97c917005d2ec",
+        "d": true,
+        "name": "",
+        "group": "0caa174d7a6e517e",
+        "order": 2,
+        "width": 8,
+        "height": 6,
+        "label": "Oil Flow Rate (Qo)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#0f8ce6",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1090,
+        "y": 560,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8ebbd188762cc865",
+        "type": "function",
+        "z": "3bb97c917005d2ec",
+        "g": "68acde47a0a8f15f",
+        "name": "Cumulative Liquid Rate",
+        "func": "msg.topic = 'Cumulative Liquid Rate'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 850,
+        "y": 780,
+        "wires": [
+            [
+                "c9b4a9a30c20ea05"
+            ]
+        ]
+    },
+    {
+        "id": "64bd68c7d53fe48b",
+        "type": "function",
+        "z": "3bb97c917005d2ec",
+        "g": "68acde47a0a8f15f",
+        "name": "Cumulative Oil Rate",
+        "func": "msg.topic = 'Cumulative Oil Rate'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 840,
+        "y": 820,
+        "wires": [
+            [
+                "c9b4a9a30c20ea05"
+            ]
+        ]
+    },
+    {
+        "id": "c9b4a9a30c20ea05",
+        "type": "ui_chart",
+        "z": "3bb97c917005d2ec",
+        "g": "68acde47a0a8f15f",
+        "name": "",
+        "group": "0caa174d7a6e517e",
+        "order": 7,
+        "width": 16,
+        "height": 6,
+        "label": "Cumulative Rate",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#0f8ce6",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1130,
+        "y": 800,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3cb6f92b44f1c3de",
+        "type": "function",
+        "z": "3bb97c917005d2ec",
+        "g": "ab091dab5efec34f",
+        "name": "Liquid Rate (Qt)",
+        "func": "msg.topic = 'Liquid Rate (Qt)'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 640,
+        "wires": [
+            [
+                "37ec8b61a52e9780"
+            ]
+        ]
+    },
+    {
+        "id": "d89b715d3b8d5f8a",
+        "type": "function",
+        "z": "3bb97c917005d2ec",
+        "g": "ab091dab5efec34f",
+        "name": "Oil Rate (Qo)",
+        "func": "msg.topic = 'Oil Rate (Qo)'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 810,
+        "y": 680,
+        "wires": [
+            [
+                "37ec8b61a52e9780"
+            ]
+        ]
+    },
+    {
+        "id": "37ec8b61a52e9780",
+        "type": "ui_chart",
+        "z": "3bb97c917005d2ec",
+        "g": "ab091dab5efec34f",
+        "name": "",
+        "group": "0caa174d7a6e517e",
+        "order": 3,
+        "width": 16,
+        "height": 6,
+        "label": "Flow Rate",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#0f8ce6",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1100,
+        "y": 660,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "233be1a32928c7fc",
+        "type": "mqtt in",
+        "z": "61b33a4c12f85731",
+        "name": "mqtt",
+        "topic": "DD-GLO",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "a7ac9607114a5263",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 360,
+        "wires": [
+            [
+                "cee61f3b4b443397"
+            ]
+        ]
+    },
+    {
+        "id": "cee61f3b4b443397",
+        "type": "function",
+        "z": "61b33a4c12f85731",
+        "name": "Well",
+        "func": "var test = msg.payload;\ntag1 = { payload: test.values[0].GLIR_Well1 };\ntag2 = { payload: test.values[1].GLIR_Well2 };\ntag3 = { payload: test.values[2].Qt_Well1 };\ntag4 = { payload: test.values[3].Qt_Well2 };\ntag5 = { payload: test.values[4].Qo_Well1 };\ntag6 = { payload: test.values[5].Qo_Well2 };\ntag7 = { payload: test.values[6].wc_Well1 };\ntag8 = { payload: test.values[7].wc_Well2 };\ntag9 = { payload: test.values[8].Cum_Qt_Well1 };\ntag10 = { payload: test.values[9].Cum_Qt_Well2 };\ntag11 = { payload: test.values[10].Cum_Qo_Well1 };\ntag12 = { payload: test.values[11].Cum_Qo_Well2 };\ntag13 = { payload: test.values[12].Total_Qt };\ntag14 = { payload: test.values[13].Total_Qo };\ntag15 = { payload: test.values[14].Total_Inj };\ntag16 = { payload: test.values[15].Total_GLIR };\ntag17 = { payload: test.values[16].Total_GLIR2 };\nreturn [tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag9, tag10, tag11, tag12, tag13, tag14, tag15, tag16, tag17]",
+        "outputs": 17,
+        "noerr": 17,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 360,
+        "wires": [
+            [],
+            [
+                "cf49e71e794ccfda",
+                "e49d6fbdaa0380b4"
+            ],
+            [],
+            [
+                "6dcf07e23e795c12",
+                "b0efdb05fc9a0bdf",
+                "4d5e55aff54f86b7"
+            ],
+            [],
+            [
+                "c9c477b689c7fe87",
+                "7ebb96988f941606",
+                "b77059098b0cf591"
+            ],
+            [],
+            [
+                "24a1100406bd5694",
+                "cdcd57da69c45e09"
+            ],
+            [],
+            [
+                "53d439ee2fb32325",
+                "cfa12f2c69d4c46d",
+                "4c4bc6cec05973ba"
+            ],
+            [],
+            [
+                "cd3edf7c3cb08c9a",
+                "0b407d3c05eb9d7a",
+                "1e3cc1f252214e3c"
+            ],
+            [],
+            [],
+            [],
+            [],
+            []
+        ],
+        "outputLabels": [
+            "GLIR_Well1",
+            "GLIR_Well2",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ]
+    },
+    {
+        "id": "cf49e71e794ccfda",
+        "type": "ui_gauge",
+        "z": "61b33a4c12f85731",
+        "g": "fa03babd2b1042cd",
+        "name": "",
+        "group": "5a8dedaff41e41e4",
+        "order": 3,
+        "width": 7,
+        "height": 5,
+        "gtype": "gage",
+        "title": "Gas Lift Injection Rate (MSCFD)",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 890,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "24a1100406bd5694",
+        "type": "ui_gauge",
+        "z": "61b33a4c12f85731",
+        "g": "fa03babd2b1042cd",
+        "name": "",
+        "group": "5a8dedaff41e41e4",
+        "order": 4,
+        "width": 7,
+        "height": 5,
+        "gtype": "gage",
+        "title": "Watercut (%)",
+        "label": "%",
+        "format": "{{value*100}}",
+        "min": 0,
+        "max": "1",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 1110,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "e49d6fbdaa0380b4",
+        "type": "ui_chart",
+        "z": "61b33a4c12f85731",
+        "g": "fa03babd2b1042cd",
+        "name": "",
+        "group": "5a8dedaff41e41e4",
+        "order": 16,
+        "width": 8,
+        "height": 7,
+        "label": "GLIR (MSCFD)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "step",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 840,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cdcd57da69c45e09",
+        "type": "ui_chart",
+        "z": "61b33a4c12f85731",
+        "g": "fa03babd2b1042cd",
+        "name": "",
+        "group": "5a8dedaff41e41e4",
+        "order": 17,
+        "width": 8,
+        "height": 7,
+        "label": "Water Cut (%)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1120,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cfa12f2c69d4c46d",
+        "type": "ui_text",
+        "z": "61b33a4c12f85731",
+        "g": "a6f8c462f30b8664",
+        "group": "063accb9243ad5f8",
+        "order": 9,
+        "width": 8,
+        "height": 1,
+        "name": "",
+        "label": "Cumulative Liquid Flow Rate",
+        "format": "{{msg.payload}} {{\"STB\"}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 880,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "0b407d3c05eb9d7a",
+        "type": "ui_text",
+        "z": "61b33a4c12f85731",
+        "g": "a6f8c462f30b8664",
+        "group": "063accb9243ad5f8",
+        "order": 10,
+        "width": 8,
+        "height": 1,
+        "name": "",
+        "label": "Cumulative Oil Flow Rate",
+        "format": "{{msg.payload}} {{\"STB\"}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1130,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "6dcf07e23e795c12",
+        "type": "ui_text",
+        "z": "61b33a4c12f85731",
+        "g": "a6f8c462f30b8664",
+        "group": "063accb9243ad5f8",
+        "order": 4,
+        "width": 8,
+        "height": 1,
+        "name": "",
+        "label": "Liquid Flow Rate",
+        "format": "{{msg.payload}} {{\"STB/Day\"}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 850,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "c9c477b689c7fe87",
+        "type": "ui_text",
+        "z": "61b33a4c12f85731",
+        "g": "a6f8c462f30b8664",
+        "group": "063accb9243ad5f8",
+        "order": 5,
+        "width": 8,
+        "height": 1,
+        "name": "",
+        "label": "Oil Flow Rate",
+        "format": "{{msg.payload}} {{\"STB/Day\"}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 1080,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "53d439ee2fb32325",
+        "type": "ui_chart",
+        "z": "61b33a4c12f85731",
+        "d": true,
+        "g": "a6f8c462f30b8664",
+        "name": "",
+        "group": "063accb9243ad5f8",
+        "order": 11,
+        "width": 8,
+        "height": 7,
+        "label": "Cumulative Liquid Rate",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#0f8ce6",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 870,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cd3edf7c3cb08c9a",
+        "type": "ui_chart",
+        "z": "61b33a4c12f85731",
+        "d": true,
+        "g": "a6f8c462f30b8664",
+        "name": "",
+        "group": "063accb9243ad5f8",
+        "order": 12,
+        "width": 8,
+        "height": 7,
+        "label": "Cumulative Oil Rate",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1120,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b0efdb05fc9a0bdf",
+        "type": "ui_chart",
+        "z": "61b33a4c12f85731",
+        "d": true,
+        "name": "",
+        "group": "063accb9243ad5f8",
+        "order": 2,
+        "width": 8,
+        "height": 6,
+        "label": "Liquid Flow Rate (Qt)",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#0f8ce6",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 860,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7ebb96988f941606",
+        "type": "ui_chart",
+        "z": "61b33a4c12f85731",
+        "d": true,
+        "name": "",
+        "group": "063accb9243ad5f8",
+        "order": 3,
+        "width": 8,
+        "height": 6,
+        "label": "Oil Flow Rate (Qo)",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#0f8ce6",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1150,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4c4bc6cec05973ba",
+        "type": "function",
+        "z": "61b33a4c12f85731",
+        "name": "Cumulative Liquid Rate",
+        "func": "msg.topic = 'Cumulative Liquid Rate'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 870,
+        "y": 600,
+        "wires": [
+            [
+                "c015c838791f74c1"
+            ]
+        ]
+    },
+    {
+        "id": "1e3cc1f252214e3c",
+        "type": "function",
+        "z": "61b33a4c12f85731",
+        "name": "Cumulative Oil Rate",
+        "func": "msg.topic = 'Cumulative Oil Rate'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 640,
+        "wires": [
+            [
+                "c015c838791f74c1"
+            ]
+        ]
+    },
+    {
+        "id": "c015c838791f74c1",
+        "type": "ui_chart",
+        "z": "61b33a4c12f85731",
+        "name": "",
+        "group": "063accb9243ad5f8",
+        "order": 8,
+        "width": 16,
+        "height": 6,
+        "label": "Cumulative Rate",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#0f8ce6",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1150,
+        "y": 620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4d5e55aff54f86b7",
+        "type": "function",
+        "z": "61b33a4c12f85731",
+        "name": "Liquid Rate (Qt)",
+        "func": "msg.topic = 'Liquid Rate (Qt)'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 840,
+        "y": 700,
+        "wires": [
+            [
+                "b079805e964eb8ab"
+            ]
+        ]
+    },
+    {
+        "id": "b77059098b0cf591",
+        "type": "function",
+        "z": "61b33a4c12f85731",
+        "name": "Oil Rate (Qo)",
+        "func": "msg.topic = 'Oil Rate (Qo)'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 830,
+        "y": 740,
+        "wires": [
+            [
+                "b079805e964eb8ab"
+            ]
+        ]
+    },
+    {
+        "id": "b079805e964eb8ab",
+        "type": "ui_chart",
+        "z": "61b33a4c12f85731",
+        "name": "",
+        "group": "063accb9243ad5f8",
+        "order": 1,
+        "width": 16,
+        "height": 6,
+        "label": "Flow Rate",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#0f8ce6",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1120,
+        "y": 720,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "183c89d823636275",
+        "type": "mqtt in",
+        "z": "a43624cb82c758cc",
+        "name": "mqtt",
+        "topic": "DD-GLO",
+        "qos": "0",
+        "datatype": "json",
+        "broker": "a7ac9607114a5263",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 110,
+        "y": 420,
+        "wires": [
+            [
+                "8c629ea6495bce92"
+            ]
+        ]
+    },
+    {
+        "id": "8c629ea6495bce92",
+        "type": "function",
+        "z": "a43624cb82c758cc",
+        "name": "Well",
+        "func": "var test = msg.payload;\ntag1 = { payload: test.values[0].GLIR_Well1 };\ntag2 = { payload: test.values[1].GLIR_Well2 };\ntag3 = { payload: test.values[2].Qt_Well1 };\ntag4 = { payload: test.values[3].Qt_Well2 };\ntag5 = { payload: test.values[4].Qo_Well1 };\ntag6 = { payload: test.values[5].Qo_Well2 };\ntag7 = { payload: test.values[6].wc_Well1 };\ntag8 = { payload: test.values[7].wc_Well2 };\ntag9 = { payload: test.values[8].Cum_Qt_Well1 };\ntag10 = { payload: test.values[9].Cum_Qt_Well2 };\ntag11 = { payload: test.values[10].Cum_Qo_Well1 };\ntag12 = { payload: test.values[11].Cum_Qo_Well2 };\ntag13 = { payload: test.values[12].Total_Qt };\ntag14 = { payload: test.values[13].Total_Qo };\ntag15 = { payload: test.values[14].Total_Inj };\ntag16 = { payload: test.values[15].Total_GLIR };\ntag17 = { payload: test.values[16].Total_GLIR2 };\nreturn [tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag9, tag10, tag11, tag12, tag13, tag14, tag15, tag16, tag17]",
+        "outputs": 17,
+        "noerr": 17,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 420,
+        "wires": [
+            [
+                "16883d54edd4aaa2"
+            ],
+            [
+                "e2fd300975bf7ff7"
+            ],
+            [
+                "62f191be69537e5e"
+            ],
+            [
+                "1554e08fcdd7975e"
+            ],
+            [
+                "b469b174b56686bb"
+            ],
+            [
+                "55a4ef7e1040157f"
+            ],
+            [
+                "1fb72ffedfe96de1"
+            ],
+            [
+                "ed60af8d660afd6c"
+            ],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            [],
+            []
+        ],
+        "outputLabels": [
+            "GLIR_Well1",
+            "GLIR_Well2",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ]
+    },
+    {
+        "id": "52be81431d155a1e",
+        "type": "ui_template",
+        "z": "a43624cb82c758cc",
+        "group": "a33f0a6ba9fe9f2b",
+        "name": "",
+        "order": 5,
+        "width": 6,
+        "height": 1,
+        "format": "<script id=\"clockScript1\" type=\"text/javascript\">\n    var clockInterval;\n    $(function () {\n        if (clockInterval) return;\n\n        //add logo\n        var div1 = $('<div/>');\n        var logo = new Image();\n\n        logo.src = '/SLB_LOGO.png'\n        logo.height = 60;\n        div1[0].style.margin = '10px auto';\n\n        div1.append(logo);\n\n        //add clock\n        var div2 = $('<div/>');\n        var p = $('<p/>');\n\n        div2.append(p);\n        div2[0].style.margin = '5px';\n\n        function displayTime() {\n            p.text(new Date().toLocaleString());\n        }\n        \n        clockInterval = setInterval(displayTime, 1000);\n\n        //add to toolbar when it's available\n        var addToToolbarTimer;\n        \n        function addToToolbar() {\n            var toolbar = $('.md-toolbar-tools');\n            \n            if(!toolbar.length) return;\n            \n            toolbar.append(div1);\n            toolbar.append(div2);\n            clearInterval(addToToolbarTimer);\n        }\n        addToToolbarTimer = setInterval(addToToolbar, 100);\n    });\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "Logo / Clock",
+        "x": 120,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "16883d54edd4aaa2",
+        "type": "function",
+        "z": "a43624cb82c758cc",
+        "name": "Well 1: GLIR (MSCFD)",
+        "func": "msg.topic = 'Well 1: GLIR (MSCFD)'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 240,
+        "wires": [
+            [
+                "5075d5b7859cdd63"
+            ]
+        ]
+    },
+    {
+        "id": "e2fd300975bf7ff7",
+        "type": "function",
+        "z": "a43624cb82c758cc",
+        "name": "Well 2: GLIR (MSCFD)",
+        "func": "msg.topic = 'Well 2: GLIR (MSCFD)'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 280,
+        "wires": [
+            [
+                "5075d5b7859cdd63"
+            ]
+        ]
+    },
+    {
+        "id": "62f191be69537e5e",
+        "type": "function",
+        "z": "a43624cb82c758cc",
+        "name": "Well 1: Qt (STB/Day)",
+        "func": "msg.topic = 'Well 1: Qt (STB/Day)'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 320,
+        "wires": [
+            [
+                "5075d5b7859cdd63"
+            ]
+        ]
+    },
+    {
+        "id": "1554e08fcdd7975e",
+        "type": "function",
+        "z": "a43624cb82c758cc",
+        "name": "Well 2: Qt (STB/Day)",
+        "func": "msg.topic = 'Well 2: Qt (STB/Day)'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 360,
+        "wires": [
+            [
+                "5075d5b7859cdd63"
+            ]
+        ]
+    },
+    {
+        "id": "b469b174b56686bb",
+        "type": "function",
+        "z": "a43624cb82c758cc",
+        "name": "Well 1: Qo (STB/Day)",
+        "func": "msg.topic = 'Well 1: Qo (STB/Day)'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 400,
+        "wires": [
+            [
+                "5075d5b7859cdd63"
+            ]
+        ]
+    },
+    {
+        "id": "55a4ef7e1040157f",
+        "type": "function",
+        "z": "a43624cb82c758cc",
+        "name": "Well 2: Qo (STB/Day)",
+        "func": "msg.topic = 'Well 2: Qo (STB/Day)'\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 440,
+        "wires": [
+            [
+                "5075d5b7859cdd63"
+            ]
+        ]
+    },
+    {
+        "id": "1fb72ffedfe96de1",
+        "type": "function",
+        "z": "a43624cb82c758cc",
+        "name": "Well 1: Wc (%)",
+        "func": "msg.topic = 'Well 1: Wc (%)'\nmsg.payload = msg.payload*100\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 480,
+        "wires": [
+            [
+                "5075d5b7859cdd63"
+            ]
+        ]
+    },
+    {
+        "id": "ed60af8d660afd6c",
+        "type": "function",
+        "z": "a43624cb82c758cc",
+        "name": "Well 2: Wc (%)",
+        "func": "msg.topic = 'Well 2: Wc (%)'\nmsg.payload = msg.payload * 100\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 640,
+        "y": 520,
+        "wires": [
+            [
+                "5075d5b7859cdd63"
+            ]
+        ]
+    },
+    {
+        "id": "5075d5b7859cdd63",
+        "type": "ui_chart",
+        "z": "a43624cb82c758cc",
+        "name": "",
+        "group": "f2ddd08e13d6a7eb",
+        "order": 1,
+        "width": 22,
+        "height": 11,
+        "label": "<font size = 6>Real Time Monitoring Trend",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Loading Data...",
+        "dot": true,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#db8439",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1010,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9dd882e7bfb17205",
+        "type": "ui_button",
+        "z": "a43624cb82c758cc",
+        "name": "",
+        "group": "f2ddd08e13d6a7eb",
+        "order": 3,
+        "width": 7,
+        "height": 1,
+        "passthru": false,
+        "label": "Reset Trends",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 910,
+        "y": 560,
+        "wires": [
+            [
+                "92103b7cb191933f"
+            ]
+        ]
+    },
+    {
+        "id": "92103b7cb191933f",
+        "type": "function",
+        "z": "a43624cb82c758cc",
+        "name": "reset1",
+        "func": "msg.payload = [];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 890,
+        "y": 460,
+        "wires": [
+            [
+                "5075d5b7859cdd63"
+            ]
+        ]
+    },
+    {
+        "id": "f38d0c47e9c4c7e5",
+        "type": "inject",
+        "z": "85baee48c9409b25",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "23.567",
+        "payloadType": "num",
+        "x": 290,
+        "y": 320,
+        "wires": [
+            [
+                "74b61bddae0cd3d0",
+                "58ebd0ca3367f9d2"
+            ]
+        ]
+    },
+    {
+        "id": "74b61bddae0cd3d0",
+        "type": "function",
+        "z": "85baee48c9409b25",
+        "name": "parseInt",
+        "func": "msg.payload = parseInt(msg.payload)\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 280,
+        "wires": [
+            [
+                "60668ef870bd270b"
+            ]
+        ]
+    },
+    {
+        "id": "60668ef870bd270b",
+        "type": "debug",
+        "z": "85baee48c9409b25",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 650,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "58ebd0ca3367f9d2",
+        "type": "change",
+        "z": "85baee48c9409b25",
+        "name": "jsonata round",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "$round(payload, 0)\t",
+                "tot": "jsonata"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 480,
+        "y": 380,
+        "wires": [
+            [
+                "e1bbbd3db019d854"
+            ]
+        ]
+    },
+    {
+        "id": "e1bbbd3db019d854",
+        "type": "debug",
+        "z": "85baee48c9409b25",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 670,
+        "y": 380,
+        "wires": []
+    }
+]

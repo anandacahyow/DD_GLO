@@ -137,11 +137,35 @@ def input_auto2():
         cond = 'manual'
     return cond
 
+"""def input_cons():
+    global set_cons
+    #print("NILAI SET CONS",set_cons.get())
+    print("SET CONS",set_cons)
+    #if set_cons.get() != '':
+    if type(set_cons) == 'int':
+        set_cons = set_cons
+    elif set_cons.get() != '':
+        set_cons = set_cons.get()
+    else:
+        set_cons = 2000
+    #print('NILAI SETTING GLIR:', set_input)
+    cond = 'changed'
+    return [set_cons, cond]
+
+def input_cons_default():
+    cond = 'default'
+    if input_glir2() != 0:
+        cond = 'changed'
+    return cond"""
+
 def clear():
     set_glir.delete(0,'end')
 
 def clear2():
     set_glir2.delete(0,'end')
+
+def clear_cons():
+    set_cons.delete(0,'end')
 
 def read_reg(register,address,unit):
     if register == '3000':
@@ -176,15 +200,28 @@ def structure():
         cum_glir2 = cum_glir_ins_list2[-1]
     period_cond = 2
     # ========================================== INITIALIZATION STATE ==========================================
+    def_const = 2000
     if i < 8:
         # ========================================== AGREGATING STATE ==========================================
         t = 0
         #rand_glir = random.uniform(400, 800)
-        rand_glir = [410,575,450,430,710,860,870,890]
-        rand_glir2 = [410,575,450,430,710,860,870,890]
-        rand_glir2.reverse()
+        rand_glir = np.multiply([410,575,450,430,710,860,870,890],0.5)
+        rand_glir = np.multiply([890, 870, 860, 710, 430, 450, 575, 410],0.5)
+        #rand_glir = rand_glir2
         #rand_glir.reverse()
-        #rand_glir = 854
+        
+        rand_glir = []
+        rand_glir2 = []
+        for p in range(0,8):
+            #r1 = random.uniform(400, 800)
+            #r2 = random.uniform(400, 800)
+            r1 = 700
+            r2 = 750
+            rand_glir.append(r1)
+            rand_glir2.append(r2)
+        rand_glir2 = [890, 870, 860, 710, 430, 450, 575, 410]
+        rand_glir = rand_glir2
+
         
         val2 = client.write_register(7031, int(rand_glir[i]), unit=114)  #GLIR_opt
         val22 = client.write_register(7031, int(rand_glir2[i]), unit=116)  #GLIR_opt
@@ -231,9 +268,10 @@ def structure():
             Total_GLIR = {"Total_Inj":round(val_GLIR+val_GLIR2,3)}
             Cum_GLIR1 = {"Total_GLIR":round(cum_glir/period_cond,3)}
             Cum_GLIR2 = {"Total_GLIR2":round(cum_glir2/period_cond,3)}
+            Total_Cons = {"Total_Constraint":def_const}
             
             val_dict = {"time":str(datetime.now()),
-                        "values": [GLIR_Well1,GLIR_Well2,Qt_Well1,Qt_Well2,Qo_Well1,Qo_Well2,wc_Well1,wc_Well2,Cum_Qt_Well1,Cum_Qt_Well2,Cum_Qo_Well1,Cum_Qo_Well2,Total_Qt,Total_Qo,Total_GLIR,Cum_GLIR1,Cum_GLIR2]}
+                        "values": [GLIR_Well1,GLIR_Well2,Qt_Well1,Qt_Well2,Qo_Well1,Qo_Well2,wc_Well1,wc_Well2,Cum_Qt_Well1,Cum_Qt_Well2,Cum_Qo_Well1,Cum_Qo_Well2,Total_Qt,Total_Qo,Total_GLIR,Cum_GLIR1,Cum_GLIR2,Total_Cons]}
             message = json.dumps(val_dict)
             ret = client1.publish(topic,payload=message,qos=0)
             
@@ -302,8 +340,15 @@ def structure():
                 glir_input2[-1] = val_set_glir2
         elif cond == 'automatic':
             glir_input2 = glir_input2
+        
+        val_cons = set_cons.get()
+        if val_cons == '':
+            constraint = def_const
+        else:
+            constraint = int(set_cons.get())
+        print("GLIR CONSTRAINTS:",constraint)
         # ========================================== SOLVER ==========================================
-        regoptim = DDGLO(glir_input, cum_qt_ins, val_wc,glir_input2, cum_qt_ins2, val_wc2, i-7)
+        regoptim = DDGLO(glir_input, cum_qt_ins, val_wc,glir_input2, cum_qt_ins2, val_wc2, constraint,i-7)
         glir_pred = regoptim.RegOpt()[0]
         qt_pred = regoptim.RegOpt()[2]
 
@@ -359,9 +404,10 @@ def structure():
             Total_GLIR = {"Total_Inj":round(val_GLIR+val_GLIR2,3)}
             Cum_GLIR1 = {"Total_GLIR":round(cum_glir/period_cond,3)}
             Cum_GLIR2 = {"Total_GLIR2":round(cum_glir2/period_cond,3)}
+            Total_Cons = {"Total_Constraint":constraint}
             
             val_dict = {"time":str(datetime.now()),
-                        "values": [GLIR_Well1,GLIR_Well2,Qt_Well1,Qt_Well2,Qo_Well1,Qo_Well2,wc_Well1,wc_Well2,Cum_Qt_Well1,Cum_Qt_Well2,Cum_Qo_Well1,Cum_Qo_Well2,Total_Qt,Total_Qo,Total_GLIR,Cum_GLIR1,Cum_GLIR2]}
+                        "values": [GLIR_Well1,GLIR_Well2,Qt_Well1,Qt_Well2,Qo_Well1,Qo_Well2,wc_Well1,wc_Well2,Cum_Qt_Well1,Cum_Qt_Well2,Cum_Qo_Well1,Cum_Qo_Well2,Total_Qt,Total_Qo,Total_GLIR,Cum_GLIR1,Cum_GLIR2,Total_Cons]}
             message = json.dumps(val_dict)
             ret = client1.publish(topic,payload=message,qos=0)
             
@@ -433,8 +479,8 @@ def structure():
     ax.legend()
 
     ax1 = plot_fig.add_subplot(212)
-    ax1.plot(time2,plot_qo, label='Predicted Qt Well 1', color = 'green')
-    ax1.plot(time2,plot_qo2, label='Predicted Qt Well 2', color = 'orange')
+    ax1.plot(time2,plot_qo, label='Predicted Qo Well 1', color = 'green')
+    ax1.plot(time2,plot_qo2, label='Predicted Qo Well 2', color = 'orange')
     ax1.set_xlabel('Period')
     ax1.set_ylabel('Qo (STB/day)')
     ax1.grid(True)
@@ -568,7 +614,7 @@ GLPV_table.tag_configure('latest',background='yellow')
 # ======================================== BUTTON FRAME ========================================
 dragdown_label = tk.Label(frame_dragdown,image = img)
 dragdown_label.pack()
-# ======================================== GLPCs ========================================
+# ======================================== ACTION COMMANDs ========================================
 button_label = tk.LabelFrame(frame_button, text="ACTIONS COMMANDS")
 button_label.grid(row=0,column=0,padx=10,pady=10)
 
@@ -583,7 +629,7 @@ setting_button.grid(row=1,column=0,padx=10,pady=10)
 
 automatic_button = tk.Button(button_label_well1, text="AUTOMATIC", command=clear)
 automatic_button.grid(row=2,column=0,padx=10,pady=10)
-
+# ======================================== ACTION COMMANDs ========================================
 button_label_well2 = tk.LabelFrame(button_label, text="WELL 2")
 button_label_well2.grid(row=1,column=0,padx=10,pady=10)
 
@@ -595,6 +641,18 @@ setting_button.grid(row=4,column=0,padx=10,pady=10)
 
 automatic_button2 = tk.Button(button_label_well2, text="AUTOMATIC", command=clear2)
 automatic_button2.grid(row=5,column=0,padx=10,pady=10)
+# ======================================== ACTION COMMANDs ========================================
+button_label_cons = tk.LabelFrame(button_label, text="GLIR CONSTRAINTS")
+button_label_cons.grid(row=2,column=0,padx=10,pady=10)
+
+set_cons = tk.Entry(button_label_cons)
+set_cons.grid(row=6,column=0,padx=10,pady=10)
+
+setting_cons = tk.Button(button_label_cons, text="SET GLIR CONSTRAINT", command=input_glir2) #COMMAND NANTI DLU
+setting_cons.grid(row=7,column=0,padx=10,pady=10)
+
+default_cons = tk.Button(button_label_cons, text="DEFAULT", command=clear_cons)
+default_cons.grid(row=8,column=0,padx=10,pady=10)
 
 #auto_button = tk.Button(button_label, text="MODE : AUTOMATIC",command=input_auto)
 #auto_button.grid(row=0,column=3,padx=10)

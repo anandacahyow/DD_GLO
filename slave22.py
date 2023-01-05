@@ -221,8 +221,8 @@ def WellDyn(GLIR,a,b,c,e):
     return Qt_rand
 
 def WC_dyn(t):
-    wc = ((0.4)/(1+20*(math.exp(-0.01*t))))+0.35
-    wc2 = ((0.4)/(1+20*(math.exp(-0.01*t))))+0.35
+    wc = ((0.15)/(1+20*(math.exp(-0.001*t))))+0.6
+    wc2 = ((0.2)/(1+20*(math.exp(-0.001*t))))+0.57
     #wc = 0.75
     return [wc,wc2]
 
@@ -275,7 +275,7 @@ def WellSys(u,i,mode):
     x_sys = res.inputs
 
     if mode == 'qt':
-        y_sys  = y_sys + y_sys*random.uniform(-10/100, 10/100)
+        y_sys  = y_sys + y_sys*random.uniform(-5/100, 5/100)
     elif mode == 'qo':
         y_sys = y_sys*(1 - WC_dyn(i)[0])
     #print(sys)
@@ -299,12 +299,13 @@ def updater_entrypoint(contexts, id, period, val_data):
         setpoint_glir2.append(setpoint2)
         wc_val2 = WC_dyn(t)[1]
 
-        # WELL MODEL TF
+        # WELL MODEL TF ARX MODEL 3rd ORDER
         #qt_simulated = WellSys(setpoint_glir, t, 'qt')[-1] #TF BASED MODEL
-        qo_simulated = 0.3*WellSys(setpoint_glir, t, 'qt')[-1]*math.exp(-0.000455*t) #TF BASED MODEL
+        qo_simulated = 0.5*WellSys(setpoint_glir, t, 'qt')[-1]*math.exp(-0.000455*t) #TF BASED MODEL
         qt_simulated = qo_simulated/(1 - WC_dyn(t)[1]) #TF BASED MODEL
-        qo_simulated2 = 0.2*WellSys(setpoint_glir, t, 'qt')[-1]*math.exp(-0.000455*t) #TF BASED MODEL
+        qo_simulated2 = 0.5*WellSys(setpoint_glir2, t, 'qt')[-1]*math.exp(-0.000455*t) #TF BASED MODEL
         qt_simulated2 = qo_simulated2/(1 - WC_dyn(t)[1]) #TF BASED MODEL
+        
         """#WELL MODEL REGRESSION
         qt_simulated = WellDyn(setpoint, -0.001, 1.4, 110, 5) #REGRESSION BASED MODEL
         qo_simulated = qt_simulated*(1 - WC_dyn(t))*math.exp(-0.0000455*t) #TF BASED MODEL
@@ -323,7 +324,19 @@ def updater_entrypoint(contexts, id, period, val_data):
         qo_simulated2 = 0.2*WellDyn(setpoint2, -0.001, 1.4, 110, 5)*math.exp(-0.0000455*t)
         qt_simulated2 = qo_simulated2/(1 - WC_dyn(t)[1]) #TF BASED MODEL"""
 
-        #qw = contexts.contexts[113].store["i"].getValues(167+1,count=2)[0] #qw
+        #MULTI WELL WELL MODEL REGRESSION ABSOLUTE
+        qo_simulated = 1*WellDyn(setpoint, 8.42570632e-05, -1.76777331e-01,  2.36235576e+02, 5)*math.exp(-0.000655*t)
+        qt_simulated = qo_simulated/(1 - WC_dyn(t)[0]) #TF BASED MODELs
+
+        qo_simulated2 = 1*WellDyn(setpoint2, 8.42570632e-05, -1.76777331e-01,  2.36235576e+02, 5)*math.exp(-0.000455*t)
+        qt_simulated2 = qo_simulated2/(1 - WC_dyn(t)[1]) #TF BASED MODEL"""
+
+        #MULTI WELL WELL MODEL REGRESSION CAHYO 2
+        """qo_simulated = 1*WellDyn(setpoint, -0.001, 1.4, 110, 5)*math.exp(-0.0000455*t)
+        qt_simulated = qo_simulated/(1 - WC_dyn(t)[0]) #TF BASED MODELs
+
+        qo_simulated2 = 1*WellDyn(setpoint2, -0.001, 1.4, 110, 5)*math.exp(-0.0000455*t)
+        qt_simulated2 = qo_simulated2/(1 - WC_dyn(t)[1]) #TF BASED MODEL"""
 
         qt_cum_val += qt_simulated
         qo_cum_val += qo_simulated
